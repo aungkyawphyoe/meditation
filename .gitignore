@@ -1,5 +1,11 @@
 # Agent workspace logs
 .agent/
+.agents/
+AGENTS.md
+CLAUDE.md
+agent.md
+agent_skills.md
+skills-lock.json
 
 # Ralph Wiggum
 .specify/
