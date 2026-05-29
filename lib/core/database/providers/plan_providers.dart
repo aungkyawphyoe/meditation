@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../daos/plan_dao.dart';
 import '../database.dart';
+import 'app_database_providers.dart';
 
 final planDaoProvider = Provider<PlanDao>((ref) {
   return ref.watch(databaseProvider).planDao;

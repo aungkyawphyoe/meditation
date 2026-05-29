@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meditation/app.dart';
-import 'package:meditation/core/database/database.dart';
 import 'test_helpers.dart';
 
 void main() {
@@ -77,7 +75,8 @@ void main() {
 
     await tester.tap(find.text('Plans'));
     await tester.pump();
-    expect(find.text('Plans - Coming Soon'), findsOneWidget);
+    expect(find.text('Subscribed'), findsOneWidget);
+    expect(find.text('List'), findsOneWidget);
 
     await tester.tap(find.text('Profile'));
     await tester.pump();

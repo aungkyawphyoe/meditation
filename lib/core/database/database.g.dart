@@ -930,16 +930,1496 @@ class ChantSessionsTableCompanion extends UpdateCompanion<ChantSession> {
   }
 }
 
+class $GongDawDetailsTableTable extends GongDawDetailsTable
+    with TableInfo<$GongDawDetailsTableTable, GongDawDetails> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GongDawDetailsTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _meaningMeta = const VerificationMeta(
+    'meaning',
+  );
+  @override
+  late final GeneratedColumn<String> meaning = GeneratedColumn<String>(
+    'meaning',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, meaning];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'gong_daw_details_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<GongDawDetails> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('meaning')) {
+      context.handle(
+        _meaningMeta,
+        meaning.isAcceptableOrUnknown(data['meaning']!, _meaningMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_meaningMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GongDawDetails map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GongDawDetails(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      meaning: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}meaning'],
+      )!,
+    );
+  }
+
+  @override
+  $GongDawDetailsTableTable createAlias(String alias) {
+    return $GongDawDetailsTableTable(attachedDatabase, alias);
+  }
+}
+
+class GongDawDetails extends DataClass implements Insertable<GongDawDetails> {
+  final int id;
+  final String name;
+  final String meaning;
+  const GongDawDetails({
+    required this.id,
+    required this.name,
+    required this.meaning,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['meaning'] = Variable<String>(meaning);
+    return map;
+  }
+
+  GongDawDetailsTableCompanion toCompanion(bool nullToAbsent) {
+    return GongDawDetailsTableCompanion(
+      id: Value(id),
+      name: Value(name),
+      meaning: Value(meaning),
+    );
+  }
+
+  factory GongDawDetails.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GongDawDetails(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      meaning: serializer.fromJson<String>(json['meaning']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'meaning': serializer.toJson<String>(meaning),
+    };
+  }
+
+  GongDawDetails copyWith({int? id, String? name, String? meaning}) =>
+      GongDawDetails(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        meaning: meaning ?? this.meaning,
+      );
+  GongDawDetails copyWithCompanion(GongDawDetailsTableCompanion data) {
+    return GongDawDetails(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      meaning: data.meaning.present ? data.meaning.value : this.meaning,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GongDawDetails(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('meaning: $meaning')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, meaning);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GongDawDetails &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.meaning == this.meaning);
+}
+
+class GongDawDetailsTableCompanion extends UpdateCompanion<GongDawDetails> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> meaning;
+  const GongDawDetailsTableCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.meaning = const Value.absent(),
+  });
+  GongDawDetailsTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required String meaning,
+  }) : name = Value(name),
+       meaning = Value(meaning);
+  static Insertable<GongDawDetails> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? meaning,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (meaning != null) 'meaning': meaning,
+    });
+  }
+
+  GongDawDetailsTableCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String>? meaning,
+  }) {
+    return GongDawDetailsTableCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      meaning: meaning ?? this.meaning,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (meaning.present) {
+      map['meaning'] = Variable<String>(meaning.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GongDawDetailsTableCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('meaning: $meaning')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $BeadPlansTableTable extends BeadPlansTable
+    with TableInfo<$BeadPlansTableTable, BeadPlan> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BeadPlansTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isPredefinedMeta = const VerificationMeta(
+    'isPredefined',
+  );
+  @override
+  late final GeneratedColumn<bool> isPredefined = GeneratedColumn<bool>(
+    'is_predefined',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_predefined" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _beadsPerRoundMeta = const VerificationMeta(
+    'beadsPerRound',
+  );
+  @override
+  late final GeneratedColumn<int> beadsPerRound = GeneratedColumn<int>(
+    'beads_per_round',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(108),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    title,
+    description,
+    isPredefined,
+    beadsPerRound,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'bead_plans_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BeadPlan> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('is_predefined')) {
+      context.handle(
+        _isPredefinedMeta,
+        isPredefined.isAcceptableOrUnknown(
+          data['is_predefined']!,
+          _isPredefinedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('beads_per_round')) {
+      context.handle(
+        _beadsPerRoundMeta,
+        beadsPerRound.isAcceptableOrUnknown(
+          data['beads_per_round']!,
+          _beadsPerRoundMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  BeadPlan map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BeadPlan(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      isPredefined: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_predefined'],
+      )!,
+      beadsPerRound: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}beads_per_round'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $BeadPlansTableTable createAlias(String alias) {
+    return $BeadPlansTableTable(attachedDatabase, alias);
+  }
+}
+
+class BeadPlan extends DataClass implements Insertable<BeadPlan> {
+  final int id;
+  final String title;
+  final String description;
+  final bool isPredefined;
+  final int beadsPerRound;
+  final DateTime createdAt;
+  const BeadPlan({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.isPredefined,
+    required this.beadsPerRound,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['title'] = Variable<String>(title);
+    map['description'] = Variable<String>(description);
+    map['is_predefined'] = Variable<bool>(isPredefined);
+    map['beads_per_round'] = Variable<int>(beadsPerRound);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  BeadPlansTableCompanion toCompanion(bool nullToAbsent) {
+    return BeadPlansTableCompanion(
+      id: Value(id),
+      title: Value(title),
+      description: Value(description),
+      isPredefined: Value(isPredefined),
+      beadsPerRound: Value(beadsPerRound),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory BeadPlan.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BeadPlan(
+      id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      description: serializer.fromJson<String>(json['description']),
+      isPredefined: serializer.fromJson<bool>(json['isPredefined']),
+      beadsPerRound: serializer.fromJson<int>(json['beadsPerRound']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
+      'description': serializer.toJson<String>(description),
+      'isPredefined': serializer.toJson<bool>(isPredefined),
+      'beadsPerRound': serializer.toJson<int>(beadsPerRound),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  BeadPlan copyWith({
+    int? id,
+    String? title,
+    String? description,
+    bool? isPredefined,
+    int? beadsPerRound,
+    DateTime? createdAt,
+  }) => BeadPlan(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    description: description ?? this.description,
+    isPredefined: isPredefined ?? this.isPredefined,
+    beadsPerRound: beadsPerRound ?? this.beadsPerRound,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  BeadPlan copyWithCompanion(BeadPlansTableCompanion data) {
+    return BeadPlan(
+      id: data.id.present ? data.id.value : this.id,
+      title: data.title.present ? data.title.value : this.title,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      isPredefined: data.isPredefined.present
+          ? data.isPredefined.value
+          : this.isPredefined,
+      beadsPerRound: data.beadsPerRound.present
+          ? data.beadsPerRound.value
+          : this.beadsPerRound,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BeadPlan(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('isPredefined: $isPredefined, ')
+          ..write('beadsPerRound: $beadsPerRound, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    title,
+    description,
+    isPredefined,
+    beadsPerRound,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BeadPlan &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.description == this.description &&
+          other.isPredefined == this.isPredefined &&
+          other.beadsPerRound == this.beadsPerRound &&
+          other.createdAt == this.createdAt);
+}
+
+class BeadPlansTableCompanion extends UpdateCompanion<BeadPlan> {
+  final Value<int> id;
+  final Value<String> title;
+  final Value<String> description;
+  final Value<bool> isPredefined;
+  final Value<int> beadsPerRound;
+  final Value<DateTime> createdAt;
+  const BeadPlansTableCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.description = const Value.absent(),
+    this.isPredefined = const Value.absent(),
+    this.beadsPerRound = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  BeadPlansTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String title,
+    required String description,
+    this.isPredefined = const Value.absent(),
+    this.beadsPerRound = const Value.absent(),
+    required DateTime createdAt,
+  }) : title = Value(title),
+       description = Value(description),
+       createdAt = Value(createdAt);
+  static Insertable<BeadPlan> custom({
+    Expression<int>? id,
+    Expression<String>? title,
+    Expression<String>? description,
+    Expression<bool>? isPredefined,
+    Expression<int>? beadsPerRound,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (description != null) 'description': description,
+      if (isPredefined != null) 'is_predefined': isPredefined,
+      if (beadsPerRound != null) 'beads_per_round': beadsPerRound,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  BeadPlansTableCompanion copyWith({
+    Value<int>? id,
+    Value<String>? title,
+    Value<String>? description,
+    Value<bool>? isPredefined,
+    Value<int>? beadsPerRound,
+    Value<DateTime>? createdAt,
+  }) {
+    return BeadPlansTableCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      isPredefined: isPredefined ?? this.isPredefined,
+      beadsPerRound: beadsPerRound ?? this.beadsPerRound,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (isPredefined.present) {
+      map['is_predefined'] = Variable<bool>(isPredefined.value);
+    }
+    if (beadsPerRound.present) {
+      map['beads_per_round'] = Variable<int>(beadsPerRound.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BeadPlansTableCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('isPredefined: $isPredefined, ')
+          ..write('beadsPerRound: $beadsPerRound, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PlanDaysTableTable extends PlanDaysTable
+    with TableInfo<$PlanDaysTableTable, PlanDay> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PlanDaysTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _planIdMeta = const VerificationMeta('planId');
+  @override
+  late final GeneratedColumn<int> planId = GeneratedColumn<int>(
+    'plan_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES bead_plans_table (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _dayNumberMeta = const VerificationMeta(
+    'dayNumber',
+  );
+  @override
+  late final GeneratedColumn<int> dayNumber = GeneratedColumn<int>(
+    'day_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _gongDawIdMeta = const VerificationMeta(
+    'gongDawId',
+  );
+  @override
+  late final GeneratedColumn<int> gongDawId = GeneratedColumn<int>(
+    'gong_daw_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES gong_daw_details_table (id)',
+    ),
+  );
+  static const VerificationMeta _targetRoundsMeta = const VerificationMeta(
+    'targetRounds',
+  );
+  @override
+  late final GeneratedColumn<int> targetRounds = GeneratedColumn<int>(
+    'target_rounds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    planId,
+    dayNumber,
+    gongDawId,
+    targetRounds,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'plan_days_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PlanDay> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('plan_id')) {
+      context.handle(
+        _planIdMeta,
+        planId.isAcceptableOrUnknown(data['plan_id']!, _planIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_planIdMeta);
+    }
+    if (data.containsKey('day_number')) {
+      context.handle(
+        _dayNumberMeta,
+        dayNumber.isAcceptableOrUnknown(data['day_number']!, _dayNumberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayNumberMeta);
+    }
+    if (data.containsKey('gong_daw_id')) {
+      context.handle(
+        _gongDawIdMeta,
+        gongDawId.isAcceptableOrUnknown(data['gong_daw_id']!, _gongDawIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_gongDawIdMeta);
+    }
+    if (data.containsKey('target_rounds')) {
+      context.handle(
+        _targetRoundsMeta,
+        targetRounds.isAcceptableOrUnknown(
+          data['target_rounds']!,
+          _targetRoundsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_targetRoundsMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PlanDay map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PlanDay(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      planId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}plan_id'],
+      )!,
+      dayNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}day_number'],
+      )!,
+      gongDawId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}gong_daw_id'],
+      )!,
+      targetRounds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}target_rounds'],
+      )!,
+    );
+  }
+
+  @override
+  $PlanDaysTableTable createAlias(String alias) {
+    return $PlanDaysTableTable(attachedDatabase, alias);
+  }
+}
+
+class PlanDay extends DataClass implements Insertable<PlanDay> {
+  final int id;
+  final int planId;
+  final int dayNumber;
+  final int gongDawId;
+  final int targetRounds;
+  const PlanDay({
+    required this.id,
+    required this.planId,
+    required this.dayNumber,
+    required this.gongDawId,
+    required this.targetRounds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['plan_id'] = Variable<int>(planId);
+    map['day_number'] = Variable<int>(dayNumber);
+    map['gong_daw_id'] = Variable<int>(gongDawId);
+    map['target_rounds'] = Variable<int>(targetRounds);
+    return map;
+  }
+
+  PlanDaysTableCompanion toCompanion(bool nullToAbsent) {
+    return PlanDaysTableCompanion(
+      id: Value(id),
+      planId: Value(planId),
+      dayNumber: Value(dayNumber),
+      gongDawId: Value(gongDawId),
+      targetRounds: Value(targetRounds),
+    );
+  }
+
+  factory PlanDay.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PlanDay(
+      id: serializer.fromJson<int>(json['id']),
+      planId: serializer.fromJson<int>(json['planId']),
+      dayNumber: serializer.fromJson<int>(json['dayNumber']),
+      gongDawId: serializer.fromJson<int>(json['gongDawId']),
+      targetRounds: serializer.fromJson<int>(json['targetRounds']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'planId': serializer.toJson<int>(planId),
+      'dayNumber': serializer.toJson<int>(dayNumber),
+      'gongDawId': serializer.toJson<int>(gongDawId),
+      'targetRounds': serializer.toJson<int>(targetRounds),
+    };
+  }
+
+  PlanDay copyWith({
+    int? id,
+    int? planId,
+    int? dayNumber,
+    int? gongDawId,
+    int? targetRounds,
+  }) => PlanDay(
+    id: id ?? this.id,
+    planId: planId ?? this.planId,
+    dayNumber: dayNumber ?? this.dayNumber,
+    gongDawId: gongDawId ?? this.gongDawId,
+    targetRounds: targetRounds ?? this.targetRounds,
+  );
+  PlanDay copyWithCompanion(PlanDaysTableCompanion data) {
+    return PlanDay(
+      id: data.id.present ? data.id.value : this.id,
+      planId: data.planId.present ? data.planId.value : this.planId,
+      dayNumber: data.dayNumber.present ? data.dayNumber.value : this.dayNumber,
+      gongDawId: data.gongDawId.present ? data.gongDawId.value : this.gongDawId,
+      targetRounds: data.targetRounds.present
+          ? data.targetRounds.value
+          : this.targetRounds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlanDay(')
+          ..write('id: $id, ')
+          ..write('planId: $planId, ')
+          ..write('dayNumber: $dayNumber, ')
+          ..write('gongDawId: $gongDawId, ')
+          ..write('targetRounds: $targetRounds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, planId, dayNumber, gongDawId, targetRounds);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PlanDay &&
+          other.id == this.id &&
+          other.planId == this.planId &&
+          other.dayNumber == this.dayNumber &&
+          other.gongDawId == this.gongDawId &&
+          other.targetRounds == this.targetRounds);
+}
+
+class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
+  final Value<int> id;
+  final Value<int> planId;
+  final Value<int> dayNumber;
+  final Value<int> gongDawId;
+  final Value<int> targetRounds;
+  const PlanDaysTableCompanion({
+    this.id = const Value.absent(),
+    this.planId = const Value.absent(),
+    this.dayNumber = const Value.absent(),
+    this.gongDawId = const Value.absent(),
+    this.targetRounds = const Value.absent(),
+  });
+  PlanDaysTableCompanion.insert({
+    this.id = const Value.absent(),
+    required int planId,
+    required int dayNumber,
+    required int gongDawId,
+    required int targetRounds,
+  }) : planId = Value(planId),
+       dayNumber = Value(dayNumber),
+       gongDawId = Value(gongDawId),
+       targetRounds = Value(targetRounds);
+  static Insertable<PlanDay> custom({
+    Expression<int>? id,
+    Expression<int>? planId,
+    Expression<int>? dayNumber,
+    Expression<int>? gongDawId,
+    Expression<int>? targetRounds,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (planId != null) 'plan_id': planId,
+      if (dayNumber != null) 'day_number': dayNumber,
+      if (gongDawId != null) 'gong_daw_id': gongDawId,
+      if (targetRounds != null) 'target_rounds': targetRounds,
+    });
+  }
+
+  PlanDaysTableCompanion copyWith({
+    Value<int>? id,
+    Value<int>? planId,
+    Value<int>? dayNumber,
+    Value<int>? gongDawId,
+    Value<int>? targetRounds,
+  }) {
+    return PlanDaysTableCompanion(
+      id: id ?? this.id,
+      planId: planId ?? this.planId,
+      dayNumber: dayNumber ?? this.dayNumber,
+      gongDawId: gongDawId ?? this.gongDawId,
+      targetRounds: targetRounds ?? this.targetRounds,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (planId.present) {
+      map['plan_id'] = Variable<int>(planId.value);
+    }
+    if (dayNumber.present) {
+      map['day_number'] = Variable<int>(dayNumber.value);
+    }
+    if (gongDawId.present) {
+      map['gong_daw_id'] = Variable<int>(gongDawId.value);
+    }
+    if (targetRounds.present) {
+      map['target_rounds'] = Variable<int>(targetRounds.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlanDaysTableCompanion(')
+          ..write('id: $id, ')
+          ..write('planId: $planId, ')
+          ..write('dayNumber: $dayNumber, ')
+          ..write('gongDawId: $gongDawId, ')
+          ..write('targetRounds: $targetRounds')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UserPlanProgressTableTable extends UserPlanProgressTable
+    with TableInfo<$UserPlanProgressTableTable, UserPlanProgress> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserPlanProgressTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<int> userId = GeneratedColumn<int>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES user_info_table (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _planIdMeta = const VerificationMeta('planId');
+  @override
+  late final GeneratedColumn<int> planId = GeneratedColumn<int>(
+    'plan_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES bead_plans_table (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _currentDayMeta = const VerificationMeta(
+    'currentDay',
+  );
+  @override
+  late final GeneratedColumn<int> currentDay = GeneratedColumn<int>(
+    'current_day',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
+    'start_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    planId,
+    currentDay,
+    status,
+    startDate,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_plan_progress_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UserPlanProgress> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('plan_id')) {
+      context.handle(
+        _planIdMeta,
+        planId.isAcceptableOrUnknown(data['plan_id']!, _planIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_planIdMeta);
+    }
+    if (data.containsKey('current_day')) {
+      context.handle(
+        _currentDayMeta,
+        currentDay.isAcceptableOrUnknown(data['current_day']!, _currentDayMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserPlanProgress map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserPlanProgress(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}user_id'],
+      )!,
+      planId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}plan_id'],
+      )!,
+      currentDay: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}current_day'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}start_date'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $UserPlanProgressTableTable createAlias(String alias) {
+    return $UserPlanProgressTableTable(attachedDatabase, alias);
+  }
+}
+
+class UserPlanProgress extends DataClass
+    implements Insertable<UserPlanProgress> {
+  final int id;
+  final int userId;
+  final int planId;
+  final int currentDay;
+  final String status;
+  final DateTime startDate;
+  final DateTime updatedAt;
+  const UserPlanProgress({
+    required this.id,
+    required this.userId,
+    required this.planId,
+    required this.currentDay,
+    required this.status,
+    required this.startDate,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_id'] = Variable<int>(userId);
+    map['plan_id'] = Variable<int>(planId);
+    map['current_day'] = Variable<int>(currentDay);
+    map['status'] = Variable<String>(status);
+    map['start_date'] = Variable<DateTime>(startDate);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  UserPlanProgressTableCompanion toCompanion(bool nullToAbsent) {
+    return UserPlanProgressTableCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      planId: Value(planId),
+      currentDay: Value(currentDay),
+      status: Value(status),
+      startDate: Value(startDate),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory UserPlanProgress.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserPlanProgress(
+      id: serializer.fromJson<int>(json['id']),
+      userId: serializer.fromJson<int>(json['userId']),
+      planId: serializer.fromJson<int>(json['planId']),
+      currentDay: serializer.fromJson<int>(json['currentDay']),
+      status: serializer.fromJson<String>(json['status']),
+      startDate: serializer.fromJson<DateTime>(json['startDate']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userId': serializer.toJson<int>(userId),
+      'planId': serializer.toJson<int>(planId),
+      'currentDay': serializer.toJson<int>(currentDay),
+      'status': serializer.toJson<String>(status),
+      'startDate': serializer.toJson<DateTime>(startDate),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  UserPlanProgress copyWith({
+    int? id,
+    int? userId,
+    int? planId,
+    int? currentDay,
+    String? status,
+    DateTime? startDate,
+    DateTime? updatedAt,
+  }) => UserPlanProgress(
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    planId: planId ?? this.planId,
+    currentDay: currentDay ?? this.currentDay,
+    status: status ?? this.status,
+    startDate: startDate ?? this.startDate,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  UserPlanProgress copyWithCompanion(UserPlanProgressTableCompanion data) {
+    return UserPlanProgress(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      planId: data.planId.present ? data.planId.value : this.planId,
+      currentDay: data.currentDay.present
+          ? data.currentDay.value
+          : this.currentDay,
+      status: data.status.present ? data.status.value : this.status,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserPlanProgress(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('planId: $planId, ')
+          ..write('currentDay: $currentDay, ')
+          ..write('status: $status, ')
+          ..write('startDate: $startDate, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, userId, planId, currentDay, status, startDate, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserPlanProgress &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.planId == this.planId &&
+          other.currentDay == this.currentDay &&
+          other.status == this.status &&
+          other.startDate == this.startDate &&
+          other.updatedAt == this.updatedAt);
+}
+
+class UserPlanProgressTableCompanion extends UpdateCompanion<UserPlanProgress> {
+  final Value<int> id;
+  final Value<int> userId;
+  final Value<int> planId;
+  final Value<int> currentDay;
+  final Value<String> status;
+  final Value<DateTime> startDate;
+  final Value<DateTime> updatedAt;
+  const UserPlanProgressTableCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.planId = const Value.absent(),
+    this.currentDay = const Value.absent(),
+    this.status = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  UserPlanProgressTableCompanion.insert({
+    this.id = const Value.absent(),
+    required int userId,
+    required int planId,
+    this.currentDay = const Value.absent(),
+    required String status,
+    required DateTime startDate,
+    required DateTime updatedAt,
+  }) : userId = Value(userId),
+       planId = Value(planId),
+       status = Value(status),
+       startDate = Value(startDate),
+       updatedAt = Value(updatedAt);
+  static Insertable<UserPlanProgress> custom({
+    Expression<int>? id,
+    Expression<int>? userId,
+    Expression<int>? planId,
+    Expression<int>? currentDay,
+    Expression<String>? status,
+    Expression<DateTime>? startDate,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (planId != null) 'plan_id': planId,
+      if (currentDay != null) 'current_day': currentDay,
+      if (status != null) 'status': status,
+      if (startDate != null) 'start_date': startDate,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  UserPlanProgressTableCompanion copyWith({
+    Value<int>? id,
+    Value<int>? userId,
+    Value<int>? planId,
+    Value<int>? currentDay,
+    Value<String>? status,
+    Value<DateTime>? startDate,
+    Value<DateTime>? updatedAt,
+  }) {
+    return UserPlanProgressTableCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      planId: planId ?? this.planId,
+      currentDay: currentDay ?? this.currentDay,
+      status: status ?? this.status,
+      startDate: startDate ?? this.startDate,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<int>(userId.value);
+    }
+    if (planId.present) {
+      map['plan_id'] = Variable<int>(planId.value);
+    }
+    if (currentDay.present) {
+      map['current_day'] = Variable<int>(currentDay.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<DateTime>(startDate.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserPlanProgressTableCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('planId: $planId, ')
+          ..write('currentDay: $currentDay, ')
+          ..write('status: $status, ')
+          ..write('startDate: $startDate, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UserInfoTableTable userInfoTable = $UserInfoTableTable(this);
   late final $ChantSessionsTableTable chantSessionsTable =
       $ChantSessionsTableTable(this);
+  late final $GongDawDetailsTableTable gongDawDetailsTable =
+      $GongDawDetailsTableTable(this);
+  late final $BeadPlansTableTable beadPlansTable = $BeadPlansTableTable(this);
+  late final $PlanDaysTableTable planDaysTable = $PlanDaysTableTable(this);
+  late final $UserPlanProgressTableTable userPlanProgressTable =
+      $UserPlanProgressTableTable(this);
   late final UserInfoDao userInfoDao = UserInfoDao(this as AppDatabase);
   late final ChantSessionDao chantSessionDao = ChantSessionDao(
     this as AppDatabase,
   );
+  late final PlanDao planDao = PlanDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -947,7 +2427,39 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     userInfoTable,
     chantSessionsTable,
+    gongDawDetailsTable,
+    beadPlansTable,
+    planDaysTable,
+    userPlanProgressTable,
   ];
+  @override
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'bead_plans_table',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('plan_days_table', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'user_info_table',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('user_plan_progress_table', kind: UpdateKind.delete),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'bead_plans_table',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('user_plan_progress_table', kind: UpdateKind.delete),
+      ],
+    ),
+  ]);
 }
 
 typedef $$UserInfoTableTableCreateCompanionBuilder =
@@ -972,6 +2484,43 @@ typedef $$UserInfoTableTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
+
+final class $$UserInfoTableTableReferences
+    extends BaseReferences<_$AppDatabase, $UserInfoTableTable, UserInfo> {
+  $$UserInfoTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<
+    $UserPlanProgressTableTable,
+    List<UserPlanProgress>
+  >
+  _userPlanProgressTableRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.userPlanProgressTable,
+        aliasName: $_aliasNameGenerator(
+          db.userInfoTable.id,
+          db.userPlanProgressTable.userId,
+        ),
+      );
+
+  $$UserPlanProgressTableTableProcessedTableManager
+  get userPlanProgressTableRefs {
+    final manager = $$UserPlanProgressTableTableTableManager(
+      $_db,
+      $_db.userPlanProgressTable,
+    ).filter((f) => f.userId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _userPlanProgressTableRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
 
 class $$UserInfoTableTableFilterComposer
     extends Composer<_$AppDatabase, $UserInfoTableTable> {
@@ -1021,6 +2570,32 @@ class $$UserInfoTableTableFilterComposer
     column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> userPlanProgressTableRefs(
+    Expression<bool> Function($$UserPlanProgressTableTableFilterComposer f) f,
+  ) {
+    final $$UserPlanProgressTableTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.userPlanProgressTable,
+          getReferencedColumn: (t) => t.userId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$UserPlanProgressTableTableFilterComposer(
+                $db: $db,
+                $table: $db.userPlanProgressTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$UserInfoTableTableOrderingComposer
@@ -1111,6 +2686,32 @@ class $$UserInfoTableTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  Expression<T> userPlanProgressTableRefs<T extends Object>(
+    Expression<T> Function($$UserPlanProgressTableTableAnnotationComposer a) f,
+  ) {
+    final $$UserPlanProgressTableTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.userPlanProgressTable,
+          getReferencedColumn: (t) => t.userId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$UserPlanProgressTableTableAnnotationComposer(
+                $db: $db,
+                $table: $db.userPlanProgressTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$UserInfoTableTableTableManager
@@ -1124,12 +2725,9 @@ class $$UserInfoTableTableTableManager
           $$UserInfoTableTableAnnotationComposer,
           $$UserInfoTableTableCreateCompanionBuilder,
           $$UserInfoTableTableUpdateCompanionBuilder,
-          (
-            UserInfo,
-            BaseReferences<_$AppDatabase, $UserInfoTableTable, UserInfo>,
-          ),
+          (UserInfo, $$UserInfoTableTableReferences),
           UserInfo,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool userPlanProgressTableRefs})
         > {
   $$UserInfoTableTableTableManager(_$AppDatabase db, $UserInfoTableTable table)
     : super(
@@ -1183,9 +2781,45 @@ class $$UserInfoTableTableTableManager
                 updatedAt: updatedAt,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$UserInfoTableTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userPlanProgressTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (userPlanProgressTableRefs) db.userPlanProgressTable,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (userPlanProgressTableRefs)
+                    await $_getPrefetchedData<
+                      UserInfo,
+                      $UserInfoTableTable,
+                      UserPlanProgress
+                    >(
+                      currentTable: table,
+                      referencedTable: $$UserInfoTableTableReferences
+                          ._userPlanProgressTableRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$UserInfoTableTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).userPlanProgressTableRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.userId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
@@ -1200,9 +2834,9 @@ typedef $$UserInfoTableTableProcessedTableManager =
       $$UserInfoTableTableAnnotationComposer,
       $$UserInfoTableTableCreateCompanionBuilder,
       $$UserInfoTableTableUpdateCompanionBuilder,
-      (UserInfo, BaseReferences<_$AppDatabase, $UserInfoTableTable, UserInfo>),
+      (UserInfo, $$UserInfoTableTableReferences),
       UserInfo,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool userPlanProgressTableRefs})
     >;
 typedef $$ChantSessionsTableTableCreateCompanionBuilder =
     ChantSessionsTableCompanion Function({
@@ -1432,6 +3066,1610 @@ typedef $$ChantSessionsTableTableProcessedTableManager =
       ChantSession,
       PrefetchHooks Function()
     >;
+typedef $$GongDawDetailsTableTableCreateCompanionBuilder =
+    GongDawDetailsTableCompanion Function({
+      Value<int> id,
+      required String name,
+      required String meaning,
+    });
+typedef $$GongDawDetailsTableTableUpdateCompanionBuilder =
+    GongDawDetailsTableCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String> meaning,
+    });
+
+final class $$GongDawDetailsTableTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $GongDawDetailsTableTable,
+          GongDawDetails
+        > {
+  $$GongDawDetailsTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<$PlanDaysTableTable, List<PlanDay>>
+  _planDaysTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.planDaysTable,
+    aliasName: $_aliasNameGenerator(
+      db.gongDawDetailsTable.id,
+      db.planDaysTable.gongDawId,
+    ),
+  );
+
+  $$PlanDaysTableTableProcessedTableManager get planDaysTableRefs {
+    final manager = $$PlanDaysTableTableTableManager(
+      $_db,
+      $_db.planDaysTable,
+    ).filter((f) => f.gongDawId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_planDaysTableRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$GongDawDetailsTableTableFilterComposer
+    extends Composer<_$AppDatabase, $GongDawDetailsTableTable> {
+  $$GongDawDetailsTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get meaning => $composableBuilder(
+    column: $table.meaning,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> planDaysTableRefs(
+    Expression<bool> Function($$PlanDaysTableTableFilterComposer f) f,
+  ) {
+    final $$PlanDaysTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.planDaysTable,
+      getReferencedColumn: (t) => t.gongDawId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PlanDaysTableTableFilterComposer(
+            $db: $db,
+            $table: $db.planDaysTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$GongDawDetailsTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $GongDawDetailsTableTable> {
+  $$GongDawDetailsTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get meaning => $composableBuilder(
+    column: $table.meaning,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$GongDawDetailsTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $GongDawDetailsTableTable> {
+  $$GongDawDetailsTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get meaning =>
+      $composableBuilder(column: $table.meaning, builder: (column) => column);
+
+  Expression<T> planDaysTableRefs<T extends Object>(
+    Expression<T> Function($$PlanDaysTableTableAnnotationComposer a) f,
+  ) {
+    final $$PlanDaysTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.planDaysTable,
+      getReferencedColumn: (t) => t.gongDawId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PlanDaysTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.planDaysTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$GongDawDetailsTableTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $GongDawDetailsTableTable,
+          GongDawDetails,
+          $$GongDawDetailsTableTableFilterComposer,
+          $$GongDawDetailsTableTableOrderingComposer,
+          $$GongDawDetailsTableTableAnnotationComposer,
+          $$GongDawDetailsTableTableCreateCompanionBuilder,
+          $$GongDawDetailsTableTableUpdateCompanionBuilder,
+          (GongDawDetails, $$GongDawDetailsTableTableReferences),
+          GongDawDetails,
+          PrefetchHooks Function({bool planDaysTableRefs})
+        > {
+  $$GongDawDetailsTableTableTableManager(
+    _$AppDatabase db,
+    $GongDawDetailsTableTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GongDawDetailsTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GongDawDetailsTableTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$GongDawDetailsTableTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> meaning = const Value.absent(),
+              }) => GongDawDetailsTableCompanion(
+                id: id,
+                name: name,
+                meaning: meaning,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                required String meaning,
+              }) => GongDawDetailsTableCompanion.insert(
+                id: id,
+                name: name,
+                meaning: meaning,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$GongDawDetailsTableTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({planDaysTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (planDaysTableRefs) db.planDaysTable,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (planDaysTableRefs)
+                    await $_getPrefetchedData<
+                      GongDawDetails,
+                      $GongDawDetailsTableTable,
+                      PlanDay
+                    >(
+                      currentTable: table,
+                      referencedTable: $$GongDawDetailsTableTableReferences
+                          ._planDaysTableRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$GongDawDetailsTableTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).planDaysTableRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.gongDawId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$GongDawDetailsTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $GongDawDetailsTableTable,
+      GongDawDetails,
+      $$GongDawDetailsTableTableFilterComposer,
+      $$GongDawDetailsTableTableOrderingComposer,
+      $$GongDawDetailsTableTableAnnotationComposer,
+      $$GongDawDetailsTableTableCreateCompanionBuilder,
+      $$GongDawDetailsTableTableUpdateCompanionBuilder,
+      (GongDawDetails, $$GongDawDetailsTableTableReferences),
+      GongDawDetails,
+      PrefetchHooks Function({bool planDaysTableRefs})
+    >;
+typedef $$BeadPlansTableTableCreateCompanionBuilder =
+    BeadPlansTableCompanion Function({
+      Value<int> id,
+      required String title,
+      required String description,
+      Value<bool> isPredefined,
+      Value<int> beadsPerRound,
+      required DateTime createdAt,
+    });
+typedef $$BeadPlansTableTableUpdateCompanionBuilder =
+    BeadPlansTableCompanion Function({
+      Value<int> id,
+      Value<String> title,
+      Value<String> description,
+      Value<bool> isPredefined,
+      Value<int> beadsPerRound,
+      Value<DateTime> createdAt,
+    });
+
+final class $$BeadPlansTableTableReferences
+    extends BaseReferences<_$AppDatabase, $BeadPlansTableTable, BeadPlan> {
+  $$BeadPlansTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<$PlanDaysTableTable, List<PlanDay>>
+  _planDaysTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.planDaysTable,
+    aliasName: $_aliasNameGenerator(
+      db.beadPlansTable.id,
+      db.planDaysTable.planId,
+    ),
+  );
+
+  $$PlanDaysTableTableProcessedTableManager get planDaysTableRefs {
+    final manager = $$PlanDaysTableTableTableManager(
+      $_db,
+      $_db.planDaysTable,
+    ).filter((f) => f.planId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_planDaysTableRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $UserPlanProgressTableTable,
+    List<UserPlanProgress>
+  >
+  _userPlanProgressTableRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.userPlanProgressTable,
+        aliasName: $_aliasNameGenerator(
+          db.beadPlansTable.id,
+          db.userPlanProgressTable.planId,
+        ),
+      );
+
+  $$UserPlanProgressTableTableProcessedTableManager
+  get userPlanProgressTableRefs {
+    final manager = $$UserPlanProgressTableTableTableManager(
+      $_db,
+      $_db.userPlanProgressTable,
+    ).filter((f) => f.planId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _userPlanProgressTableRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$BeadPlansTableTableFilterComposer
+    extends Composer<_$AppDatabase, $BeadPlansTableTable> {
+  $$BeadPlansTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isPredefined => $composableBuilder(
+    column: $table.isPredefined,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get beadsPerRound => $composableBuilder(
+    column: $table.beadsPerRound,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> planDaysTableRefs(
+    Expression<bool> Function($$PlanDaysTableTableFilterComposer f) f,
+  ) {
+    final $$PlanDaysTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.planDaysTable,
+      getReferencedColumn: (t) => t.planId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PlanDaysTableTableFilterComposer(
+            $db: $db,
+            $table: $db.planDaysTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> userPlanProgressTableRefs(
+    Expression<bool> Function($$UserPlanProgressTableTableFilterComposer f) f,
+  ) {
+    final $$UserPlanProgressTableTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.userPlanProgressTable,
+          getReferencedColumn: (t) => t.planId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$UserPlanProgressTableTableFilterComposer(
+                $db: $db,
+                $table: $db.userPlanProgressTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$BeadPlansTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $BeadPlansTableTable> {
+  $$BeadPlansTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isPredefined => $composableBuilder(
+    column: $table.isPredefined,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get beadsPerRound => $composableBuilder(
+    column: $table.beadsPerRound,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$BeadPlansTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BeadPlansTableTable> {
+  $$BeadPlansTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isPredefined => $composableBuilder(
+    column: $table.isPredefined,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get beadsPerRound => $composableBuilder(
+    column: $table.beadsPerRound,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  Expression<T> planDaysTableRefs<T extends Object>(
+    Expression<T> Function($$PlanDaysTableTableAnnotationComposer a) f,
+  ) {
+    final $$PlanDaysTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.planDaysTable,
+      getReferencedColumn: (t) => t.planId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PlanDaysTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.planDaysTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> userPlanProgressTableRefs<T extends Object>(
+    Expression<T> Function($$UserPlanProgressTableTableAnnotationComposer a) f,
+  ) {
+    final $$UserPlanProgressTableTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.userPlanProgressTable,
+          getReferencedColumn: (t) => t.planId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$UserPlanProgressTableTableAnnotationComposer(
+                $db: $db,
+                $table: $db.userPlanProgressTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$BeadPlansTableTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BeadPlansTableTable,
+          BeadPlan,
+          $$BeadPlansTableTableFilterComposer,
+          $$BeadPlansTableTableOrderingComposer,
+          $$BeadPlansTableTableAnnotationComposer,
+          $$BeadPlansTableTableCreateCompanionBuilder,
+          $$BeadPlansTableTableUpdateCompanionBuilder,
+          (BeadPlan, $$BeadPlansTableTableReferences),
+          BeadPlan,
+          PrefetchHooks Function({
+            bool planDaysTableRefs,
+            bool userPlanProgressTableRefs,
+          })
+        > {
+  $$BeadPlansTableTableTableManager(
+    _$AppDatabase db,
+    $BeadPlansTableTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BeadPlansTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BeadPlansTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BeadPlansTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<bool> isPredefined = const Value.absent(),
+                Value<int> beadsPerRound = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => BeadPlansTableCompanion(
+                id: id,
+                title: title,
+                description: description,
+                isPredefined: isPredefined,
+                beadsPerRound: beadsPerRound,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String title,
+                required String description,
+                Value<bool> isPredefined = const Value.absent(),
+                Value<int> beadsPerRound = const Value.absent(),
+                required DateTime createdAt,
+              }) => BeadPlansTableCompanion.insert(
+                id: id,
+                title: title,
+                description: description,
+                isPredefined: isPredefined,
+                beadsPerRound: beadsPerRound,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$BeadPlansTableTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({planDaysTableRefs = false, userPlanProgressTableRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (planDaysTableRefs) db.planDaysTable,
+                    if (userPlanProgressTableRefs) db.userPlanProgressTable,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (planDaysTableRefs)
+                        await $_getPrefetchedData<
+                          BeadPlan,
+                          $BeadPlansTableTable,
+                          PlanDay
+                        >(
+                          currentTable: table,
+                          referencedTable: $$BeadPlansTableTableReferences
+                              ._planDaysTableRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$BeadPlansTableTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).planDaysTableRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.planId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (userPlanProgressTableRefs)
+                        await $_getPrefetchedData<
+                          BeadPlan,
+                          $BeadPlansTableTable,
+                          UserPlanProgress
+                        >(
+                          currentTable: table,
+                          referencedTable: $$BeadPlansTableTableReferences
+                              ._userPlanProgressTableRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$BeadPlansTableTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).userPlanProgressTableRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.planId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$BeadPlansTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BeadPlansTableTable,
+      BeadPlan,
+      $$BeadPlansTableTableFilterComposer,
+      $$BeadPlansTableTableOrderingComposer,
+      $$BeadPlansTableTableAnnotationComposer,
+      $$BeadPlansTableTableCreateCompanionBuilder,
+      $$BeadPlansTableTableUpdateCompanionBuilder,
+      (BeadPlan, $$BeadPlansTableTableReferences),
+      BeadPlan,
+      PrefetchHooks Function({
+        bool planDaysTableRefs,
+        bool userPlanProgressTableRefs,
+      })
+    >;
+typedef $$PlanDaysTableTableCreateCompanionBuilder =
+    PlanDaysTableCompanion Function({
+      Value<int> id,
+      required int planId,
+      required int dayNumber,
+      required int gongDawId,
+      required int targetRounds,
+    });
+typedef $$PlanDaysTableTableUpdateCompanionBuilder =
+    PlanDaysTableCompanion Function({
+      Value<int> id,
+      Value<int> planId,
+      Value<int> dayNumber,
+      Value<int> gongDawId,
+      Value<int> targetRounds,
+    });
+
+final class $$PlanDaysTableTableReferences
+    extends BaseReferences<_$AppDatabase, $PlanDaysTableTable, PlanDay> {
+  $$PlanDaysTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $BeadPlansTableTable _planIdTable(_$AppDatabase db) =>
+      db.beadPlansTable.createAlias(
+        $_aliasNameGenerator(db.planDaysTable.planId, db.beadPlansTable.id),
+      );
+
+  $$BeadPlansTableTableProcessedTableManager get planId {
+    final $_column = $_itemColumn<int>('plan_id')!;
+
+    final manager = $$BeadPlansTableTableTableManager(
+      $_db,
+      $_db.beadPlansTable,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_planIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $GongDawDetailsTableTable _gongDawIdTable(_$AppDatabase db) =>
+      db.gongDawDetailsTable.createAlias(
+        $_aliasNameGenerator(
+          db.planDaysTable.gongDawId,
+          db.gongDawDetailsTable.id,
+        ),
+      );
+
+  $$GongDawDetailsTableTableProcessedTableManager get gongDawId {
+    final $_column = $_itemColumn<int>('gong_daw_id')!;
+
+    final manager = $$GongDawDetailsTableTableTableManager(
+      $_db,
+      $_db.gongDawDetailsTable,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_gongDawIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$PlanDaysTableTableFilterComposer
+    extends Composer<_$AppDatabase, $PlanDaysTableTable> {
+  $$PlanDaysTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dayNumber => $composableBuilder(
+    column: $table.dayNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get targetRounds => $composableBuilder(
+    column: $table.targetRounds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$BeadPlansTableTableFilterComposer get planId {
+    final $$BeadPlansTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.planId,
+      referencedTable: $db.beadPlansTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BeadPlansTableTableFilterComposer(
+            $db: $db,
+            $table: $db.beadPlansTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GongDawDetailsTableTableFilterComposer get gongDawId {
+    final $$GongDawDetailsTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.gongDawId,
+      referencedTable: $db.gongDawDetailsTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GongDawDetailsTableTableFilterComposer(
+            $db: $db,
+            $table: $db.gongDawDetailsTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PlanDaysTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $PlanDaysTableTable> {
+  $$PlanDaysTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dayNumber => $composableBuilder(
+    column: $table.dayNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get targetRounds => $composableBuilder(
+    column: $table.targetRounds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$BeadPlansTableTableOrderingComposer get planId {
+    final $$BeadPlansTableTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.planId,
+      referencedTable: $db.beadPlansTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BeadPlansTableTableOrderingComposer(
+            $db: $db,
+            $table: $db.beadPlansTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GongDawDetailsTableTableOrderingComposer get gongDawId {
+    final $$GongDawDetailsTableTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.gongDawId,
+          referencedTable: $db.gongDawDetailsTable,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$GongDawDetailsTableTableOrderingComposer(
+                $db: $db,
+                $table: $db.gongDawDetailsTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$PlanDaysTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PlanDaysTableTable> {
+  $$PlanDaysTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get dayNumber =>
+      $composableBuilder(column: $table.dayNumber, builder: (column) => column);
+
+  GeneratedColumn<int> get targetRounds => $composableBuilder(
+    column: $table.targetRounds,
+    builder: (column) => column,
+  );
+
+  $$BeadPlansTableTableAnnotationComposer get planId {
+    final $$BeadPlansTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.planId,
+      referencedTable: $db.beadPlansTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BeadPlansTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.beadPlansTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GongDawDetailsTableTableAnnotationComposer get gongDawId {
+    final $$GongDawDetailsTableTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.gongDawId,
+          referencedTable: $db.gongDawDetailsTable,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$GongDawDetailsTableTableAnnotationComposer(
+                $db: $db,
+                $table: $db.gongDawDetailsTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$PlanDaysTableTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PlanDaysTableTable,
+          PlanDay,
+          $$PlanDaysTableTableFilterComposer,
+          $$PlanDaysTableTableOrderingComposer,
+          $$PlanDaysTableTableAnnotationComposer,
+          $$PlanDaysTableTableCreateCompanionBuilder,
+          $$PlanDaysTableTableUpdateCompanionBuilder,
+          (PlanDay, $$PlanDaysTableTableReferences),
+          PlanDay,
+          PrefetchHooks Function({bool planId, bool gongDawId})
+        > {
+  $$PlanDaysTableTableTableManager(_$AppDatabase db, $PlanDaysTableTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PlanDaysTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PlanDaysTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PlanDaysTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> planId = const Value.absent(),
+                Value<int> dayNumber = const Value.absent(),
+                Value<int> gongDawId = const Value.absent(),
+                Value<int> targetRounds = const Value.absent(),
+              }) => PlanDaysTableCompanion(
+                id: id,
+                planId: planId,
+                dayNumber: dayNumber,
+                gongDawId: gongDawId,
+                targetRounds: targetRounds,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int planId,
+                required int dayNumber,
+                required int gongDawId,
+                required int targetRounds,
+              }) => PlanDaysTableCompanion.insert(
+                id: id,
+                planId: planId,
+                dayNumber: dayNumber,
+                gongDawId: gongDawId,
+                targetRounds: targetRounds,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$PlanDaysTableTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({planId = false, gongDawId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (planId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.planId,
+                                referencedTable: $$PlanDaysTableTableReferences
+                                    ._planIdTable(db),
+                                referencedColumn: $$PlanDaysTableTableReferences
+                                    ._planIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+                    if (gongDawId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.gongDawId,
+                                referencedTable: $$PlanDaysTableTableReferences
+                                    ._gongDawIdTable(db),
+                                referencedColumn: $$PlanDaysTableTableReferences
+                                    ._gongDawIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$PlanDaysTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PlanDaysTableTable,
+      PlanDay,
+      $$PlanDaysTableTableFilterComposer,
+      $$PlanDaysTableTableOrderingComposer,
+      $$PlanDaysTableTableAnnotationComposer,
+      $$PlanDaysTableTableCreateCompanionBuilder,
+      $$PlanDaysTableTableUpdateCompanionBuilder,
+      (PlanDay, $$PlanDaysTableTableReferences),
+      PlanDay,
+      PrefetchHooks Function({bool planId, bool gongDawId})
+    >;
+typedef $$UserPlanProgressTableTableCreateCompanionBuilder =
+    UserPlanProgressTableCompanion Function({
+      Value<int> id,
+      required int userId,
+      required int planId,
+      Value<int> currentDay,
+      required String status,
+      required DateTime startDate,
+      required DateTime updatedAt,
+    });
+typedef $$UserPlanProgressTableTableUpdateCompanionBuilder =
+    UserPlanProgressTableCompanion Function({
+      Value<int> id,
+      Value<int> userId,
+      Value<int> planId,
+      Value<int> currentDay,
+      Value<String> status,
+      Value<DateTime> startDate,
+      Value<DateTime> updatedAt,
+    });
+
+final class $$UserPlanProgressTableTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $UserPlanProgressTableTable,
+          UserPlanProgress
+        > {
+  $$UserPlanProgressTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $UserInfoTableTable _userIdTable(_$AppDatabase db) =>
+      db.userInfoTable.createAlias(
+        $_aliasNameGenerator(
+          db.userPlanProgressTable.userId,
+          db.userInfoTable.id,
+        ),
+      );
+
+  $$UserInfoTableTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<int>('user_id')!;
+
+    final manager = $$UserInfoTableTableTableManager(
+      $_db,
+      $_db.userInfoTable,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $BeadPlansTableTable _planIdTable(_$AppDatabase db) =>
+      db.beadPlansTable.createAlias(
+        $_aliasNameGenerator(
+          db.userPlanProgressTable.planId,
+          db.beadPlansTable.id,
+        ),
+      );
+
+  $$BeadPlansTableTableProcessedTableManager get planId {
+    final $_column = $_itemColumn<int>('plan_id')!;
+
+    final manager = $$BeadPlansTableTableTableManager(
+      $_db,
+      $_db.beadPlansTable,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_planIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$UserPlanProgressTableTableFilterComposer
+    extends Composer<_$AppDatabase, $UserPlanProgressTableTable> {
+  $$UserPlanProgressTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get currentDay => $composableBuilder(
+    column: $table.currentDay,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$UserInfoTableTableFilterComposer get userId {
+    final $$UserInfoTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.userInfoTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserInfoTableTableFilterComposer(
+            $db: $db,
+            $table: $db.userInfoTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BeadPlansTableTableFilterComposer get planId {
+    final $$BeadPlansTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.planId,
+      referencedTable: $db.beadPlansTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BeadPlansTableTableFilterComposer(
+            $db: $db,
+            $table: $db.beadPlansTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$UserPlanProgressTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $UserPlanProgressTableTable> {
+  $$UserPlanProgressTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get currentDay => $composableBuilder(
+    column: $table.currentDay,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$UserInfoTableTableOrderingComposer get userId {
+    final $$UserInfoTableTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.userInfoTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserInfoTableTableOrderingComposer(
+            $db: $db,
+            $table: $db.userInfoTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BeadPlansTableTableOrderingComposer get planId {
+    final $$BeadPlansTableTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.planId,
+      referencedTable: $db.beadPlansTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BeadPlansTableTableOrderingComposer(
+            $db: $db,
+            $table: $db.beadPlansTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$UserPlanProgressTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserPlanProgressTableTable> {
+  $$UserPlanProgressTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get currentDay => $composableBuilder(
+    column: $table.currentDay,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  $$UserInfoTableTableAnnotationComposer get userId {
+    final $$UserInfoTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.userInfoTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserInfoTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.userInfoTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BeadPlansTableTableAnnotationComposer get planId {
+    final $$BeadPlansTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.planId,
+      referencedTable: $db.beadPlansTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BeadPlansTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.beadPlansTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$UserPlanProgressTableTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UserPlanProgressTableTable,
+          UserPlanProgress,
+          $$UserPlanProgressTableTableFilterComposer,
+          $$UserPlanProgressTableTableOrderingComposer,
+          $$UserPlanProgressTableTableAnnotationComposer,
+          $$UserPlanProgressTableTableCreateCompanionBuilder,
+          $$UserPlanProgressTableTableUpdateCompanionBuilder,
+          (UserPlanProgress, $$UserPlanProgressTableTableReferences),
+          UserPlanProgress,
+          PrefetchHooks Function({bool userId, bool planId})
+        > {
+  $$UserPlanProgressTableTableTableManager(
+    _$AppDatabase db,
+    $UserPlanProgressTableTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserPlanProgressTableTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$UserPlanProgressTableTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$UserPlanProgressTableTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> userId = const Value.absent(),
+                Value<int> planId = const Value.absent(),
+                Value<int> currentDay = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> startDate = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => UserPlanProgressTableCompanion(
+                id: id,
+                userId: userId,
+                planId: planId,
+                currentDay: currentDay,
+                status: status,
+                startDate: startDate,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int userId,
+                required int planId,
+                Value<int> currentDay = const Value.absent(),
+                required String status,
+                required DateTime startDate,
+                required DateTime updatedAt,
+              }) => UserPlanProgressTableCompanion.insert(
+                id: id,
+                userId: userId,
+                planId: planId,
+                currentDay: currentDay,
+                status: status,
+                startDate: startDate,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$UserPlanProgressTableTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({userId = false, planId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable:
+                                    $$UserPlanProgressTableTableReferences
+                                        ._userIdTable(db),
+                                referencedColumn:
+                                    $$UserPlanProgressTableTableReferences
+                                        ._userIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (planId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.planId,
+                                referencedTable:
+                                    $$UserPlanProgressTableTableReferences
+                                        ._planIdTable(db),
+                                referencedColumn:
+                                    $$UserPlanProgressTableTableReferences
+                                        ._planIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$UserPlanProgressTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UserPlanProgressTableTable,
+      UserPlanProgress,
+      $$UserPlanProgressTableTableFilterComposer,
+      $$UserPlanProgressTableTableOrderingComposer,
+      $$UserPlanProgressTableTableAnnotationComposer,
+      $$UserPlanProgressTableTableCreateCompanionBuilder,
+      $$UserPlanProgressTableTableUpdateCompanionBuilder,
+      (UserPlanProgress, $$UserPlanProgressTableTableReferences),
+      UserPlanProgress,
+      PrefetchHooks Function({bool userId, bool planId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1440,4 +4678,12 @@ class $AppDatabaseManager {
       $$UserInfoTableTableTableManager(_db, _db.userInfoTable);
   $$ChantSessionsTableTableTableManager get chantSessionsTable =>
       $$ChantSessionsTableTableTableManager(_db, _db.chantSessionsTable);
+  $$GongDawDetailsTableTableTableManager get gongDawDetailsTable =>
+      $$GongDawDetailsTableTableTableManager(_db, _db.gongDawDetailsTable);
+  $$BeadPlansTableTableTableManager get beadPlansTable =>
+      $$BeadPlansTableTableTableManager(_db, _db.beadPlansTable);
+  $$PlanDaysTableTableTableManager get planDaysTable =>
+      $$PlanDaysTableTableTableManager(_db, _db.planDaysTable);
+  $$UserPlanProgressTableTableTableManager get userPlanProgressTable =>
+      $$UserPlanProgressTableTableTableManager(_db, _db.userPlanProgressTable);
 }
