@@ -1,0 +1,146 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:drift/drift.dart' hide Column;
+import '../../providers/counter_provider.dart';
+import '../../../../core/database/database.dart';
+import '../../../../core/database/providers/app_database_providers.dart';
+import '../widgets/mode_selector.dart';
+import '../widgets/counter_display.dart';
+import '../widgets/tap_to_count.dart';
+import '../widgets/stats_display.dart';
+
+class CounterScreen extends ConsumerWidget {
+  const CounterScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            const _Header(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 24),
+                    ModeSelector(
+                      onModeChange: (mode) =>
+                          _onModeChange(context, ref, mode),
+                    ),
+                    const SizedBox(height: 40),
+                    const CounterDisplay(),
+                    const SizedBox(height: 32),
+                    const TapToCount(),
+                    const SizedBox(height: 40),
+                    const StatsDisplay(),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onModeChange(
+      BuildContext context, WidgetRef ref, CounterMode newMode) async {
+    final state = ref.read(counterProvider);
+    if (state.sessionBeads <= 0) {
+      ref.read(counterProvider.notifier).setMode(newMode);
+      return;
+    }
+
+    final dao = ref.read(chantSessionDaoProvider);
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          'Save Session?',
+          style: TextStyle(
+            fontFamily: 'Geist',
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF111111),
+          ),
+        ),
+        content: Text(
+          'You have ${state.sessionBeads} bead(s) in this session.',
+          style: const TextStyle(
+            fontFamily: 'Geist',
+            fontSize: 14,
+            color: Color(0xFF666666),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text(
+              'Discard',
+              style: TextStyle(
+                fontFamily: 'Geist',
+                fontSize: 14,
+                color: Color(0xFF666666),
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text(
+              'Save',
+              style: TextStyle(
+                fontFamily: 'Geist',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFFFF8400),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true) {
+      await dao.insertSession(ChantSessionsTableCompanion(
+        mode: Value(state.mode.label),
+        beadsCount: Value(state.sessionBeads),
+        roundsCompleted: Value(state.roundsCompleted),
+        startedAt: Value(state.sessionStartedAt ?? DateTime.now()),
+        completedAt: Value(DateTime.now()),
+      ));
+      ref.invalidate(recentSessionsProvider);
+      ref.invalidate(lifetimeBeadsProvider);
+      ref.invalidate(lifetimeRoundsProvider);
+    }
+
+    ref.read(counterProvider.notifier).setMode(newMode);
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(20, 8, 20, 16),
+      child: Row(
+        children: [
+          Text(
+            'Meditation',
+            style: TextStyle(
+              fontFamily: 'Geist',
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF111111),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
