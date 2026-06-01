@@ -34,3 +34,10 @@ final userPlanHistoryProvider =
   final dao = ref.watch(planDaoProvider);
   return dao.getAllUserProgress(userId);
 });
+
+final hasActivePlanProvider = Provider<bool>((ref) {
+  final user = ref.watch(userInfoProvider).valueOrNull;
+  if (user == null) return false;
+  final activePlan = ref.watch(activePlanProvider(user.id)).valueOrNull;
+  return activePlan != null;
+});

@@ -4,46 +4,142 @@ import 'package:drift/drift.dart' hide Column;
 import '../../providers/counter_provider.dart';
 import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
+import '../../../../core/database/providers/plan_providers.dart';
 import '../widgets/mode_selector.dart';
 import '../widgets/counter_display.dart';
 import '../widgets/tap_to_count.dart';
 import '../widgets/stats_display.dart';
+import '../widgets/today_plan_detail.dart';
+import '../widgets/completion_overlay.dart';
 
 class CounterScreen extends ConsumerWidget {
   const CounterScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<bool>(
+      counterProvider.select((s) => s.isTodayPlanComplete),
+      (prev, next) {
+        if (next && prev == false) {
+          Future.delayed(const Duration(seconds: 2), () {
+            ref.read(counterProvider.notifier).completeTodayPlan();
+          });
+        }
+      },
+    );
+
+    final counterState = ref.watch(counterProvider);
+    final hasActivePlan = ref.watch(hasActivePlanProvider);
+
+    final showPlanButton =
+        hasActivePlan && !counterState.isCompletedThisSession;
+
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const _Header(),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 24),
-                    ModeSelector(
-                      onModeChange: (mode) =>
-                          _onModeChange(context, ref, mode),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                const _Header(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 24),
+                        if (counterState.isTodayPlanActive)
+                          const TodayPlanDetail()
+                        else
+                          ModeSelector(
+                            onModeChange: (mode) =>
+                                _onModeChange(context, ref, mode),
+                          ),
+                        const SizedBox(height: 40),
+                        const CounterDisplay(),
+                        const SizedBox(height: 32),
+                        const TapToCount(),
+                        const SizedBox(height: 40),
+                        const StatsDisplay(),
+                        const SizedBox(height: 24),
+                      ],
                     ),
-                    const SizedBox(height: 40),
-                    const CounterDisplay(),
-                    const SizedBox(height: 32),
-                    const TapToCount(),
-                    const SizedBox(height: 40),
-                    const StatsDisplay(),
-                    const SizedBox(height: 24),
-                  ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (counterState.isTodayPlanComplete)
+            const CompletionOverlay(),
+          if (showPlanButton)
+            Positioned(
+              right: 24,
+              bottom: 24,
+              child: SizedBox(
+                height: 48,
+                child: ElevatedButton.icon(
+                  onPressed: () => _handlePlanButton(context, ref),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFF8400),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    elevation: 4,
+                    shadowColor:
+                        const Color(0xFFFF8400).withOpacity(0.4),
+                  ),
+                  icon: Icon(
+                    counterState.isTodayPlanActive
+                        ? Icons.close
+                        : Icons.play_arrow,
+                    size: 20,
+                  ),
+                  label: Text(
+                    counterState.isTodayPlanActive
+                        ? 'Exit Today Plan'
+                        : 'Start Today Plan',
+                    style: const TextStyle(
+                      fontFamily: 'Geist',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
+  }
+
+  Future<void> _handlePlanButton(
+      BuildContext context, WidgetRef ref) async {
+    final state = ref.read(counterProvider);
+
+    if (state.isTodayPlanActive) {
+      ref.read(counterProvider.notifier).exitTodayPlan();
+      return;
+    }
+
+    final user = await ref.read(userInfoProvider.future);
+    if (user == null) return;
+
+    final dao = ref.read(planDaoProvider);
+    final activePlan = await dao.getActivePlan(user.id);
+    if (activePlan == null) return;
+
+    final plan = await dao.getPlanById(activePlan.planId);
+    if (plan == null) return;
+
+    final todayDay =
+        await dao.getPlanDay(activePlan.planId, activePlan.currentDay);
+    if (todayDay == null) return;
+
+    ref.read(counterProvider.notifier).startTodayPlan(
+          plan.title,
+          plan.beadsPerRound,
+          todayDay.targetRounds,
+        );
   }
 
   Future<void> _onModeChange(
