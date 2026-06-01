@@ -38,7 +38,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.fromExecutor(QueryExecutor executor) : super(executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -64,6 +64,9 @@ class AppDatabase extends _$AppDatabase {
           await m.createTable(planDaysTable);
           await m.createTable(userPlanProgressTable);
           await _seedPredefinedData();
+        }
+        if (from < 3) {
+          await m.addColumn(planDaysTable, planDaysTable.gongDawName);
         }
       },
     );

@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/database/database.dart';
@@ -58,16 +59,44 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
     final dao = ref.read(planDaoProvider);
     final beadsPerRound = int.tryParse(_beadsController.text) ?? 108;
 
-    await dao.addPlan(BeadPlan(
-      id: 0,
+    final planId = await dao.addPlan(BeadPlansTableCompanion.insert(
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
-      isPredefined: false,
-      beadsPerRound: beadsPerRound,
+      isPredefined: const Value(false),
+      beadsPerRound: Value(beadsPerRound),
       createdAt: DateTime.now(),
     ));
 
+    final existingGongDawDetails = await dao.getAllGongDawDetails();
+
+    for (final day in _days) {
+      final name = day.gongDawController.text.trim();
+
+      var match = existingGongDawDetails.where(
+        (d) => d.name == name,
+      ).firstOrNull;
+
+      int gongDawId;
+      if (match != null) {
+        gongDawId = match.id;
+      } else {
+        gongDawId = await dao.addGongDawDetail(GongDawDetailsTableCompanion.insert(
+          name: name,
+          meaning: '',
+        ));
+      }
+
+      await dao.addPlanDay(PlanDaysTableCompanion.insert(
+        planId: planId,
+        dayNumber: day.dayNumber,
+        gongDawId: gongDawId,
+        targetRounds: int.tryParse(day.targetRoundsController.text) ?? 1,
+        gongDawName: Value(name),
+      ));
+    }
+
     ref.invalidate(allPlansProvider);
+    ref.invalidate(planDaysProvider(planId));
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

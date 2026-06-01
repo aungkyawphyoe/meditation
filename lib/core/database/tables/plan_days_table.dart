@@ -9,4 +9,5 @@ class PlanDaysTable extends Table {
   IntColumn get dayNumber => integer()();
   IntColumn get gongDawId => integer().references(GongDawDetailsTable, #id)();
   IntColumn get targetRounds => integer()();
+  TextColumn get gongDawName => text().nullable()();
 }

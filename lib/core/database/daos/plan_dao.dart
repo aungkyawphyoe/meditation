@@ -126,11 +126,30 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
         .get();
   }
 
-  Future<void> addPlan(BeadPlan plan) async {
-    await into(beadPlansTable).insert(plan);
+  Future<int> addPlan(Insertable<BeadPlan> plan) async {
+    return into(beadPlansTable).insert(plan);
   }
 
-  Future<void> addPlanDay(PlanDay day) async {
+  Future<void> addPlanDay(Insertable<PlanDay> day) async {
     await into(planDaysTable).insert(day);
+  }
+
+  Future<int> addGongDawDetail(Insertable<GongDawDetails> detail) async {
+    return into(gongDawDetailsTable).insert(detail);
+  }
+
+  Future<void> deletePlan(int planId) async {
+    await (delete(beadPlansTable)..where((t) => t.id.equals(planId))).go();
+  }
+
+  Future<void> deletePlanDay(int dayId) async {
+    await (delete(planDaysTable)..where((t) => t.id.equals(dayId))).go();
+  }
+
+  Future<void> updatePlanDayDayNumber(int dayId, int dayNumber) async {
+    await (update(planDaysTable)..where((t) => t.id.equals(dayId)))
+        .write(PlanDaysTableCompanion(
+      dayNumber: Value(dayNumber),
+    ));
   }
 }

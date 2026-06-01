@@ -1660,6 +1660,17 @@ class $PlanDaysTableTable extends PlanDaysTable
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _gongDawNameMeta = const VerificationMeta(
+    'gongDawName',
+  );
+  @override
+  late final GeneratedColumn<String> gongDawName = GeneratedColumn<String>(
+    'gong_daw_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1667,6 +1678,7 @@ class $PlanDaysTableTable extends PlanDaysTable
     dayNumber,
     gongDawId,
     targetRounds,
+    gongDawName,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1718,6 +1730,15 @@ class $PlanDaysTableTable extends PlanDaysTable
     } else if (isInserting) {
       context.missing(_targetRoundsMeta);
     }
+    if (data.containsKey('gong_daw_name')) {
+      context.handle(
+        _gongDawNameMeta,
+        gongDawName.isAcceptableOrUnknown(
+          data['gong_daw_name']!,
+          _gongDawNameMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1747,6 +1768,10 @@ class $PlanDaysTableTable extends PlanDaysTable
         DriftSqlType.int,
         data['${effectivePrefix}target_rounds'],
       )!,
+      gongDawName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}gong_daw_name'],
+      ),
     );
   }
 
@@ -1762,12 +1787,14 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
   final int dayNumber;
   final int gongDawId;
   final int targetRounds;
+  final String? gongDawName;
   const PlanDay({
     required this.id,
     required this.planId,
     required this.dayNumber,
     required this.gongDawId,
     required this.targetRounds,
+    this.gongDawName,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1777,6 +1804,9 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
     map['day_number'] = Variable<int>(dayNumber);
     map['gong_daw_id'] = Variable<int>(gongDawId);
     map['target_rounds'] = Variable<int>(targetRounds);
+    if (!nullToAbsent || gongDawName != null) {
+      map['gong_daw_name'] = Variable<String>(gongDawName);
+    }
     return map;
   }
 
@@ -1787,6 +1817,9 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
       dayNumber: Value(dayNumber),
       gongDawId: Value(gongDawId),
       targetRounds: Value(targetRounds),
+      gongDawName: gongDawName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gongDawName),
     );
   }
 
@@ -1801,6 +1834,7 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
       dayNumber: serializer.fromJson<int>(json['dayNumber']),
       gongDawId: serializer.fromJson<int>(json['gongDawId']),
       targetRounds: serializer.fromJson<int>(json['targetRounds']),
+      gongDawName: serializer.fromJson<String?>(json['gongDawName']),
     );
   }
   @override
@@ -1812,6 +1846,7 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
       'dayNumber': serializer.toJson<int>(dayNumber),
       'gongDawId': serializer.toJson<int>(gongDawId),
       'targetRounds': serializer.toJson<int>(targetRounds),
+      'gongDawName': serializer.toJson<String?>(gongDawName),
     };
   }
 
@@ -1821,12 +1856,14 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
     int? dayNumber,
     int? gongDawId,
     int? targetRounds,
+    Value<String?> gongDawName = const Value.absent(),
   }) => PlanDay(
     id: id ?? this.id,
     planId: planId ?? this.planId,
     dayNumber: dayNumber ?? this.dayNumber,
     gongDawId: gongDawId ?? this.gongDawId,
     targetRounds: targetRounds ?? this.targetRounds,
+    gongDawName: gongDawName.present ? gongDawName.value : this.gongDawName,
   );
   PlanDay copyWithCompanion(PlanDaysTableCompanion data) {
     return PlanDay(
@@ -1837,6 +1874,9 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
       targetRounds: data.targetRounds.present
           ? data.targetRounds.value
           : this.targetRounds,
+      gongDawName: data.gongDawName.present
+          ? data.gongDawName.value
+          : this.gongDawName,
     );
   }
 
@@ -1847,14 +1887,15 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
           ..write('planId: $planId, ')
           ..write('dayNumber: $dayNumber, ')
           ..write('gongDawId: $gongDawId, ')
-          ..write('targetRounds: $targetRounds')
+          ..write('targetRounds: $targetRounds, ')
+          ..write('gongDawName: $gongDawName')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, planId, dayNumber, gongDawId, targetRounds);
+      Object.hash(id, planId, dayNumber, gongDawId, targetRounds, gongDawName);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1863,7 +1904,8 @@ class PlanDay extends DataClass implements Insertable<PlanDay> {
           other.planId == this.planId &&
           other.dayNumber == this.dayNumber &&
           other.gongDawId == this.gongDawId &&
-          other.targetRounds == this.targetRounds);
+          other.targetRounds == this.targetRounds &&
+          other.gongDawName == this.gongDawName);
 }
 
 class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
@@ -1872,12 +1914,14 @@ class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
   final Value<int> dayNumber;
   final Value<int> gongDawId;
   final Value<int> targetRounds;
+  final Value<String?> gongDawName;
   const PlanDaysTableCompanion({
     this.id = const Value.absent(),
     this.planId = const Value.absent(),
     this.dayNumber = const Value.absent(),
     this.gongDawId = const Value.absent(),
     this.targetRounds = const Value.absent(),
+    this.gongDawName = const Value.absent(),
   });
   PlanDaysTableCompanion.insert({
     this.id = const Value.absent(),
@@ -1885,6 +1929,7 @@ class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
     required int dayNumber,
     required int gongDawId,
     required int targetRounds,
+    this.gongDawName = const Value.absent(),
   }) : planId = Value(planId),
        dayNumber = Value(dayNumber),
        gongDawId = Value(gongDawId),
@@ -1895,6 +1940,7 @@ class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
     Expression<int>? dayNumber,
     Expression<int>? gongDawId,
     Expression<int>? targetRounds,
+    Expression<String>? gongDawName,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1902,6 +1948,7 @@ class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
       if (dayNumber != null) 'day_number': dayNumber,
       if (gongDawId != null) 'gong_daw_id': gongDawId,
       if (targetRounds != null) 'target_rounds': targetRounds,
+      if (gongDawName != null) 'gong_daw_name': gongDawName,
     });
   }
 
@@ -1911,6 +1958,7 @@ class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
     Value<int>? dayNumber,
     Value<int>? gongDawId,
     Value<int>? targetRounds,
+    Value<String?>? gongDawName,
   }) {
     return PlanDaysTableCompanion(
       id: id ?? this.id,
@@ -1918,6 +1966,7 @@ class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
       dayNumber: dayNumber ?? this.dayNumber,
       gongDawId: gongDawId ?? this.gongDawId,
       targetRounds: targetRounds ?? this.targetRounds,
+      gongDawName: gongDawName ?? this.gongDawName,
     );
   }
 
@@ -1939,6 +1988,9 @@ class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
     if (targetRounds.present) {
       map['target_rounds'] = Variable<int>(targetRounds.value);
     }
+    if (gongDawName.present) {
+      map['gong_daw_name'] = Variable<String>(gongDawName.value);
+    }
     return map;
   }
 
@@ -1949,7 +2001,8 @@ class PlanDaysTableCompanion extends UpdateCompanion<PlanDay> {
           ..write('planId: $planId, ')
           ..write('dayNumber: $dayNumber, ')
           ..write('gongDawId: $gongDawId, ')
-          ..write('targetRounds: $targetRounds')
+          ..write('targetRounds: $targetRounds, ')
+          ..write('gongDawName: $gongDawName')
           ..write(')'))
         .toString();
   }
@@ -3794,6 +3847,7 @@ typedef $$PlanDaysTableTableCreateCompanionBuilder =
       required int dayNumber,
       required int gongDawId,
       required int targetRounds,
+      Value<String?> gongDawName,
     });
 typedef $$PlanDaysTableTableUpdateCompanionBuilder =
     PlanDaysTableCompanion Function({
@@ -3802,6 +3856,7 @@ typedef $$PlanDaysTableTableUpdateCompanionBuilder =
       Value<int> dayNumber,
       Value<int> gongDawId,
       Value<int> targetRounds,
+      Value<String?> gongDawName,
     });
 
 final class $$PlanDaysTableTableReferences
@@ -3878,6 +3933,11 @@ class $$PlanDaysTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get gongDawName => $composableBuilder(
+    column: $table.gongDawName,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$BeadPlansTableTableFilterComposer get planId {
     final $$BeadPlansTableTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -3949,6 +4009,11 @@ class $$PlanDaysTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get gongDawName => $composableBuilder(
+    column: $table.gongDawName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$BeadPlansTableTableOrderingComposer get planId {
     final $$BeadPlansTableTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -4014,6 +4079,11 @@ class $$PlanDaysTableTableAnnotationComposer
 
   GeneratedColumn<int> get targetRounds => $composableBuilder(
     column: $table.targetRounds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get gongDawName => $composableBuilder(
+    column: $table.gongDawName,
     builder: (column) => column,
   );
 
@@ -4098,12 +4168,14 @@ class $$PlanDaysTableTableTableManager
                 Value<int> dayNumber = const Value.absent(),
                 Value<int> gongDawId = const Value.absent(),
                 Value<int> targetRounds = const Value.absent(),
+                Value<String?> gongDawName = const Value.absent(),
               }) => PlanDaysTableCompanion(
                 id: id,
                 planId: planId,
                 dayNumber: dayNumber,
                 gongDawId: gongDawId,
                 targetRounds: targetRounds,
+                gongDawName: gongDawName,
               ),
           createCompanionCallback:
               ({
@@ -4112,12 +4184,14 @@ class $$PlanDaysTableTableTableManager
                 required int dayNumber,
                 required int gongDawId,
                 required int targetRounds,
+                Value<String?> gongDawName = const Value.absent(),
               }) => PlanDaysTableCompanion.insert(
                 id: id,
                 planId: planId,
                 dayNumber: dayNumber,
                 gongDawId: gongDawId,
                 targetRounds: targetRounds,
+                gongDawName: gongDawName,
               ),
           withReferenceMapper: (p0) => p0
               .map(

@@ -132,7 +132,7 @@ class _ActivePlanView extends ConsumerWidget {
             final currentDayDetail = isLastDay
                 ? null
                 : planDays.where((d) => d.dayNumber == progress.currentDay).firstOrNull;
-            final gongDawName = 'Gong/Daw #${currentDayDetail?.gongDawId ?? ''}';
+            final gongDawName = currentDayDetail?.gongDawName ?? 'Day ${progress.currentDay}';
 
             return SingleChildScrollView(
               child: Column(

@@ -23,6 +23,7 @@ class ActivePlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (totalDays == 0) return const SizedBox.shrink();
     final isLastDay = progress.currentDay > totalDays;
     final dayIndex = isLastDay ? totalDays : progress.currentDay;
 
