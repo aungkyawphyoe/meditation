@@ -82,7 +82,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
       } else {
         gongDawId = await dao.addGongDawDetail(GongDawDetailsTableCompanion.insert(
           name: name,
-          meaning: '',
+          meaning: day.gongDawDetailController.text.trim(),
         ));
       }
 
@@ -203,6 +203,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
               return _DayCard(
                 dayNumber: day.dayNumber,
                 gongDawController: day.gongDawController,
+                gongDawDetailController: day.gongDawDetailController,
                 targetRoundsController: day.targetRoundsController,
                 onRemove: () => _removeDay(i),
               );
@@ -290,15 +291,18 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
 class _DayEntry {
   int dayNumber;
   final TextEditingController gongDawController;
+  final TextEditingController gongDawDetailController;
   final TextEditingController targetRoundsController;
 
   _DayEntry({
     required this.dayNumber,
   })  : gongDawController = TextEditingController(),
+        gongDawDetailController = TextEditingController(),
         targetRoundsController = TextEditingController(text: '1');
 
   void dispose() {
     gongDawController.dispose();
+    gongDawDetailController.dispose();
     targetRoundsController.dispose();
   }
 }
@@ -306,15 +310,29 @@ class _DayEntry {
 class _DayCard extends StatelessWidget {
   final int dayNumber;
   final TextEditingController gongDawController;
+  final TextEditingController gongDawDetailController;
   final TextEditingController targetRoundsController;
   final VoidCallback onRemove;
 
   const _DayCard({
     required this.dayNumber,
     required this.gongDawController,
+    required this.gongDawDetailController,
     required this.targetRoundsController,
     required this.onRemove,
   });
+
+  void _increment() {
+    final current = int.tryParse(targetRoundsController.text) ?? 1;
+    targetRoundsController.text = '${current + 1}';
+  }
+
+  void _decrement() {
+    final current = int.tryParse(targetRoundsController.text) ?? 1;
+    if (current > 1) {
+      targetRoundsController.text = '${current - 1}';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -370,6 +388,7 @@ class _DayCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Column(
@@ -409,42 +428,103 @@ class _DayCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Target Rounds',
-                        style: TextStyle(
-                          fontFamily: 'Geist',
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF888888),
-                        ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Target Rounds',
+                      style: TextStyle(
+                        fontFamily: 'Geist',
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF888888),
                       ),
-                      const SizedBox(height: 6),
-                      TextFormField(
-                        controller: targetRoundsController,
-                        keyboardType: TextInputType.number,
-                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
-                        style: const TextStyle(fontFamily: 'JetBrains Mono', fontSize: 14),
-                        decoration: InputDecoration(
-                          hintText: '1',
-                          hintStyle: const TextStyle(
-                            fontFamily: 'JetBrains Mono',
-                            fontSize: 14,
-                            color: Color(0xFF999999),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFFF2F3F0),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF2F3F0),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ],
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: 48,
+                            child: TextFormField(
+                              controller: targetRoundsController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+                              style: const TextStyle(
+                                fontFamily: 'JetBrains Mono',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.zero,
+                                isDense: true,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: _increment,
+                            child: Container(
+                              width: 32,
+                              height: 40,
+                              alignment: Alignment.center,
+                              child: const Icon(Icons.add_rounded, size: 18, color: Color(0xFFFF8400)),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: _decrement,
+                            child: Container(
+                              width: 32,
+                              height: 40,
+                              alignment: Alignment.center,
+                              child: const Icon(Icons.remove_rounded, size: 18, color: Color(0xFFFF8400)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Gong/Daw Detail',
+                  style: TextStyle(
+                    fontFamily: 'Geist',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF888888),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  controller: gongDawDetailController,
+                  style: const TextStyle(fontFamily: 'Geist', fontSize: 14),
+                  decoration: InputDecoration(
+                    hintText: 'e.g., ပူဇော်အထူးကို ခံတော်မူထိုက်သော',
+                    hintStyle: const TextStyle(
+                      fontFamily: 'Geist',
+                      fontSize: 14,
+                      color: Color(0xFF999999),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFF2F3F0),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ],
