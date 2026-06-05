@@ -228,8 +228,19 @@ class _PlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isActive = plan.status == 'active';
-    final statusLabel = isActive ? 'Active' : 'Success';
-    final statusColor = isActive ? const Color(0xFFFF8400) : const Color(0xFF22C55E);
+    final isFailed = plan.status == 'failed';
+    String statusLabel;
+    Color statusColor;
+    if (isActive) {
+      statusLabel = 'Active';
+      statusColor = const Color(0xFFFF8400);
+    } else if (isFailed) {
+      statusLabel = 'Failed';
+      statusColor = const Color(0xFFEF4444);
+    } else {
+      statusLabel = 'Success';
+      statusColor = const Color(0xFF22C55E);
+    }
     final daysText = isActive
         ? 'Day ${plan.currentDay} of ${plan.totalDays}'
         : '${plan.totalDays} Days';

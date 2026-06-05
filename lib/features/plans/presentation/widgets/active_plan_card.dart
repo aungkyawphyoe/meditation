@@ -7,8 +7,10 @@ class ActivePlanCard extends StatelessWidget {
   final int totalDays;
   final PlanDay? currentDayDetail;
   final String currentGongDawName;
+  final String? gongDawMeaning;
   final VoidCallback onCompleteDay;
   final VoidCallback onCompletePlan;
+  final VoidCallback? onStopPlan;
 
   const ActivePlanCard({
     super.key,
@@ -17,8 +19,10 @@ class ActivePlanCard extends StatelessWidget {
     required this.totalDays,
     required this.currentDayDetail,
     required this.currentGongDawName,
+    this.gongDawMeaning,
     required this.onCompleteDay,
     required this.onCompletePlan,
+    this.onStopPlan,
   });
 
   @override
@@ -135,6 +139,7 @@ class ActivePlanCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
@@ -159,18 +164,55 @@ class ActivePlanCard extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 2),
-                          Text(
-                            '${currentDayDetail!.targetRounds} rounds',
-                            style: TextStyle(
-                              fontFamily: 'JetBrains Mono',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white.withOpacity(0.7),
+                          if (gongDawMeaning != null) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              gongDawMeaning!,
+                              style: TextStyle(
+                                fontFamily: 'Geist',
+                                fontSize: 11,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white.withOpacity(0.6),
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
+                          ],
                         ],
                       ),
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            'Day $dayIndex / $totalDays',
+                            style: const TextStyle(
+                              fontFamily: 'JetBrains Mono',
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${currentDayDetail!.targetRounds} rounds',
+                          style: TextStyle(
+                            fontFamily: 'JetBrains Mono',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -199,6 +241,27 @@ class ActivePlanCard extends StatelessWidget {
                 ),
               ),
             ),
+            if (onStopPlan != null) ...[
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: TextButton.icon(
+                  onPressed: onStopPlan,
+                  icon: const Icon(Icons.stop_rounded, size: 18),
+                  label: const Text('Stop Plan'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white.withOpacity(0.8),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(
+                        color: Colors.white.withOpacity(0.3),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

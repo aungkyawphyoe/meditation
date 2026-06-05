@@ -117,6 +117,7 @@ class _ActivePlanView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final planAsync = ref.watch(planProvider(progress.planId));
     final planDaysAsync = ref.watch(planDaysProvider(progress.planId));
+    final allDetailsAsync = ref.watch(allGongDawDetailsProvider);
 
     return planAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -133,6 +134,10 @@ class _ActivePlanView extends ConsumerWidget {
                 ? null
                 : planDays.where((d) => d.dayNumber == progress.currentDay).firstOrNull;
             final gongDawName = currentDayDetail?.gongDawName ?? 'Day ${progress.currentDay}';
+            final allDetails = allDetailsAsync.valueOrNull ?? [];
+            final gongDawMeaning = currentDayDetail != null
+                ? allDetails.where((d) => d.id == currentDayDetail.gongDawId).firstOrNull?.meaning
+                : null;
 
             return SingleChildScrollView(
               child: Column(
@@ -143,8 +148,10 @@ class _ActivePlanView extends ConsumerWidget {
                     totalDays: totalDays,
                     currentDayDetail: currentDayDetail,
                     currentGongDawName: gongDawName,
+                    gongDawMeaning: gongDawMeaning,
                     onCompleteDay: () => _handleCompleteDay(ref, progress, totalDays),
                     onCompletePlan: () => _handleCompletePlan(context, ref, progress),
+                    onStopPlan: () => _handleStopPlan(context, ref, progress),
                   ),
                 ],
               ),
@@ -166,6 +173,32 @@ class _ActivePlanView extends ConsumerWidget {
     final dao = ref.read(planDaoProvider);
     await dao.completePlan(progress.id);
     ref.invalidate(activePlanProvider(userId));
+  }
+
+  Future<void> _handleStopPlan(BuildContext context, WidgetRef ref, UserPlanProgress progress) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Stop Plan'),
+        content: const Text('Are you sure you want to stop this plan? It will be marked as failed.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: TextButton.styleFrom(foregroundColor: const Color(0xFFEF4444)),
+            child: const Text('Stop'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    final dao = ref.read(planDaoProvider);
+    await dao.failPlan(progress.id);
+    ref.invalidate(activePlanProvider(userId));
+    ref.invalidate(recentPlansProvider);
   }
 }
 

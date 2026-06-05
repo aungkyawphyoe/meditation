@@ -48,14 +48,13 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
   }
 
   Future<int> activatePlan(int userId, int planId) {
-    return into(userPlanProgressTable).insert(UserPlanProgress(
-      id: 0,
-      userId: userId,
-      planId: planId,
-      currentDay: 1,
-      status: 'active',
-      startDate: DateTime.now(),
-      updatedAt: DateTime.now(),
+    return into(userPlanProgressTable).insert(UserPlanProgressTableCompanion(
+      userId: Value(userId),
+      planId: Value(planId),
+      currentDay: const Value(1),
+      status: const Value('active'),
+      startDate: Value(DateTime.now()),
+      updatedAt: Value(DateTime.now()),
     ));
   }
 
@@ -97,6 +96,24 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
       planId: progress.planId,
       currentDay: progress.currentDay,
       status: 'completed',
+      startDate: progress.startDate,
+      updatedAt: DateTime.now(),
+    ));
+  }
+
+  Future<void> failPlan(int progressId) async {
+    final progress = await (select(userPlanProgressTable)
+          ..where((t) => t.id.equals(progressId)))
+        .getSingleOrNull();
+    if (progress == null) return;
+    await (update(userPlanProgressTable)
+          ..where((t) => t.id.equals(progressId)))
+        .write(UserPlanProgress(
+      id: progress.id,
+      userId: progress.userId,
+      planId: progress.planId,
+      currentDay: progress.currentDay,
+      status: 'failed',
       startDate: progress.startDate,
       updatedAt: DateTime.now(),
     ));
@@ -171,7 +188,7 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
        FROM user_plan_progress_table p
        JOIN bead_plans_table bp ON p.plan_id = bp.id
        LEFT JOIN plan_days_table pd ON pd.plan_id = bp.id
-       WHERE p.user_id = ? AND (p.status = 'active' OR p.status = 'completed')
+       WHERE p.user_id = ? AND (p.status = 'active' OR p.status = 'completed' OR p.status = 'failed')
        GROUP BY p.id
        ORDER BY CASE WHEN p.status = 'active' THEN 0 ELSE 1 END, p.updated_at DESC
        LIMIT ?''',
