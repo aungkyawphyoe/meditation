@@ -211,6 +211,8 @@ class CounterScreen extends ConsumerWidget {
       ref.invalidate(recentSessionsProvider);
       ref.invalidate(lifetimeBeadsProvider);
       ref.invalidate(lifetimeRoundsProvider);
+      ref.invalidate(completedPlansProvider);
+      ref.invalidate(recentPlansProvider);
     }
 
     ref.read(counterProvider.notifier).setMode(newMode);

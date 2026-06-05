@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import '../database.dart';
+import '../models/plan_progress_summary.dart';
 import '../tables/bead_plans_table.dart';
 import '../tables/gong_daw_details_table.dart';
 import '../tables/plan_days_table.dart';
@@ -151,5 +152,42 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
         .write(PlanDaysTableCompanion(
       dayNumber: Value(dayNumber),
     ));
+  }
+
+  Future<int> getCompletedPlansCount(int userId) async {
+    final count = await customSelect(
+      "SELECT COUNT(*) AS total FROM user_plan_progress_table WHERE user_id = ? AND status = 'completed'",
+      readsFrom: {userPlanProgressTable},
+      variables: [Variable.withInt(userId)],
+    ).getSingle();
+    return count.data['total'] as int;
+  }
+
+  Future<List<PlanProgressSummary>> getRecentPlans(int userId,
+      {int limit = 20}) async {
+    final result = await customSelect(
+      '''SELECT p.id AS progress_id, p.plan_id, bp.title, bp.description,
+       COUNT(pd.id) AS plan_days_count, p.current_day, p.status
+       FROM user_plan_progress_table p
+       JOIN bead_plans_table bp ON p.plan_id = bp.id
+       LEFT JOIN plan_days_table pd ON pd.plan_id = bp.id
+       WHERE p.user_id = ? AND (p.status = 'active' OR p.status = 'completed')
+       GROUP BY p.id
+       ORDER BY CASE WHEN p.status = 'active' THEN 0 ELSE 1 END, p.updated_at DESC
+       LIMIT ?''',
+      readsFrom: {userPlanProgressTable, beadPlansTable, planDaysTable},
+      variables: [Variable.withInt(userId), Variable.withInt(limit)],
+    ).get();
+    return result.map((row) {
+      return PlanProgressSummary(
+        progressId: row.data['progress_id'] as int,
+        planId: row.data['plan_id'] as int,
+        title: row.data['title'] as String,
+        description: row.data['description'] as String,
+        totalDays: row.data['plan_days_count'] as int,
+        currentDay: row.data['current_day'] as int,
+        status: row.data['status'] as String,
+      );
+    }).toList();
   }
 }

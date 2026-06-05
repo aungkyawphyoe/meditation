@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../daos/plan_dao.dart';
 import '../database.dart';
+import '../models/plan_progress_summary.dart';
 import 'app_database_providers.dart';
 
 final planDaoProvider = Provider<PlanDao>((ref) {
@@ -40,4 +41,19 @@ final hasActivePlanProvider = Provider<bool>((ref) {
   if (user == null) return false;
   final activePlan = ref.watch(activePlanProvider(user.id)).valueOrNull;
   return activePlan != null;
+});
+
+final completedPlansProvider = FutureProvider<int>((ref) async {
+  final user = await ref.watch(userInfoProvider.future);
+  if (user == null) return 0;
+  final dao = ref.watch(planDaoProvider);
+  return dao.getCompletedPlansCount(user.id);
+});
+
+final recentPlansProvider =
+    FutureProvider<List<PlanProgressSummary>>((ref) async {
+  final user = await ref.watch(userInfoProvider.future);
+  if (user == null) return [];
+  final dao = ref.watch(planDaoProvider);
+  return dao.getRecentPlans(user.id);
 });

@@ -10,30 +10,33 @@ class ModeSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(counterProvider.select((s) => s.mode));
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFE7E8E5),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      padding: const EdgeInsets.all(4),
-      child: Row(
-        children: [
-          _ModeTab(
-            label: 'Standard (108)',
-            isActive: mode == CounterMode.standard,
-            onTap: () => _handleModeChange(context, ref, CounterMode.standard),
-          ),
-          _ModeTab(
-            label: 'Short (8)',
-            isActive: mode == CounterMode.short,
-            onTap: () => _handleModeChange(context, ref, CounterMode.short),
-          ),
-          _ModeTab(
-            label: 'Continuous',
-            isActive: mode == CounterMode.continuous,
-            onTap: () => _handleModeChange(context, ref, CounterMode.continuous),
-          ),
-        ],
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFE7E8E5),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.all(4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _ModeTab(
+              label: 'Standard (108)',
+              isActive: mode == CounterMode.standard,
+              onTap: () => _handleModeChange(context, ref, CounterMode.standard),
+            ),
+            _ModeTab(
+              label: 'Short (8)',
+              isActive: mode == CounterMode.short,
+              onTap: () => _handleModeChange(context, ref, CounterMode.short),
+            ),
+            _ModeTab(
+              label: 'Continuous',
+              isActive: mode == CounterMode.continuous,
+              onTap: () => _handleModeChange(context, ref, CounterMode.continuous),
+            ),
+          ],
+        ),
       ),
     );
   }
