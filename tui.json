@@ -1,0 +1,13 @@
+{
+  "theme": "dark",
+  "keybindings": {
+    "ctrl+p": "command-palette",
+    "ctrl+shift+p": "agent-palette",
+    "ctrl+b": "toggle-sidebar"
+  },
+  "sidebar": {
+    "showAgents": true,
+    "showCommands": true,
+    "showSkills": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://opencode.ai/schemas/opencode.json",
+  "version": "0.1.0",
+  "project": {
+    "name": "meditation",
+    "description": "A Flutter-based prayer bead counter app"
+  },
+  "agents": [
+    { "name": "review", "path": ".opencode/agents/review.md" },
+    { "name": "explore", "path": ".opencode/agents/explore.md" }
+  ],
+  "commands": [
+    { "name": "test", "path": ".opencode/commands/test.md" },
+    { "name": "release", "path": ".opencode/commands/release.md" }
+  ],
+  "skills": [
+    { "name": "git-release", "path": ".opencode/skills/git-release/SKILL.md" }
+  ],
+  "plugins": [
+    ".opencode/plugins/env-protection.ts",
+    ".opencode/plugins/notify.ts"
+  ]
+}
