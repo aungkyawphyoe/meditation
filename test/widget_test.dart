@@ -4,9 +4,13 @@ import 'package:meditation/app.dart';
 import 'test_helpers.dart';
 
 void main() {
-  testWidgets('App renders onboarding on first launch', (WidgetTester tester) async {
+  testWidgets('App renders onboarding on first launch', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
     await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text('Welcome to'), findsOneWidget);
@@ -14,16 +18,22 @@ void main() {
     expect(find.text('Start'), findsOneWidget);
   });
 
-  testWidgets('Onboarding saves name and navigates to counter', (WidgetTester tester) async {
+  testWidgets('Onboarding saves name and navigates to counter', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
     await tester.pump();
 
     await tester.enterText(find.byType(TextField), 'Test User');
     await tester.tap(find.text('Start'));
     await tester.pump();
     // Let async DB write + provider invalidation complete
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
@@ -37,10 +47,14 @@ void main() {
     expect(find.text('Test User'), findsOneWidget);
   });
 
-  testWidgets('App renders counter screen when user exists', (WidgetTester tester) async {
+  testWidgets('App renders counter screen when user exists', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
     await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text('Meditation'), findsOneWidget);
@@ -55,10 +69,14 @@ void main() {
     expect(find.text('Profile'), findsOneWidget);
   });
 
-  testWidgets('Tapping tap area increments counter', (WidgetTester tester) async {
+  testWidgets('Tapping tap area increments counter', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
     await tester.pump(const Duration(milliseconds: 100));
 
     await tester.tap(find.text('TAP TO COUNT'));
@@ -70,7 +88,9 @@ void main() {
   testWidgets('Navigation between tabs works', (WidgetTester tester) async {
     final db = createTestDatabase();
     await seedTestUser(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
     await tester.pump(const Duration(milliseconds: 100));
 
     await tester.tap(find.text('Plans'));
@@ -88,10 +108,14 @@ void main() {
     expect(find.text('Meditation'), findsOneWidget);
   });
 
-  testWidgets('Mode switch shows save dialog with session beads', (WidgetTester tester) async {
+  testWidgets('Mode switch shows save dialog with session beads', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
     await tester.pump(const Duration(milliseconds: 100));
 
     for (int i = 0; i < 5; i++) {
@@ -108,12 +132,18 @@ void main() {
     expect(find.text('Save'), findsOneWidget);
   });
 
-  testWidgets('Subscribed user sees Start Today Plan button', (WidgetTester tester) async {
+  testWidgets('Subscribed user sees Start Today Plan button', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
     await seedTestPlan(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
@@ -121,17 +151,25 @@ void main() {
     expect(find.text('Standard (108)'), findsOneWidget);
   });
 
-  testWidgets('Start Today Plan enters plan mode and hides mode selector', (WidgetTester tester) async {
+  testWidgets('Start Today Plan enters plan mode and hides mode selector', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
     await seedTestPlan(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
     await tester.tap(find.text('Start Today Plan'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
@@ -143,17 +181,25 @@ void main() {
     expect(find.text('3 beads per round — 2 rounds today'), findsOneWidget);
   });
 
-  testWidgets('Exiting today plan returns to free mode', (WidgetTester tester) async {
+  testWidgets('Exiting today plan returns to free mode', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
     await seedTestPlan(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
     await tester.tap(find.text('Start Today Plan'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
@@ -166,61 +212,82 @@ void main() {
     expect(find.text('Test Plan'), findsNothing);
   });
 
-  testWidgets('Completing all rounds shows completion overlay and hides button', (WidgetTester tester) async {
+  testWidgets(
+    'Completing all rounds shows completion overlay and hides button',
+    (WidgetTester tester) async {
+      final db = createTestDatabase();
+      await seedTestUser(db);
+      await seedTestPlan(db);
+      await tester.pumpWidget(
+        createTestProviderScope(child: const App(), database: db),
+      );
+      await tester.runAsync(
+        () => Future.delayed(const Duration(milliseconds: 500)),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      await tester.tap(find.text('Start Today Plan'));
+      await tester.runAsync(
+        () => Future.delayed(const Duration(milliseconds: 500)),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      // Plan: 3 beads/round, 2 rounds target → 6 taps to complete
+      for (int i = 0; i < 6; i++) {
+        await tester.tap(find.text('TAP TO COUNT'));
+      }
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.text("Today's Plan\nComplete!"), findsOneWidget);
+      expect(find.text('All rounds completed'), findsOneWidget);
+
+      // After 2 seconds, overlay dismisses and button is hidden
+      await tester.runAsync(() => Future.delayed(const Duration(seconds: 3)));
+      for (int i = 0; i < 20; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+      }
+
+      expect(find.text('Start Today Plan'), findsNothing);
+      expect(find.text('Standard (108)'), findsOneWidget);
+    },
+  );
+
+  testWidgets('Unsubscribed user does not see Start Today Plan', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
-    await seedTestPlan(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
-    await tester.pump();
-    await tester.pump();
-
-    await tester.tap(find.text('Start Today Plan'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
-    await tester.pump();
-    await tester.pump();
-
-    // Plan: 3 beads/round, 2 rounds target → 6 taps to complete
-    for (int i = 0; i < 6; i++) {
-      await tester.tap(find.text('TAP TO COUNT'));
-    }
-    await tester.pump();
-    await tester.pump();
-
-    expect(find.text("Today's Plan\nComplete!"), findsOneWidget);
-    expect(find.text('All rounds completed'), findsOneWidget);
-
-    // After 2 seconds, overlay dismisses and button is hidden
-    await tester.runAsync(() => Future.delayed(const Duration(seconds: 3)));
-    for (int i = 0; i < 20; i++) {
-      await tester.pump(const Duration(milliseconds: 100));
-    }
-
-    expect(find.text('Start Today Plan'), findsNothing);
-    expect(find.text('Standard (108)'), findsOneWidget);
-  });
-
-  testWidgets('Unsubscribed user does not see Start Today Plan', (WidgetTester tester) async {
-    final db = createTestDatabase();
-    await seedTestUser(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
     await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text('Start Today Plan'), findsNothing);
     expect(find.text('Standard (108)'), findsOneWidget);
   });
 
-  testWidgets('Subscribed tab shows Stop Plan button', (WidgetTester tester) async {
+  testWidgets('Subscribed tab shows Stop Plan button', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
     await seedTestPlan(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
     await tester.tap(find.text('Plans'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
@@ -228,17 +295,25 @@ void main() {
     expect(find.text('Stop Plan'), findsOneWidget);
   });
 
-  testWidgets('Stop Plan with Cancel keeps plan active', (WidgetTester tester) async {
+  testWidgets('Stop Plan with Cancel keeps plan active', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
     await seedTestPlan(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
     await tester.tap(find.text('Plans'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
@@ -254,17 +329,25 @@ void main() {
     expect(find.text('Test Plan'), findsOneWidget);
   });
 
-  testWidgets('Stop Plan with confirmation removes plan from Subscribed tab', (WidgetTester tester) async {
+  testWidgets('Stop Plan with confirmation removes plan from Subscribed tab', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
     await seedTestPlan(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
     await tester.tap(find.text('Plans'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
@@ -274,7 +357,9 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Stop'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
     await tester.pump();
@@ -283,17 +368,25 @@ void main() {
     expect(find.text('No Active Plan'), findsOneWidget);
   });
 
-  testWidgets('Stopped plan shows as Failed in Profile', (WidgetTester tester) async {
+  testWidgets('Stopped plan shows as Failed in Profile', (
+    WidgetTester tester,
+  ) async {
     final db = createTestDatabase();
     await seedTestUser(db);
     await seedTestPlan(db);
-    await tester.pumpWidget(createTestProviderScope(child: const App(), database: db));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
     await tester.tap(find.text('Plans'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
 
@@ -301,13 +394,17 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Stop'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
     await tester.pump();
 
     await tester.tap(find.text('Profile'));
-    await tester.runAsync(() => Future.delayed(const Duration(milliseconds: 500)));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
     await tester.pump();
     await tester.pump();
     await tester.pump();

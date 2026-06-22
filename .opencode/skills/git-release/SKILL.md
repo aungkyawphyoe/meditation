@@ -1,6 +1,7 @@
-# Git Release Skill
-
-Create and manage git-based releases with version bumps and changelog generation.
+---
+name: git-release
+description: Create and manage git-based releases with version bumps and changelog generation.
+---
 
 ## Workflow
 1. Determine next version (semver)

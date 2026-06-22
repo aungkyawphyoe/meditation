@@ -31,9 +31,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
 
   void _addDay() {
     setState(() {
-      _days.add(_DayEntry(
-        dayNumber: _days.length + 1,
-      ));
+      _days.add(_DayEntry(dayNumber: _days.length + 1));
     });
   }
 
@@ -50,58 +48,64 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
     if (_days.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Add at least one day')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Add at least one day')));
       return;
     }
 
     final dao = ref.read(planDaoProvider);
     final beadsPerRound = int.tryParse(_beadsController.text) ?? 108;
 
-    final planId = await dao.addPlan(BeadPlansTableCompanion.insert(
-      title: _titleController.text.trim(),
-      description: _descriptionController.text.trim(),
-      isPredefined: const Value(false),
-      beadsPerRound: Value(beadsPerRound),
-      createdAt: DateTime.now(),
-    ));
+    final planId = await dao.addPlan(
+      BeadPlansTableCompanion.insert(
+        title: _titleController.text.trim(),
+        description: _descriptionController.text.trim(),
+        isPredefined: const Value(false),
+        beadsPerRound: Value(beadsPerRound),
+        createdAt: DateTime.now(),
+      ),
+    );
 
     final existingGongDawDetails = await dao.getAllGongDawDetails();
 
     for (final day in _days) {
       final name = day.gongDawController.text.trim();
 
-      var match = existingGongDawDetails.where(
-        (d) => d.name == name,
-      ).firstOrNull;
+      var match = existingGongDawDetails
+          .where((d) => d.name == name)
+          .firstOrNull;
 
       int gongDawId;
       if (match != null) {
         gongDawId = match.id;
       } else {
-        gongDawId = await dao.addGongDawDetail(GongDawDetailsTableCompanion.insert(
-          name: name,
-          meaning: day.gongDawDetailController.text.trim(),
-        ));
+        gongDawId = await dao.addGongDawDetail(
+          GongDawDetailsTableCompanion.insert(
+            name: name,
+            meaning: day.gongDawDetailController.text.trim(),
+          ),
+        );
       }
 
-      await dao.addPlanDay(PlanDaysTableCompanion.insert(
-        planId: planId,
-        dayNumber: day.dayNumber,
-        gongDawId: gongDawId,
-        targetRounds: int.tryParse(day.targetRoundsController.text) ?? 1,
-        gongDawName: Value(name),
-      ));
+      await dao.addPlanDay(
+        PlanDaysTableCompanion.insert(
+          planId: planId,
+          dayNumber: day.dayNumber,
+          gongDawId: gongDawId,
+          targetRounds: int.tryParse(day.targetRoundsController.text) ?? 1,
+          gongDawName: Value(name),
+        ),
+      );
     }
 
     ref.invalidate(allPlansProvider);
     ref.invalidate(planDaysProvider(planId));
 
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Plan created!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Plan created!')));
       Navigator.pop(context);
     }
   }
@@ -136,7 +140,8 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
             const SizedBox(height: 8),
             TextFormField(
               controller: _titleController,
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+              validator: (v) =>
+                  (v == null || v.trim().isEmpty) ? 'Required' : null,
               style: const TextStyle(fontFamily: 'Geist', fontSize: 16),
               decoration: _inputDecoration('e.g., 21-Day Challenge'),
             ),
@@ -155,7 +160,10 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
             TextFormField(
               controller: _beadsController,
               keyboardType: TextInputType.number,
-              style: const TextStyle(fontFamily: 'JetBrains Mono', fontSize: 16),
+              style: const TextStyle(
+                fontFamily: 'JetBrains Mono',
+                fontSize: 16,
+              ),
               decoration: _inputDecoration('108'),
             ),
             const SizedBox(height: 24),
@@ -178,7 +186,9 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                     'Add Day',
                     style: TextStyle(fontFamily: 'Geist', fontSize: 14),
                   ),
-                  style: TextButton.styleFrom(foregroundColor: const Color(0xFFFF8400)),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFFFF8400),
+                  ),
                 ),
               ],
             ),
@@ -294,11 +304,10 @@ class _DayEntry {
   final TextEditingController gongDawDetailController;
   final TextEditingController targetRoundsController;
 
-  _DayEntry({
-    required this.dayNumber,
-  })  : gongDawController = TextEditingController(),
-        gongDawDetailController = TextEditingController(),
-        targetRoundsController = TextEditingController(text: '1');
+  _DayEntry({required this.dayNumber})
+    : gongDawController = TextEditingController(),
+      gongDawDetailController = TextEditingController(),
+      targetRoundsController = TextEditingController(text: '1');
 
   void dispose() {
     gongDawController.dispose();
@@ -382,7 +391,11 @@ class _DayCard extends StatelessWidget {
                 const Spacer(),
                 GestureDetector(
                   onTap: onRemove,
-                  child: const Icon(Icons.close_rounded, size: 20, color: Color(0xFF999999)),
+                  child: const Icon(
+                    Icons.close_rounded,
+                    size: 20,
+                    color: Color(0xFF999999),
+                  ),
                 ),
               ],
             ),
@@ -406,8 +419,12 @@ class _DayCard extends StatelessWidget {
                       const SizedBox(height: 6),
                       TextFormField(
                         controller: gongDawController,
-                        validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
-                        style: const TextStyle(fontFamily: 'Geist', fontSize: 14),
+                        validator: (v) =>
+                            (v == null || v.trim().isEmpty) ? 'Required' : null,
+                        style: const TextStyle(
+                          fontFamily: 'Geist',
+                          fontSize: 14,
+                        ),
                         decoration: InputDecoration(
                           hintText: 'e.g., အရဟံ',
                           hintStyle: const TextStyle(
@@ -417,7 +434,10 @@ class _DayCard extends StatelessWidget {
                           ),
                           filled: true,
                           fillColor: const Color(0xFFF2F3F0),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide.none,
@@ -456,7 +476,9 @@ class _DayCard extends StatelessWidget {
                               controller: targetRoundsController,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.center,
-                              validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+                              validator: (v) => (v == null || v.trim().isEmpty)
+                                  ? 'Required'
+                                  : null,
                               style: const TextStyle(
                                 fontFamily: 'JetBrains Mono',
                                 fontSize: 14,
@@ -475,7 +497,11 @@ class _DayCard extends StatelessWidget {
                               width: 32,
                               height: 40,
                               alignment: Alignment.center,
-                              child: const Icon(Icons.add_rounded, size: 18, color: Color(0xFFFF8400)),
+                              child: const Icon(
+                                Icons.add_rounded,
+                                size: 18,
+                                color: Color(0xFFFF8400),
+                              ),
                             ),
                           ),
                           GestureDetector(
@@ -484,7 +510,11 @@ class _DayCard extends StatelessWidget {
                               width: 32,
                               height: 40,
                               alignment: Alignment.center,
-                              child: const Icon(Icons.remove_rounded, size: 18, color: Color(0xFFFF8400)),
+                              child: const Icon(
+                                Icons.remove_rounded,
+                                size: 18,
+                                color: Color(0xFFFF8400),
+                              ),
                             ),
                           ),
                         ],
@@ -520,7 +550,10 @@ class _DayCard extends StatelessWidget {
                     ),
                     filled: true,
                     fillColor: const Color(0xFFF2F3F0),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide.none,

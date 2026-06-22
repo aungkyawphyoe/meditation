@@ -23,7 +23,8 @@ class ModeSelector extends ConsumerWidget {
             _ModeTab(
               label: 'Standard (108)',
               isActive: mode == CounterMode.standard,
-              onTap: () => _handleModeChange(context, ref, CounterMode.standard),
+              onTap: () =>
+                  _handleModeChange(context, ref, CounterMode.standard),
             ),
             _ModeTab(
               label: 'Short (8)',
@@ -33,7 +34,8 @@ class ModeSelector extends ConsumerWidget {
             _ModeTab(
               label: 'Continuous',
               isActive: mode == CounterMode.continuous,
-              onTap: () => _handleModeChange(context, ref, CounterMode.continuous),
+              onTap: () =>
+                  _handleModeChange(context, ref, CounterMode.continuous),
             ),
           ],
         ),
@@ -41,7 +43,11 @@ class ModeSelector extends ConsumerWidget {
     );
   }
 
-  void _handleModeChange(BuildContext context, WidgetRef ref, CounterMode newMode) {
+  void _handleModeChange(
+    BuildContext context,
+    WidgetRef ref,
+    CounterMode newMode,
+  ) {
     final state = ref.read(counterProvider);
     if (state.mode == newMode) return;
 

@@ -25,9 +25,8 @@ class App extends ConsumerWidget {
         fontFamily: 'Geist',
       ),
       home: userAsync.when(
-        loading: () => const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        loading: () =>
+            const Scaffold(body: Center(child: CircularProgressIndicator())),
         error: (e, s) => Scaffold(
           body: Center(
             child: Text(

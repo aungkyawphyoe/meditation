@@ -17,16 +17,16 @@ class CounterScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<bool>(
-      counterProvider.select((s) => s.isTodayPlanComplete),
-      (prev, next) {
-        if (next && prev == false) {
-          Future.delayed(const Duration(seconds: 2), () {
-            ref.read(counterProvider.notifier).completeTodayPlan();
-          });
-        }
-      },
-    );
+    ref.listen<bool>(counterProvider.select((s) => s.isTodayPlanComplete), (
+      prev,
+      next,
+    ) {
+      if (next && prev == false) {
+        Future.delayed(const Duration(seconds: 2), () {
+          ref.read(counterProvider.notifier).completeTodayPlan();
+        });
+      }
+    });
 
     final counterState = ref.watch(counterProvider);
     final hasActivePlan = ref.watch(hasActivePlanProvider);
@@ -68,8 +68,7 @@ class CounterScreen extends ConsumerWidget {
               ],
             ),
           ),
-          if (counterState.isTodayPlanComplete)
-            const CompletionOverlay(),
+          if (counterState.isTodayPlanComplete) const CompletionOverlay(),
           if (showPlanButton)
             Positioned(
               right: 24,
@@ -85,8 +84,7 @@ class CounterScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(24),
                     ),
                     elevation: 4,
-                    shadowColor:
-                        const Color(0xFFFF8400).withOpacity(0.4),
+                    shadowColor: const Color(0xFFFF8400).withOpacity(0.4),
                   ),
                   icon: Icon(
                     counterState.isTodayPlanActive
@@ -112,8 +110,7 @@ class CounterScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _handlePlanButton(
-      BuildContext context, WidgetRef ref) async {
+  Future<void> _handlePlanButton(BuildContext context, WidgetRef ref) async {
     final state = ref.read(counterProvider);
 
     if (state.isTodayPlanActive) {
@@ -131,19 +128,22 @@ class CounterScreen extends ConsumerWidget {
     final plan = await dao.getPlanById(activePlan.planId);
     if (plan == null) return;
 
-    final todayDay =
-        await dao.getPlanDay(activePlan.planId, activePlan.currentDay);
+    final todayDay = await dao.getPlanDay(
+      activePlan.planId,
+      activePlan.currentDay,
+    );
     if (todayDay == null) return;
 
-    ref.read(counterProvider.notifier).startTodayPlan(
-          plan.title,
-          plan.beadsPerRound,
-          todayDay.targetRounds,
-        );
+    ref
+        .read(counterProvider.notifier)
+        .startTodayPlan(plan.title, plan.beadsPerRound, todayDay.targetRounds);
   }
 
   Future<void> _onModeChange(
-      BuildContext context, WidgetRef ref, CounterMode newMode) async {
+    BuildContext context,
+    WidgetRef ref,
+    CounterMode newMode,
+  ) async {
     final state = ref.read(counterProvider);
     if (state.sessionBeads <= 0) {
       ref.read(counterProvider.notifier).setMode(newMode);
@@ -201,13 +201,15 @@ class CounterScreen extends ConsumerWidget {
     );
 
     if (result == true) {
-      await dao.insertSession(ChantSessionsTableCompanion(
-        mode: Value(state.mode.label),
-        beadsCount: Value(state.sessionBeads),
-        roundsCompleted: Value(state.roundsCompleted),
-        startedAt: Value(state.sessionStartedAt ?? DateTime.now()),
-        completedAt: Value(DateTime.now()),
-      ));
+      await dao.insertSession(
+        ChantSessionsTableCompanion(
+          mode: Value(state.mode.label),
+          beadsCount: Value(state.sessionBeads),
+          roundsCompleted: Value(state.roundsCompleted),
+          startedAt: Value(state.sessionStartedAt ?? DateTime.now()),
+          completedAt: Value(DateTime.now()),
+        ),
+      );
       ref.invalidate(recentSessionsProvider);
       ref.invalidate(lifetimeBeadsProvider);
       ref.invalidate(lifetimeRoundsProvider);

@@ -28,16 +28,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
     final dao = ref.read(userInfoDaoProvider);
     final now = DateTime.now();
-    await dao.upsertUser(UserInfo(
-      id: 1,
-      name: name,
-      rankTitle: 'Novice Chanter',
-      streakDays: 0,
-      totalLifetimeBeads: 0,
-      totalLifetimeRounds: 0,
-      createdAt: now,
-      updatedAt: now,
-    ));
+    await dao.upsertUser(
+      UserInfo(
+        id: 1,
+        name: name,
+        rankTitle: 'Novice Chanter',
+        streakDays: 0,
+        totalLifetimeBeads: 0,
+        totalLifetimeRounds: 0,
+        createdAt: now,
+        updatedAt: now,
+      ),
+    );
 
     ref.invalidate(userInfoProvider);
   }

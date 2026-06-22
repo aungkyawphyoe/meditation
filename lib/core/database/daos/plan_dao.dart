@@ -8,12 +8,14 @@ import '../tables/user_plan_progress_table.dart';
 
 part 'plan_dao.g.dart';
 
-@DriftAccessor(tables: [
-  BeadPlansTable,
-  GongDawDetailsTable,
-  PlanDaysTable,
-  UserPlanProgressTable,
-])
+@DriftAccessor(
+  tables: [
+    BeadPlansTable,
+    GongDawDetailsTable,
+    PlanDaysTable,
+    UserPlanProgressTable,
+  ],
+)
 class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
   PlanDao(super.db);
 
@@ -22,13 +24,13 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
   }
 
   Future<BeadPlan?> getPlanById(int id) {
-    return (select(beadPlansTable)..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (select(
+      beadPlansTable,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   Future<List<PlanDay>> getPlanDays(int planId) {
-    return (select(planDaysTable)..where((t) => t.planId.equals(planId)))
-        .get();
+    return (select(planDaysTable)..where((t) => t.planId.equals(planId))).get();
   }
 
   Future<PlanDay?> getPlanDay(int planId, int dayNumber) {
@@ -39,8 +41,9 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
   }
 
   Future<GongDawDetails?> getGongDawDetails(int id) {
-    return (select(gongDawDetailsTable)..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (select(
+      gongDawDetailsTable,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   Future<List<GongDawDetails>> getAllGongDawDetails() {
@@ -48,14 +51,16 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
   }
 
   Future<int> activatePlan(int userId, int planId) {
-    return into(userPlanProgressTable).insert(UserPlanProgressTableCompanion(
-      userId: Value(userId),
-      planId: Value(planId),
-      currentDay: const Value(1),
-      status: const Value('active'),
-      startDate: Value(DateTime.now()),
-      updatedAt: Value(DateTime.now()),
-    ));
+    return into(userPlanProgressTable).insert(
+      UserPlanProgressTableCompanion(
+        userId: Value(userId),
+        planId: Value(planId),
+        currentDay: const Value(1),
+        status: const Value('active'),
+        startDate: Value(DateTime.now()),
+        updatedAt: Value(DateTime.now()),
+      ),
+    );
   }
 
   Future<UserPlanProgress?> getActivePlan(int userId) {
@@ -66,75 +71,83 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
   }
 
   Future<void> advanceDay(int progressId) async {
-    final progress = await (select(userPlanProgressTable)
-          ..where((t) => t.id.equals(progressId)))
-        .getSingleOrNull();
+    final progress = await (select(
+      userPlanProgressTable,
+    )..where((t) => t.id.equals(progressId))).getSingleOrNull();
     if (progress == null) return;
-    await (update(userPlanProgressTable)
-          ..where((t) => t.id.equals(progressId)))
-        .write(UserPlanProgress(
-      id: progress.id,
-      userId: progress.userId,
-      planId: progress.planId,
-      currentDay: progress.currentDay + 1,
-      status: progress.status,
-      startDate: progress.startDate,
-      updatedAt: DateTime.now(),
-    ));
+    await (update(
+      userPlanProgressTable,
+    )..where((t) => t.id.equals(progressId))).write(
+      UserPlanProgress(
+        id: progress.id,
+        userId: progress.userId,
+        planId: progress.planId,
+        currentDay: progress.currentDay + 1,
+        status: progress.status,
+        startDate: progress.startDate,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   Future<void> completePlan(int progressId) async {
-    final progress = await (select(userPlanProgressTable)
-          ..where((t) => t.id.equals(progressId)))
-        .getSingleOrNull();
+    final progress = await (select(
+      userPlanProgressTable,
+    )..where((t) => t.id.equals(progressId))).getSingleOrNull();
     if (progress == null) return;
-    await (update(userPlanProgressTable)
-          ..where((t) => t.id.equals(progressId)))
-        .write(UserPlanProgress(
-      id: progress.id,
-      userId: progress.userId,
-      planId: progress.planId,
-      currentDay: progress.currentDay,
-      status: 'completed',
-      startDate: progress.startDate,
-      updatedAt: DateTime.now(),
-    ));
+    await (update(
+      userPlanProgressTable,
+    )..where((t) => t.id.equals(progressId))).write(
+      UserPlanProgress(
+        id: progress.id,
+        userId: progress.userId,
+        planId: progress.planId,
+        currentDay: progress.currentDay,
+        status: 'completed',
+        startDate: progress.startDate,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   Future<void> failPlan(int progressId) async {
-    final progress = await (select(userPlanProgressTable)
-          ..where((t) => t.id.equals(progressId)))
-        .getSingleOrNull();
+    final progress = await (select(
+      userPlanProgressTable,
+    )..where((t) => t.id.equals(progressId))).getSingleOrNull();
     if (progress == null) return;
-    await (update(userPlanProgressTable)
-          ..where((t) => t.id.equals(progressId)))
-        .write(UserPlanProgress(
-      id: progress.id,
-      userId: progress.userId,
-      planId: progress.planId,
-      currentDay: progress.currentDay,
-      status: 'failed',
-      startDate: progress.startDate,
-      updatedAt: DateTime.now(),
-    ));
+    await (update(
+      userPlanProgressTable,
+    )..where((t) => t.id.equals(progressId))).write(
+      UserPlanProgress(
+        id: progress.id,
+        userId: progress.userId,
+        planId: progress.planId,
+        currentDay: progress.currentDay,
+        status: 'failed',
+        startDate: progress.startDate,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   Future<void> pausePlan(int progressId) async {
-    final progress = await (select(userPlanProgressTable)
-          ..where((t) => t.id.equals(progressId)))
-        .getSingleOrNull();
+    final progress = await (select(
+      userPlanProgressTable,
+    )..where((t) => t.id.equals(progressId))).getSingleOrNull();
     if (progress == null) return;
-    await (update(userPlanProgressTable)
-          ..where((t) => t.id.equals(progressId)))
-        .write(UserPlanProgress(
-      id: progress.id,
-      userId: progress.userId,
-      planId: progress.planId,
-      currentDay: progress.currentDay,
-      status: 'paused',
-      startDate: progress.startDate,
-      updatedAt: DateTime.now(),
-    ));
+    await (update(
+      userPlanProgressTable,
+    )..where((t) => t.id.equals(progressId))).write(
+      UserPlanProgress(
+        id: progress.id,
+        userId: progress.userId,
+        planId: progress.planId,
+        currentDay: progress.currentDay,
+        status: 'paused',
+        startDate: progress.startDate,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   Future<List<UserPlanProgress>> getAllUserProgress(int userId) {
@@ -165,10 +178,9 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
   }
 
   Future<void> updatePlanDayDayNumber(int dayId, int dayNumber) async {
-    await (update(planDaysTable)..where((t) => t.id.equals(dayId)))
-        .write(PlanDaysTableCompanion(
-      dayNumber: Value(dayNumber),
-    ));
+    await (update(planDaysTable)..where((t) => t.id.equals(dayId))).write(
+      PlanDaysTableCompanion(dayNumber: Value(dayNumber)),
+    );
   }
 
   Future<int> getCompletedPlansCount(int userId) async {
@@ -180,8 +192,10 @@ class PlanDao extends DatabaseAccessor<AppDatabase> with _$PlanDaoMixin {
     return count.data['total'] as int;
   }
 
-  Future<List<PlanProgressSummary>> getRecentPlans(int userId,
-      {int limit = 20}) async {
+  Future<List<PlanProgressSummary>> getRecentPlans(
+    int userId, {
+    int limit = 20,
+  }) async {
     final result = await customSelect(
       '''SELECT p.id AS progress_id, p.plan_id, bp.title, bp.description,
        COUNT(pd.id) AS plan_days_count, p.current_day, p.status

@@ -21,7 +21,12 @@ class ProfileScreen extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(child: Text('$e')),
           data: (user) => _buildContent(
-              context, user!, plansAsync, roundsAsync, recentPlansAsync),
+            context,
+            user!,
+            plansAsync,
+            roundsAsync,
+            recentPlansAsync,
+          ),
         ),
       ),
     );
@@ -120,10 +125,7 @@ class ProfileScreen extends ConsumerWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _StatCard(
-                  label: 'Rounds',
-                  value: formatNumber(rounds),
-                ),
+                child: _StatCard(label: 'Rounds', value: formatNumber(rounds)),
               ),
             ],
           ),

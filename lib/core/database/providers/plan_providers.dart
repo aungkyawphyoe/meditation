@@ -9,7 +9,9 @@ final planDaoProvider = Provider<PlanDao>((ref) {
   return ref.watch(databaseProvider).planDao;
 });
 
-final allGongDawDetailsProvider = FutureProvider<List<GongDawDetails>>((ref) async {
+final allGongDawDetailsProvider = FutureProvider<List<GongDawDetails>>((
+  ref,
+) async {
   final dao = ref.watch(planDaoProvider);
   return dao.getAllGongDawDetails();
 });
@@ -24,23 +26,27 @@ final planProvider = FutureProvider.family<BeadPlan?, int>((ref, id) async {
   return dao.getPlanById(id);
 });
 
-final planDaysProvider =
-    FutureProvider.family<List<PlanDay>, int>((ref, planId) async {
+final planDaysProvider = FutureProvider.family<List<PlanDay>, int>((
+  ref,
+  planId,
+) async {
   final dao = ref.watch(planDaoProvider);
   return dao.getPlanDays(planId);
 });
 
-final activePlanProvider =
-    FutureProvider.family<UserPlanProgress?, int>((ref, userId) async {
+final activePlanProvider = FutureProvider.family<UserPlanProgress?, int>((
+  ref,
+  userId,
+) async {
   final dao = ref.watch(planDaoProvider);
   return dao.getActivePlan(userId);
 });
 
 final userPlanHistoryProvider =
     FutureProvider.family<List<UserPlanProgress>, int>((ref, userId) async {
-  final dao = ref.watch(planDaoProvider);
-  return dao.getAllUserProgress(userId);
-});
+      final dao = ref.watch(planDaoProvider);
+      return dao.getAllUserProgress(userId);
+    });
 
 final hasActivePlanProvider = Provider<bool>((ref) {
   final user = ref.watch(userInfoProvider).valueOrNull;
@@ -56,8 +62,9 @@ final completedPlansProvider = FutureProvider<int>((ref) async {
   return dao.getCompletedPlansCount(user.id);
 });
 
-final recentPlansProvider =
-    FutureProvider<List<PlanProgressSummary>>((ref) async {
+final recentPlansProvider = FutureProvider<List<PlanProgressSummary>>((
+  ref,
+) async {
   final user = await ref.watch(userInfoProvider.future);
   if (user == null) return [];
   final dao = ref.watch(planDaoProvider);

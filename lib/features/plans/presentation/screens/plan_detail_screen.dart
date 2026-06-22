@@ -36,7 +36,10 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
     setState(() {});
   }
 
-  void _enterEditMode(List<PlanDay> planDays, UserPlanProgress? activeProgress) {
+  void _enterEditMode(
+    List<PlanDay> planDays,
+    UserPlanProgress? activeProgress,
+  ) {
     if (activeProgress?.planId == widget.planId) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Cannot edit an active plan')),
@@ -119,23 +122,29 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
 
       if (day.id < 0) {
         final data = _newDayData[newDayIndex++];
-        var match = existingGongDawDetails.where((d) => d.name == data.gongDawName).firstOrNull;
+        var match = existingGongDawDetails
+            .where((d) => d.name == data.gongDawName)
+            .firstOrNull;
         int gongDawId;
         if (match != null) {
           gongDawId = match.id;
         } else {
-          gongDawId = await dao.addGongDawDetail(GongDawDetailsTableCompanion.insert(
-            name: data.gongDawName,
-            meaning: data.gongDawDetail,
-          ));
+          gongDawId = await dao.addGongDawDetail(
+            GongDawDetailsTableCompanion.insert(
+              name: data.gongDawName,
+              meaning: data.gongDawDetail,
+            ),
+          );
         }
-        await dao.addPlanDay(PlanDaysTableCompanion.insert(
-          planId: widget.planId,
-          dayNumber: newNumber,
-          gongDawId: gongDawId,
-          targetRounds: data.targetRounds,
-          gongDawName: Value(data.gongDawName),
-        ));
+        await dao.addPlanDay(
+          PlanDaysTableCompanion.insert(
+            planId: widget.planId,
+            dayNumber: newNumber,
+            gongDawId: gongDawId,
+            targetRounds: data.targetRounds,
+            gongDawName: Value(data.gongDawName),
+          ),
+        );
       } else {
         if (day.dayNumber != newNumber) {
           await dao.updatePlanDayDayNumber(day.id, newNumber);
@@ -152,9 +161,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
       _nextTempId = -1;
     });
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Plan updated')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Plan updated')));
     }
   }
 
@@ -163,7 +172,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Delete Plan'),
-        content: const Text('Are you sure you want to delete this plan? This action cannot be undone.'),
+        content: const Text(
+          'Are you sure you want to delete this plan? This action cannot be undone.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -210,13 +221,20 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
           ),
         ),
         actions: [
-          if (!_isEditing && planAsync.valueOrNull != null && !planAsync.valueOrNull!.isPredefined)
+          if (!_isEditing &&
+              planAsync.valueOrNull != null &&
+              !planAsync.valueOrNull!.isPredefined)
             PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert_rounded, color: Color(0xFF111111)),
+              icon: const Icon(
+                Icons.more_vert_rounded,
+                color: Color(0xFF111111),
+              ),
               onSelected: (value) {
                 if (value == 'edit') {
                   final planDays = planDaysAsync.valueOrNull ?? [];
-                  final activeProgress = ref.read(activePlanProvider(userAsync.valueOrNull?.id ?? -1)).valueOrNull;
+                  final activeProgress = ref
+                      .read(activePlanProvider(userAsync.valueOrNull?.id ?? -1))
+                      .valueOrNull;
                   _enterEditMode(planDays, activeProgress);
                 } else if (value == 'delete') {
                   _deletePlan(planAsync.valueOrNull!);
@@ -239,7 +257,13 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                     children: [
                       Icon(Icons.delete_rounded, size: 18, color: Colors.red),
                       SizedBox(width: 10),
-                      Text('Delete', style: TextStyle(fontFamily: 'Geist', color: Colors.red)),
+                      Text(
+                        'Delete',
+                        style: TextStyle(
+                          fontFamily: 'Geist',
+                          color: Colors.red,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -280,7 +304,8 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
       error: (e, _) => Center(child: Text('Error: $e')),
       data: (activeProgress) {
         final isThisPlanActive = activeProgress?.planId == plan.id;
-        final isCompleted = !isThisPlanActive && (activeProgress?.status == 'completed');
+        final isCompleted =
+            !isThisPlanActive && (activeProgress?.status == 'completed');
         final displayDays = _isEditing ? _editableDays : planDays;
 
         return Column(
@@ -288,7 +313,13 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
             Expanded(
               child: _isEditing
                   ? _buildEditDayList(displayDays)
-                  : _buildDayList(plan, planDays, activeProgress, isThisPlanActive, isCompleted),
+                  : _buildDayList(
+                      plan,
+                      planDays,
+                      activeProgress,
+                      isThisPlanActive,
+                      isCompleted,
+                    ),
             ),
             _isEditing
                 ? _buildEditBottomBar()
@@ -299,7 +330,12 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                         ? () => _startPlan(context, ref, userId)
                         : null,
                     onCompleteDay: isThisPlanActive && activeProgress != null
-                        ? () => _advanceDay(context, ref, activeProgress, planDays.length)
+                        ? () => _advanceDay(
+                            context,
+                            ref,
+                            activeProgress,
+                            planDays.length,
+                          )
                         : null,
                     onCompletePlan: isThisPlanActive && activeProgress != null
                         ? () => _finishPlan(context, ref, activeProgress)
@@ -311,7 +347,13 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
     );
   }
 
-  Widget _buildDayList(BeadPlan plan, List<PlanDay> planDays, UserPlanProgress? activeProgress, bool isThisPlanActive, bool isCompleted) {
+  Widget _buildDayList(
+    BeadPlan plan,
+    List<PlanDay> planDays,
+    UserPlanProgress? activeProgress,
+    bool isThisPlanActive,
+    bool isCompleted,
+  ) {
     return ListView(
       padding: const EdgeInsets.only(bottom: 100),
       children: [
@@ -322,7 +364,10 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
             children: [
               if (plan.isPredefined)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   margin: const EdgeInsets.only(bottom: 8),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFF8400).withAlpha(25),
@@ -390,8 +435,10 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
         ...planDays.asMap().entries.map((entry) {
           final day = entry.value;
           final dayNum = entry.key + 1;
-          final isCurrent = isThisPlanActive && activeProgress!.currentDay == dayNum;
-          final isCompletedDay = isThisPlanActive && activeProgress!.currentDay > dayNum;
+          final isCurrent =
+              isThisPlanActive && activeProgress!.currentDay == dayNum;
+          final isCompletedDay =
+              isThisPlanActive && activeProgress!.currentDay > dayNum;
 
           return DayListTile(
             dayNumber: dayNum,
@@ -430,7 +477,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                   'Add Day',
                   style: TextStyle(fontFamily: 'Geist', fontSize: 14),
                 ),
-                style: TextButton.styleFrom(foregroundColor: const Color(0xFFFF8400)),
+                style: TextButton.styleFrom(
+                  foregroundColor: const Color(0xFFFF8400),
+                ),
               ),
             ],
           ),
@@ -475,7 +524,11 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.delete_rounded, color: Colors.white, size: 24),
+                  child: const Icon(
+                    Icons.delete_rounded,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
                 confirmDismiss: (direction) async {
                   return true;
@@ -495,13 +548,19 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                     border: Border.all(color: const Color(0xFFEEEEEE)),
                   ),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     leading: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ReorderableDragStartListener(
                           index: index,
-                          child: const Icon(Icons.drag_handle_rounded, color: Color(0xFF999999)),
+                          child: const Icon(
+                            Icons.drag_handle_rounded,
+                            color: Color(0xFF999999),
+                          ),
                         ),
                         const SizedBox(width: 8),
                         Container(
@@ -550,7 +609,11 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                           _editableDays.removeAt(index);
                         });
                       },
-                      child: const Icon(Icons.close_rounded, size: 20, color: Color(0xFF999999)),
+                      child: const Icon(
+                        Icons.close_rounded,
+                        size: 20,
+                        color: Color(0xFF999999),
+                      ),
                     ),
                   ),
                 ),
@@ -605,7 +668,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
               onPressed: () {
                 if (_editableDays.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Plan must have at least one day')),
+                    const SnackBar(
+                      content: Text('Plan must have at least one day'),
+                    ),
                   );
                   return;
                 }
@@ -640,22 +705,28 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
     if (existingProgress != null) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('You already have an active plan. Complete or pause it first.')),
+        const SnackBar(
+          content: Text(
+            'You already have an active plan. Complete or pause it first.',
+          ),
+        ),
       );
       return;
     }
     await dao.activatePlan(uid, widget.planId);
     ref.invalidate(activePlanProvider(uid));
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Plan activated!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Plan activated!')));
     }
   }
 
   Future<void> _advanceDay(
-    BuildContext context, WidgetRef ref,
-    UserPlanProgress progress, int totalDays,
+    BuildContext context,
+    WidgetRef ref,
+    UserPlanProgress progress,
+    int totalDays,
   ) async {
     if (progress.currentDay >= totalDays) return;
     final dao = ref.read(planDaoProvider);
@@ -669,7 +740,8 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
   }
 
   Future<void> _finishPlan(
-    BuildContext context, WidgetRef ref,
+    BuildContext context,
+    WidgetRef ref,
     UserPlanProgress progress,
   ) async {
     final dao = ref.read(planDaoProvider);
@@ -677,7 +749,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Complete Plan'),
-        content: const Text('Are you sure you want to mark this plan as complete?'),
+        content: const Text(
+          'Are you sure you want to mark this plan as complete?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -760,8 +834,8 @@ class _BottomAction extends StatelessWidget {
           onPressed: isCompleted
               ? null
               : isThisPlanActive
-                  ? onCompletePlan ?? onCompleteDay
-                  : onStart,
+              ? onCompletePlan ?? onCompleteDay
+              : onStart,
           style: TextButton.styleFrom(
             backgroundColor: isCompleted
                 ? const Color(0xFFE0E0E0)
@@ -780,8 +854,8 @@ class _BottomAction extends StatelessWidget {
             isCompleted
                 ? 'Completed'
                 : isThisPlanActive
-                    ? 'Complete Plan'
-                    : 'Start This Plan',
+                ? 'Complete Plan'
+                : 'Start This Plan',
             style: const TextStyle(
               fontFamily: 'Geist',
               fontSize: 16,
@@ -876,15 +950,24 @@ class _AddDayCard extends StatelessWidget {
                   icon: Icon(
                     Icons.check_rounded,
                     size: 20,
-                    color: isValid ? const Color(0xFFFF8400) : const Color(0xFFCCCCCC),
+                    color: isValid
+                        ? const Color(0xFFFF8400)
+                        : const Color(0xFFCCCCCC),
                   ),
-                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                  constraints: const BoxConstraints(
+                    minWidth: 32,
+                    minHeight: 32,
+                  ),
                   padding: EdgeInsets.zero,
                   splashRadius: 16,
                 ),
                 GestureDetector(
                   onTap: onCancel,
-                  child: const Icon(Icons.close_rounded, size: 20, color: Color(0xFF999999)),
+                  child: const Icon(
+                    Icons.close_rounded,
+                    size: 20,
+                    color: Color(0xFF999999),
+                  ),
                 ),
               ],
             ),
@@ -908,7 +991,10 @@ class _AddDayCard extends StatelessWidget {
                       const SizedBox(height: 6),
                       TextFormField(
                         controller: gongDawController,
-                        style: const TextStyle(fontFamily: 'Geist', fontSize: 14),
+                        style: const TextStyle(
+                          fontFamily: 'Geist',
+                          fontSize: 14,
+                        ),
                         decoration: InputDecoration(
                           hintText: 'e.g., အရဟံ',
                           hintStyle: const TextStyle(
@@ -918,7 +1004,10 @@ class _AddDayCard extends StatelessWidget {
                           ),
                           filled: true,
                           fillColor: const Color(0xFFF2F3F0),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide.none,
@@ -975,7 +1064,11 @@ class _AddDayCard extends StatelessWidget {
                               width: 32,
                               height: 40,
                               alignment: Alignment.center,
-                              child: const Icon(Icons.add_rounded, size: 18, color: Color(0xFFFF8400)),
+                              child: const Icon(
+                                Icons.add_rounded,
+                                size: 18,
+                                color: Color(0xFFFF8400),
+                              ),
                             ),
                           ),
                           GestureDetector(
@@ -984,7 +1077,11 @@ class _AddDayCard extends StatelessWidget {
                               width: 32,
                               height: 40,
                               alignment: Alignment.center,
-                              child: const Icon(Icons.remove_rounded, size: 18, color: Color(0xFFFF8400)),
+                              child: const Icon(
+                                Icons.remove_rounded,
+                                size: 18,
+                                color: Color(0xFFFF8400),
+                              ),
                             ),
                           ),
                         ],
@@ -1020,7 +1117,10 @@ class _AddDayCard extends StatelessWidget {
                     ),
                     filled: true,
                     fillColor: const Color(0xFFF2F3F0),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide.none,

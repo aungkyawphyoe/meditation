@@ -26,11 +26,7 @@ part 'database.g.dart';
     PlanDaysTable,
     UserPlanProgressTable,
   ],
-  daos: [
-    UserInfoDao,
-    ChantSessionDao,
-    PlanDao,
-  ],
+  daos: [UserInfoDao, ChantSessionDao, PlanDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
@@ -45,16 +41,18 @@ class AppDatabase extends _$AppDatabase {
     return MigrationStrategy(
       onCreate: (m) async {
         await m.createAll();
-        await into(userInfoTable).insert(UserInfo(
-          id: 1,
-          name: 'Meditator',
-          rankTitle: 'Novice Chanter',
-          streakDays: 0,
-          totalLifetimeBeads: 0,
-          totalLifetimeRounds: 0,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ));
+        await into(userInfoTable).insert(
+          UserInfo(
+            id: 1,
+            name: 'Meditator',
+            rankTitle: 'Novice Chanter',
+            streakDays: 0,
+            totalLifetimeBeads: 0,
+            totalLifetimeRounds: 0,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+        );
         await _seedPredefinedData();
       },
       onUpgrade: (m, from, to) async {
@@ -74,68 +72,126 @@ class AppDatabase extends _$AppDatabase {
 
   Future<void> _seedPredefinedData() async {
     await batch((b) {
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 1,
-        name: 'အရဟံ',
-        meaning: 'ပူဇော်အထူးကို ခံတော်မူထိုက်သော ဂုဏ်တော်',
-      ));
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 2,
-        name: 'သမ္မာသမ္ဗုဒ္ဓေါ',
-        meaning: 'တရားအလုံးစုံကို ကိုယ်တိုင်မှန်ကန်စွာ သိတော်မူသော ဂုဏ်တော်',
-      ));
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 3,
-        name: 'ဝိဇ္ဇာစရဏသမ္ပန္နော',
-        meaning: 'အသိဉာဏ်ပညာ အကျင့်စရဏနှင့် ပြည့်စုံတော်မူသော ဂုဏ်တော်',
-      ));
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 4,
-        name: 'သုဂတော',
-        meaning: 'ကောင်းသောစကားကို ဆိုတော်မူတတ်သော ဂုဏ်တော်',
-      ));
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 5,
-        name: 'လောကဝိဒူ',
-        meaning: 'လောကသုံးပါးကို အကုန်အစင် သိတော်မူသော ဂုဏ်တော်',
-      ));
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 6,
-        name: 'အနုတ္တရော ပုရိသဒမ္မသာရထိ',
-        meaning: 'ဆုံးမထိုက်သူတို့ကို အတုမရှိ ဆုံးမတော်မူတတ်သော ဂုဏ်တော်',
-      ));
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 7,
-        name: 'သတ္တာဒေဝမနုဿာနံ',
-        meaning: 'နတ်လူတို့၏ ဆရာတစ်ဆူ ဖြစ်တော်မူသော ဂုဏ်တော်',
-      ));
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 8,
-        name: 'ဗုဒ္ဓေါ',
-        meaning: 'သစ္စာလေးပါးကို သိတော်မူပြီးသူ ဖြစ်တော်မူသော ဂုဏ်တော်',
-      ));
-      b.insert(gongDawDetailsTable, GongDawDetails(
-        id: 9,
-        name: 'ဘဂဝါ',
-        meaning: 'ဘုန်းတော်ခြောက်ပါးနှင့် ပြည့်စုံတော်မူသော ဂုဏ်တော်',
-      ));
-      b.insert(beadPlansTable, BeadPlan(
-        id: 1,
-        title: 'ကိုးနဝင်း အဓိဋ္ဌာန် (၉ ရက်)',
-        description: '၉ ရက်တိုင်တိုင် တစ်ရက်လျှင် သတ်မှတ်ထားသော ဂုဏ်တော်နှင့် အပတ်ရေအတိုင်း တိုးမြှင့်စိတ်ရမည့် စနစ်တကျ အဓိဋ္ဌာန်စဉ် ဖြစ်သည်။',
-        isPredefined: true,
-        beadsPerRound: 108,
-        createdAt: DateTime.now(),
-      ));
-      b.insert(planDaysTable, PlanDay(id: 1, planId: 1, dayNumber: 1, gongDawId: 1, targetRounds: 1));
-      b.insert(planDaysTable, PlanDay(id: 2, planId: 1, dayNumber: 2, gongDawId: 2, targetRounds: 2));
-      b.insert(planDaysTable, PlanDay(id: 3, planId: 1, dayNumber: 3, gongDawId: 3, targetRounds: 3));
-      b.insert(planDaysTable, PlanDay(id: 4, planId: 1, dayNumber: 4, gongDawId: 4, targetRounds: 4));
-      b.insert(planDaysTable, PlanDay(id: 5, planId: 1, dayNumber: 5, gongDawId: 5, targetRounds: 5));
-      b.insert(planDaysTable, PlanDay(id: 6, planId: 1, dayNumber: 6, gongDawId: 6, targetRounds: 6));
-      b.insert(planDaysTable, PlanDay(id: 7, planId: 1, dayNumber: 7, gongDawId: 7, targetRounds: 7));
-      b.insert(planDaysTable, PlanDay(id: 8, planId: 1, dayNumber: 8, gongDawId: 8, targetRounds: 8));
-      b.insert(planDaysTable, PlanDay(id: 9, planId: 1, dayNumber: 9, gongDawId: 9, targetRounds: 9));
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 1,
+          name: 'အရဟံ',
+          meaning: 'ပူဇော်အထူးကို ခံတော်မူထိုက်သော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 2,
+          name: 'သမ္မာသမ္ဗုဒ္ဓေါ',
+          meaning: 'တရားအလုံးစုံကို ကိုယ်တိုင်မှန်ကန်စွာ သိတော်မူသော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 3,
+          name: 'ဝိဇ္ဇာစရဏသမ္ပန္နော',
+          meaning: 'အသိဉာဏ်ပညာ အကျင့်စရဏနှင့် ပြည့်စုံတော်မူသော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 4,
+          name: 'သုဂတော',
+          meaning: 'ကောင်းသောစကားကို ဆိုတော်မူတတ်သော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 5,
+          name: 'လောကဝိဒူ',
+          meaning: 'လောကသုံးပါးကို အကုန်အစင် သိတော်မူသော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 6,
+          name: 'အနုတ္တရော ပုရိသဒမ္မသာရထိ',
+          meaning: 'ဆုံးမထိုက်သူတို့ကို အတုမရှိ ဆုံးမတော်မူတတ်သော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 7,
+          name: 'သတ္တာဒေဝမနုဿာနံ',
+          meaning: 'နတ်လူတို့၏ ဆရာတစ်ဆူ ဖြစ်တော်မူသော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 8,
+          name: 'ဗုဒ္ဓေါ',
+          meaning: 'သစ္စာလေးပါးကို သိတော်မူပြီးသူ ဖြစ်တော်မူသော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        gongDawDetailsTable,
+        GongDawDetails(
+          id: 9,
+          name: 'ဘဂဝါ',
+          meaning: 'ဘုန်းတော်ခြောက်ပါးနှင့် ပြည့်စုံတော်မူသော ဂုဏ်တော်',
+        ),
+      );
+      b.insert(
+        beadPlansTable,
+        BeadPlan(
+          id: 1,
+          title: 'ကိုးနဝင်း အဓိဋ္ဌာန် (၉ ရက်)',
+          description:
+              '၉ ရက်တိုင်တိုင် တစ်ရက်လျှင် သတ်မှတ်ထားသော ဂုဏ်တော်နှင့် အပတ်ရေအတိုင်း တိုးမြှင့်စိတ်ရမည့် စနစ်တကျ အဓိဋ္ဌာန်စဉ် ဖြစ်သည်။',
+          isPredefined: true,
+          beadsPerRound: 108,
+          createdAt: DateTime.now(),
+        ),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 1, planId: 1, dayNumber: 1, gongDawId: 1, targetRounds: 1),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 2, planId: 1, dayNumber: 2, gongDawId: 2, targetRounds: 2),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 3, planId: 1, dayNumber: 3, gongDawId: 3, targetRounds: 3),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 4, planId: 1, dayNumber: 4, gongDawId: 4, targetRounds: 4),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 5, planId: 1, dayNumber: 5, gongDawId: 5, targetRounds: 5),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 6, planId: 1, dayNumber: 6, gongDawId: 6, targetRounds: 6),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 7, planId: 1, dayNumber: 7, gongDawId: 7, targetRounds: 7),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 8, planId: 1, dayNumber: 8, gongDawId: 8, targetRounds: 8),
+      );
+      b.insert(
+        planDaysTable,
+        PlanDay(id: 9, planId: 1, dayNumber: 9, gongDawId: 9, targetRounds: 9),
+      );
     });
   }
 

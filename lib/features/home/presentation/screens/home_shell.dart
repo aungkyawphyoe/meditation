@@ -9,11 +9,7 @@ final currentTabProvider = StateProvider<int>((ref) => 0);
 class HomeShell extends ConsumerWidget {
   const HomeShell({super.key});
 
-  static const _screens = [
-    CounterScreen(),
-    PlansScreen(),
-    ProfileScreen(),
-  ];
+  static const _screens = [CounterScreen(), PlansScreen(), ProfileScreen()];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -91,7 +87,9 @@ class _TabItem extends StatelessWidget {
           children: [
             Icon(
               isActive ? activeIcon : icon,
-              color: isActive ? const Color(0xFFFF8400) : const Color(0xFF666666),
+              color: isActive
+                  ? const Color(0xFFFF8400)
+                  : const Color(0xFF666666),
               size: 24,
             ),
             const SizedBox(height: 4),
@@ -101,7 +99,9 @@ class _TabItem extends StatelessWidget {
                 fontFamily: 'Geist',
                 fontSize: 10,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-                color: isActive ? const Color(0xFFFF8400) : const Color(0xFF666666),
+                color: isActive
+                    ? const Color(0xFFFF8400)
+                    : const Color(0xFF666666),
               ),
             ),
           ],

@@ -5,7 +5,8 @@ import '../tables/user_info_table.dart';
 part 'user_info_dao.g.dart';
 
 @DriftAccessor(tables: [UserInfoTable])
-class UserInfoDao extends DatabaseAccessor<AppDatabase> with _$UserInfoDaoMixin {
+class UserInfoDao extends DatabaseAccessor<AppDatabase>
+    with _$UserInfoDaoMixin {
   UserInfoDao(super.db);
 
   Future<UserInfo?> getUser() {
@@ -22,10 +23,12 @@ class UserInfoDao extends DatabaseAccessor<AppDatabase> with _$UserInfoDaoMixin 
   }) async {
     final user = await getUser();
     if (user == null) return;
-    await upsertUser(user.copyWith(
-      totalLifetimeBeads: totalBeads,
-      totalLifetimeRounds: totalRounds,
-      updatedAt: DateTime.now(),
-    ));
+    await upsertUser(
+      user.copyWith(
+        totalLifetimeBeads: totalBeads,
+        totalLifetimeRounds: totalRounds,
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 }

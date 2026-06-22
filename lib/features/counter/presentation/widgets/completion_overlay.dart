@@ -20,8 +20,7 @@ class _CompletionOverlayState extends State<CompletionOverlay>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    _scaleAnim =
-        CurvedAnimation(parent: _controller, curve: Curves.elasticOut);
+    _scaleAnim = CurvedAnimation(parent: _controller, curve: Curves.elasticOut);
     _fadeAnim = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _controller,
@@ -48,10 +47,7 @@ class _CompletionOverlayState extends State<CompletionOverlay>
             scale: _scaleAnim,
             child: Container(
               margin: const EdgeInsets.all(40),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 48,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 48),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),

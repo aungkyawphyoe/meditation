@@ -14,7 +14,9 @@ class ChantSessionDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<void> updateSession(int id, ChantSessionsTableCompanion session) {
-    return (update(chantSessionsTable)..where((t) => t.id.equals(id))).write(session);
+    return (update(
+      chantSessionsTable,
+    )..where((t) => t.id.equals(id))).write(session);
   }
 
   Future<void> deleteSession(int id) {

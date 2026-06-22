@@ -44,8 +44,8 @@ class DayListTile extends StatelessWidget {
                 color: isCompleted
                     ? const Color(0xFF4CAF50)
                     : isCurrentDay
-                        ? const Color(0xFFFF8400)
-                        : const Color(0xFFF5F5F5),
+                    ? const Color(0xFFFF8400)
+                    : const Color(0xFFF5F5F5),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(

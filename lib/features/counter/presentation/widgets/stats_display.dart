@@ -8,7 +8,9 @@ class StatsDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final rounds = ref.watch(counterProvider.select((s) => s.roundsCompleted));
-    final sessionBeads = ref.watch(counterProvider.select((s) => s.sessionBeads));
+    final sessionBeads = ref.watch(
+      counterProvider.select((s) => s.sessionBeads),
+    );
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

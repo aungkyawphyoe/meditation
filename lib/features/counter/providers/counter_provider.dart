@@ -71,8 +71,7 @@ class CounterState {
       activeSessionId: activeSessionId ?? this.activeSessionId,
       sessionStartedAt: sessionStartedAt ?? this.sessionStartedAt,
       isTodayPlanActive: isTodayPlanActive ?? this.isTodayPlanActive,
-      isTodayPlanComplete:
-          isTodayPlanComplete ?? this.isTodayPlanComplete,
+      isTodayPlanComplete: isTodayPlanComplete ?? this.isTodayPlanComplete,
       isCompletedThisSession:
           isCompletedThisSession ?? this.isCompletedThisSession,
       planName: planName ?? this.planName,
@@ -181,7 +180,10 @@ class CounterNotifier extends StateNotifier<CounterState> {
   }
 
   void startSession(int sessionId, DateTime startedAt) {
-    state = state.copyWith(activeSessionId: sessionId, sessionStartedAt: startedAt);
+    state = state.copyWith(
+      activeSessionId: sessionId,
+      sessionStartedAt: startedAt,
+    );
   }
 
   void clearSession() {
@@ -189,7 +191,8 @@ class CounterNotifier extends StateNotifier<CounterState> {
   }
 }
 
-final counterProvider =
-    StateNotifierProvider<CounterNotifier, CounterState>((ref) {
+final counterProvider = StateNotifierProvider<CounterNotifier, CounterState>((
+  ref,
+) {
   return CounterNotifier();
 });

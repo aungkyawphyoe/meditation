@@ -5,11 +5,7 @@ class BeadPlanCard extends StatelessWidget {
   final BeadPlan plan;
   final VoidCallback onTap;
 
-  const BeadPlanCard({
-    super.key,
-    required this.plan,
-    required this.onTap,
-  });
+  const BeadPlanCard({super.key, required this.plan, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
