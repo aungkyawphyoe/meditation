@@ -412,4 +412,40 @@ void main() {
     expect(find.text('Test Plan'), findsOneWidget);
     expect(find.text('Failed'), findsOneWidget);
   });
+
+  testWidgets('Rank updates after completing rounds and saving session', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    for (int i = 0; i < 108; i++) {
+      await tester.tap(find.text('TAP TO COUNT'));
+    }
+    await tester.pump();
+
+    await tester.tap(find.text('Short (8)'));
+    await tester.pump();
+    expect(find.text('Save Session?'), findsOneWidget);
+
+    await tester.tap(find.text('Save'));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    await tester.tap(find.text('Profile'));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.textContaining('Novice Chanter'), findsOneWidget);
+  });
 }
