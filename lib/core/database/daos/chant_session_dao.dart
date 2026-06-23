@@ -32,7 +32,7 @@ class ChantSessionDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> getTotalBeads() async {
     final count = await customSelect(
-      'SELECT COALESCE(SUM(beads_count), 0) AS total FROM chant_sessions',
+      'SELECT COALESCE(SUM(beads_count), 0) AS total FROM chant_sessions_table',
       readsFrom: {chantSessionsTable},
     ).getSingle();
     return count.data['total'] as int;
@@ -40,7 +40,7 @@ class ChantSessionDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> getTotalRounds() async {
     final count = await customSelect(
-      'SELECT COALESCE(SUM(rounds_completed), 0) AS total FROM chant_sessions',
+      'SELECT COALESCE(SUM(rounds_completed), 0) AS total FROM chant_sessions_table',
       readsFrom: {chantSessionsTable},
     ).getSingle();
     return count.data['total'] as int;
