@@ -214,7 +214,9 @@ class CounterScreen extends ConsumerWidget {
       final sessionDao = ref.read(chantSessionDaoProvider);
       final totalBeads = await sessionDao.getTotalBeads();
       final totalRounds = await sessionDao.getTotalRounds();
-      await ref.read(userInfoDaoProvider).updateLifetimeStats(
+      await ref
+          .read(userInfoDaoProvider)
+          .updateLifetimeStats(
             totalBeads: totalBeads,
             totalRounds: totalRounds,
           );
