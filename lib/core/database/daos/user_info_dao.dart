@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import '../../utils/rank_utils.dart';
 import '../database.dart';
 import '../tables/user_info_table.dart';
 
@@ -27,6 +28,7 @@ class UserInfoDao extends DatabaseAccessor<AppDatabase>
       user.copyWith(
         totalLifetimeBeads: totalBeads,
         totalLifetimeRounds: totalRounds,
+        rankTitle: rankForRounds(totalRounds),
         updatedAt: DateTime.now(),
       ),
     );
