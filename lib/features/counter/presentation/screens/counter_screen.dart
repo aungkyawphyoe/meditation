@@ -210,9 +210,18 @@ class CounterScreen extends ConsumerWidget {
           completedAt: Value(DateTime.now()),
         ),
       );
+      // Recalculate lifetime stats and rank
+      final sessionDao = ref.read(chantSessionDaoProvider);
+      final totalBeads = await sessionDao.getTotalBeads();
+      final totalRounds = await sessionDao.getTotalRounds();
+      await ref.read(userInfoDaoProvider).updateLifetimeStats(
+            totalBeads: totalBeads,
+            totalRounds: totalRounds,
+          );
       ref.invalidate(recentSessionsProvider);
       ref.invalidate(lifetimeBeadsProvider);
       ref.invalidate(lifetimeRoundsProvider);
+      ref.invalidate(userInfoProvider);
       ref.invalidate(completedPlansProvider);
       ref.invalidate(recentPlansProvider);
     }
