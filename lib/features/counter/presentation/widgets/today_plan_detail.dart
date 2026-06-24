@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
 
 class TodayPlanDetail extends ConsumerWidget {
@@ -32,7 +33,8 @@ class TodayPlanDetail extends ConsumerWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '$beadsPerRound beads per round — $targetRounds rounds today',
+            AppLocalizations.of(context)!
+                .beadsPerRound(beadsPerRound, targetRounds),
             style: const TextStyle(
               fontFamily: 'Geist',
               fontSize: 13,

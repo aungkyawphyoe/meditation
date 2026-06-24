@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
 
 class ModeSelector extends ConsumerWidget {
@@ -21,18 +22,18 @@ class ModeSelector extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _ModeTab(
-              label: 'Standard (108)',
+              label: AppLocalizations.of(context)!.standardMode,
               isActive: mode == CounterMode.standard,
               onTap: () =>
                   _handleModeChange(context, ref, CounterMode.standard),
             ),
             _ModeTab(
-              label: 'Short (8)',
+              label: AppLocalizations.of(context)!.shortMode,
               isActive: mode == CounterMode.short,
               onTap: () => _handleModeChange(context, ref, CounterMode.short),
             ),
             _ModeTab(
-              label: 'Continuous',
+              label: AppLocalizations.of(context)!.continuousMode,
               isActive: mode == CounterMode.continuous,
               onTap: () =>
                   _handleModeChange(context, ref, CounterMode.continuous),

@@ -1,0 +1,155 @@
+{
+  "@@locale": "en",
+  "appTitle": "Meditation",
+  "profile": "Profile",
+  "plans": "Plans",
+  "counter": "Counter",
+  "settings": "Settings",
+  "totalPlans": "Total Plans",
+  "rounds": "Rounds",
+  "myPlans": "My Plans",
+  "noPlansYet": "No plans yet",
+  "daysStreak": "{count} Days Streak",
+  "@daysStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "active": "Active",
+  "failed": "Failed",
+  "success": "Success",
+  "dayOfTotal": "Day {current} of {total}",
+  "@dayOfTotal": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "daysCount": "{count} Days",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subscribed": "Subscribed",
+  "list": "List",
+  "noActivePlan": "No Active Plan",
+  "noActivePlanSubtitle": "Browse the List tab to find\na plan that speaks to you",
+  "noPlansYetTab": "No plans yet. Tap + to create one.",
+  "stopPlan": "Stop Plan",
+  "stopPlanConfirm": "Are you sure you want to stop this plan? It will be marked as failed.",
+  "cancel": "Cancel",
+  "stop": "Stop",
+  "days": "Days",
+  "beadsPerRound": "{count} beads per round · {days} days",
+  "@beadsPerRound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "planDetails": "Plan Details",
+  "editPlan": "Edit Plan",
+  "edit": "Edit",
+  "delete": "Delete",
+  "deletePlan": "Delete Plan",
+  "deletePlanConfirm": "Are you sure you want to delete this plan? This action cannot be undone.",
+  "planNotFound": "Plan not found",
+  "predefined": "PREDEFINED",
+  "cannotEditActivePlan": "Cannot edit an active plan",
+  "planUpdated": "Plan updated",
+  "planMustHaveAtLeastOneDay": "Plan must have at least one day",
+  "addDay": "Add Day",
+  "day": "Day",
+  "gongDawName": "Gong/Daw Name",
+  "gongDawDetail": "Gong/Daw Detail",
+  "targetRounds": "Target Rounds",
+  "cancelEdit": "Cancel",
+  "saveChanges": "Save Changes",
+  "startThisPlan": "Start This Plan",
+  "completePlan": "Complete Plan",
+  "completed": "Completed",
+  "completePlanConfirm": "Are you sure you want to mark this plan as complete?",
+  "complete": "Complete",
+  "planActivated": "Plan activated!",
+  "planCompletedMsg": "Plan completed! Great work.",
+  "dayCompleteMsg": "Day {count} complete!",
+  "@dayCompleteMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "activePlan": "Active Plan",
+  "todaysGongDaw": "Today's Gong/Daw",
+  "roundsCount": "{count} rounds",
+  "@roundsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "markDayComplete": "Mark Day Complete",
+  "newPlan": "New Plan",
+  "title": "Title",
+  "titleHint": "e.g., 21-Day Challenge",
+  "description": "Description",
+  "descriptionHint": "Optional description",
+  "beadsPerRoundLabel": "Beads per Round",
+  "tapToAddDay": "Tap \"Add Day\" to create your plan schedule",
+  "savePlan": "Save Plan",
+  "requiredField": "Required",
+  "addAtLeastOneDay": "Add at least one day",
+  "planCreated": "Plan created!",
+  "welcomeTo": "Welcome to",
+  "enterNamePrompt": "Enter your name to get started",
+  "nameHint": "Your name",
+  "start": "Start",
+  "standardMode": "Standard (108)",
+  "shortMode": "Short (8)",
+  "continuousMode": "Continuous",
+  "tapToCount": "TAP TO COUNT",
+  "totalRounds": "TOTAL ROUNDS",
+  "beads": "+{count} beads",
+  "@beads": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todayPlanComplete": "Today's Plan\nComplete!",
+  "allRoundsCompleted": "All rounds completed",
+  "exitTodayPlan": "Exit Today Plan",
+  "startTodayPlan": "Start Today Plan",
+  "saveSession": "Save Session?",
+  "saveSessionContent": "You have {count} bead(s) in this session.",
+  "@saveSessionContent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "discard": "Discard",
+  "save": "Save",
+  "errorLoadingApp": "Error loading app",
+  "language": "Language",
+  "english": "English",
+  "burmese": "Myanmar",
+  "youAlreadyHaveActivePlan": "You already have an active plan. Complete or pause it first."
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -53,18 +54,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Welcome to',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.welcomeTo,
+                style: const TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 20,
                   color: Color(0xFF666666),
                 ),
               ),
               const SizedBox(height: 4),
-              const Text(
-                'Meditation',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.appTitle,
+                style: const TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 36,
                   fontWeight: FontWeight.w700,
@@ -72,9 +73,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 ),
               ),
               const SizedBox(height: 48),
-              const Text(
-                'Enter your name to get started',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.enterNamePrompt,
+                style: const TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 14,
                   color: Color(0xFF666666),
@@ -86,7 +87,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 autofocus: true,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  hintText: 'Your name',
+                  hintText: AppLocalizations.of(context)!.nameHint,
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
@@ -130,9 +131,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             color: Color(0xFF111111),
                           ),
                         )
-                      : const Text(
-                          'Start',
-                          style: TextStyle(
+                      : Text(
+                          AppLocalizations.of(context)!.start,
+                          style: const TextStyle(
                             fontFamily: 'Geist',
                             fontSize: 16,
                             fontWeight: FontWeight.w600,

@@ -178,7 +178,7 @@ void main() {
     expect(find.text('Short (8)'), findsNothing);
     expect(find.text('Continuous'), findsNothing);
     expect(find.text('Test Plan'), findsAtLeast(1));
-    expect(find.text('3 beads per round — 2 rounds today'), findsOneWidget);
+    expect(find.text('3 beads per round · 2 days'), findsOneWidget);
   });
 
   testWidgets('Exiting today plan returns to free mode', (

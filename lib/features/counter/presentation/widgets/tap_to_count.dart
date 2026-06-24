@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
 
 class TapToCount extends ConsumerWidget {
@@ -23,10 +24,10 @@ class TapToCount extends ConsumerWidget {
             ),
           ],
         ),
-        child: const Center(
+        child: Center(
           child: Text(
-            'TAP TO COUNT',
-            style: TextStyle(
+            AppLocalizations.of(context)!.tapToCount,
+            style: const TextStyle(
               fontFamily: 'Geist',
               fontSize: 12,
               fontWeight: FontWeight.w600,

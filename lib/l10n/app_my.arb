@@ -1,0 +1,155 @@
+{
+  "@@locale": "my",
+  "appTitle": "တရားအားထုတ်ခြင်း",
+  "profile": "ပရိုဖိုင်",
+  "plans": "အစီအစဉ်များ",
+  "counter": "ကောင်တာ",
+  "settings": "ဆက်တင်များ",
+  "totalPlans": "အစီအစဉ်စုစုပေါင်း",
+  "rounds": "ပတ်ရေ",
+  "myPlans": "ကျွန်ုပ်၏ အစီအစဉ်များ",
+  "noPlansYet": "အစီအစဉ်မရှိသေးပါ",
+  "daysStreak": "{count} ရက် ဆက်တိုက်",
+  "@daysStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "active": "လုပ်ဆောင်ဆဲ",
+  "failed": "မအောင်မြင်ပါ",
+  "success": "အောင်မြင်ပါသည်",
+  "dayOfTotal": "ရက်မြောက် {current} / စုစုပေါင်း {total} ရက်",
+  "@dayOfTotal": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "daysCount": "{count} ရက်",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subscribed": "စာရင်းသွင်းထားပြီး",
+  "list": "စာရင်း",
+  "noActivePlan": "လုပ်ဆောင်နေသော အစီအစဉ်မရှိပါ",
+  "noActivePlanSubtitle": "သင့်အတွက် သင့်တော်မည့် အစီအစဉ်တစ်ခုကို\nရှာဖွေရန် 'စာရင်း' တက်ဘ်ကို ကြည့်ပါ",
+  "noPlansYetTab": "အစီအစဉ်မရှိသေးပါ။ အသစ်ပြုလုပ်ရန် + ကို နှိပ်ပါ။",
+  "stopPlan": "အစီအစဉ် ရပ်တန့်ရန်",
+  "stopPlanConfirm": "ဤအစီအစဉ်ကို ရပ်တန့်ရန် သေချာပါသလား။ ၎င်းကို မအောင်မြင်သော အစီအစဉ်အဖြစ် သတ်မှတ်ပါလိမ့်မည်။",
+  "cancel": "ပယ်ဖျက်ရန်",
+  "stop": "ရပ်ရန်",
+  "days": "ရက်များ",
+  "beadsPerRound": "တစ်ပတ်လျှင် {count} လုံး · {days} ရက်",
+  "@beadsPerRound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "planDetails": "အစီအစဉ် အသေးစိတ်",
+  "editPlan": "အစီအစဉ် ပြင်ဆင်ရန်",
+  "edit": "ပြင်ဆင်ရန်",
+  "delete": "ဖျက်ရန်",
+  "deletePlan": "အစီအစဉ် ဖျက်ရန်",
+  "deletePlanConfirm": "ဤအစီအစဉ်ကို ဖျက်ရန် သေချာပါသလား။ ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။",
+  "planNotFound": "အစီအစဉ် ရှာမတွေ့ပါ",
+  "predefined": "သတ်မှတ်ပြီးသား",
+  "cannotEditActivePlan": "လုပ်ဆောင်နေသော အစီအစဉ်ကို ပြင်ဆင်၍မရပါ",
+  "planUpdated": "အစီအစဉ်ကို အပ်ဒိတ်လုပ်ပြီးပါပြီ",
+  "planMustHaveAtLeastOneDay": "အစီအစဉ်တွင် အနည်းဆုံး တစ်ရက် ရှိရပါမည်",
+  "addDay": "ရက်ပေါင်းထည့်ရန်",
+  "day": "ရက်",
+  "gongDawName": "ဂုဏ်တော် အမည်",
+  "gongDawDetail": "ဂုဏ်တော် အသေးစိတ်",
+  "targetRounds": "ရည်မှန်းချက် ပတ်ရေ",
+  "cancelEdit": "ပယ်ဖျက်ရန်",
+  "saveChanges": "အပြောင်းအလဲများ သိမ်းဆည်းရန်",
+  "startThisPlan": "ဤအစီအစဉ် စတင်ရန်",
+  "completePlan": "အစီအစဉ် အောင်မြင်စွာ အဆုံးသတ်ရန်",
+  "completed": "ပြီးမြောက်သည်",
+  "completePlanConfirm": "ဤအစီအစဉ်ကို ပြီးမြောက်ကြောင်း သတ်မှတ်ရန် သေချာပါသလား။",
+  "complete": "ပြီးမြောက်ရန်",
+  "planActivated": "အစီအစဉ်ကို စတင်လိုက်ပါပြီ။",
+  "planCompletedMsg": "အစီအစဉ် ပြီးမြောက်သွားပါပြီ။ သာဓုခေါ်ဆိုပါသည်၊၊",
+  "dayCompleteMsg": "ရက်မြောက် {count} ပြီးမြောက်ပါပြီ။",
+  "@dayCompleteMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "activePlan": "လုပ်ဆောင်နေသော အစီအစဉ်",
+  "todaysGongDaw": "ယနေ့အတွက် ဂုဏ်တော်",
+  "roundsCount": "{count} ပတ်",
+  "@roundsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "markDayComplete": "ယနေ့အတွက် ပြီးမြောက်ကြောင်း မှတ်သားရန်",
+  "newPlan": "အစီအစဉ်အသစ်",
+  "title": "ခေါင်းစဉ်",
+  "titleHint": "ဥပမာ- ၂၁ ရက် စိန်ခေါ်မှု",
+  "description": "အသေးစိတ် ဖော်ပြချက်",
+  "descriptionHint": "စိတ်ကြိုက် ထည့်သွင်းရန် ဖော်ပြချက်",
+  "beadsPerRoundLabel": "တစ်ပတ်လျှင် ရှိရမည့် ပုတီးလုံးရေ",
+  "tapToAddDay": "သင့်အစီအစဉ်၏ အချိန်ဇယား ဖန်တီးရန် 'ရက်ပေါင်းထည့်ရန်' ကို နှိပ်ပါ",
+  "savePlan": "အစီအစဉ် သိမ်းဆည်းရန်",
+  "requiredField": "ဖြည့်စွက်ရန် လိုအပ်သည်",
+  "addAtLeastOneDay": "အနည်းဆုံး တစ်ရက် ထည့်သွင်းပါ",
+  "planCreated": "အစီအစဉ် ဖန်တီးပြီးပါပြီ။",
+  "welcomeTo": "မှ ကြိုဆိုပါသည်",
+  "enterNamePrompt": "စတင်ရန် သင့်အမည်ကို ထည့်သွင်းပါ",
+  "nameHint": "သင့်အမည်",
+  "start": "စတင်ရန်",
+  "standardMode": "ပုံမှန်စိပ်နည်း (၁၀၈ လုံး)",
+  "shortMode": "အမြန်စိပ်နည်း (၈ လုံး)",
+  "continuousMode": "အဆက်မပြတ် စိပ်နည်း",
+  "tapToCount": "ရေတွက်ရန် နှိပ်ပါ",
+  "totalRounds": "စုစုပေါင်း ပတ်ရေ",
+  "beads": "+{count} လုံး",
+  "@beads": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todayPlanComplete": "ယနေ့အတွက် အစီအစဉ်\nပြီးမြောက်ပါပြီ။",
+  "allRoundsCompleted": "ပတ်ရေအားလုံး ပြီးမြောက်ပါပြီ",
+  "exitTodayPlan": "ယနေ့အစီအစဉ်မှ ထွက်ရန်",
+  "startTodayPlan": "ယနေ့အစီအစဉ် စတင်ရန်",
+  "saveSession": "လက်ရှိမှတ်တမ်းကို သိမ်းဆည်းမလား။",
+  "saveSessionContent": "ဤမှတ်တမ်းတွင် ပုတီးစိပ်ပြီးသား {count} လုံး ရှိနေပါသည်။",
+  "@saveSessionContent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "discard": "ပယ်ဖျက်ရန်",
+  "save": "သိမ်းဆည်းရန်",
+  "errorLoadingApp": "အက်ပ်ဖွင့်ရာတွင် အမှားအယွင်းရှိနေပါသည်",
+  "language": "ဘာသာစကား",
+  "english": "English",
+  "burmese": "မြန်မာ",
+  "youAlreadyHaveActivePlan": "လုပ်ဆောင်နေဆဲ အစီအစဉ်တစ်ခု ရှိနှင့်ပြီးသား ဖြစ်သည်။ ကျေးဇူးပြု၍ ၎င်းကို အရင်ဆုံး ပြီးမြောက်အောင် ပြုလုပ်ပါ သို့မဟုတ် ခေတ္တရပ်ဆိုင်းထားပါ။"
+}

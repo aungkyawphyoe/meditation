@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/database/database.dart';
+import '../../../../l10n/app_localizations.dart';
 
-class ActivePlanCard extends StatelessWidget {
+class ActivePlanCard extends ConsumerWidget {
   final BeadPlan plan;
   final UserPlanProgress progress;
   final int totalDays;
@@ -26,7 +28,7 @@ class ActivePlanCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     if (totalDays == 0) return const SizedBox.shrink();
     final isLastDay = progress.currentDay > totalDays;
     final dayIndex = isLastDay ? totalDays : progress.currentDay;
@@ -57,9 +59,9 @@ class ActivePlanCard extends StatelessWidget {
               children: [
                 const Icon(Icons.auto_awesome, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
-                const Text(
-                  'Active Plan',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.activePlan,
+                  style: const TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -103,7 +105,7 @@ class ActivePlanCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Day $dayIndex / $totalDays',
+                  AppLocalizations.of(context)!.dayOfTotal(dayIndex, totalDays),
                   style: const TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 15,
@@ -149,7 +151,7 @@ class ActivePlanCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Today\'s Gong/Daw',
+                            AppLocalizations.of(context)!.todaysGongDaw,
                             style: TextStyle(
                               fontFamily: 'Geist',
                               fontSize: 11,
@@ -198,7 +200,8 @@ class ActivePlanCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            'Day $dayIndex / $totalDays',
+                            AppLocalizations.of(context)!
+                                .dayOfTotal(dayIndex, totalDays),
                             style: const TextStyle(
                               fontFamily: 'JetBrains Mono',
                               fontSize: 11,
@@ -209,7 +212,8 @@ class ActivePlanCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '${currentDayDetail!.targetRounds} rounds',
+                          AppLocalizations.of(context)!
+                              .roundsCount(currentDayDetail!.targetRounds),
                           style: TextStyle(
                             fontFamily: 'JetBrains Mono',
                             fontSize: 12,
@@ -237,7 +241,9 @@ class ActivePlanCard extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  isLastDay ? 'Complete Plan' : 'Mark Day Complete',
+                  isLastDay
+                      ? AppLocalizations.of(context)!.completePlan
+                      : AppLocalizations.of(context)!.markDayComplete,
                   style: const TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 15,
@@ -253,7 +259,7 @@ class ActivePlanCard extends StatelessWidget {
                 child: TextButton.icon(
                   onPressed: onStopPlan,
                   icon: const Icon(Icons.stop_rounded, size: 18),
-                  label: const Text('Stop Plan'),
+                  label: Text(AppLocalizations.of(context)!.stopPlan),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white.withOpacity(0.8),
                     padding: const EdgeInsets.symmetric(vertical: 10),

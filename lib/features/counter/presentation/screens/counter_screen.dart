@@ -5,6 +5,7 @@ import '../../providers/counter_provider.dart';
 import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../widgets/mode_selector.dart';
 import '../widgets/counter_display.dart';
 import '../widgets/tap_to_count.dart';
@@ -40,7 +41,7 @@ class CounterScreen extends ConsumerWidget {
           SafeArea(
             child: Column(
               children: [
-                const _Header(),
+                _Header(title: AppLocalizations.of(context)!.appTitle),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -94,8 +95,8 @@ class CounterScreen extends ConsumerWidget {
                   ),
                   label: Text(
                     counterState.isTodayPlanActive
-                        ? 'Exit Today Plan'
-                        : 'Start Today Plan',
+                        ? AppLocalizations.of(context)!.exitTodayPlan
+                        : AppLocalizations.of(context)!.startTodayPlan,
                     style: const TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,
@@ -155,9 +156,9 @@ class CounterScreen extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text(
-          'Save Session?',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context)!.saveSession,
+          style: const TextStyle(
             fontFamily: 'Geist',
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -165,7 +166,7 @@ class CounterScreen extends ConsumerWidget {
           ),
         ),
         content: Text(
-          'You have ${state.sessionBeads} bead(s) in this session.',
+          AppLocalizations.of(context)!.saveSessionContent(state.sessionBeads),
           style: const TextStyle(
             fontFamily: 'Geist',
             fontSize: 14,
@@ -175,9 +176,9 @@ class CounterScreen extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text(
-              'Discard',
-              style: TextStyle(
+            child: Text(
+              AppLocalizations.of(context)!.discard,
+              style: const TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 14,
                 color: Color(0xFF666666),
@@ -186,9 +187,9 @@ class CounterScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text(
-              'Save',
-              style: TextStyle(
+            child: Text(
+              AppLocalizations.of(context)!.save,
+              style: const TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -233,17 +234,19 @@ class CounterScreen extends ConsumerWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header();
+  final String title;
+
+  const _Header({required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(20, 8, 20, 16),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
       child: Row(
         children: [
           Text(
-            'Meditation',
-            style: TextStyle(
+            title,
+            style: const TextStyle(
               fontFamily: 'Geist',
               fontSize: 28,
               fontWeight: FontWeight.w700,

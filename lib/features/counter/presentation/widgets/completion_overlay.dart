@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class CompletionOverlay extends StatefulWidget {
   const CompletionOverlay({super.key});
@@ -61,10 +62,10 @@ class _CompletionOverlayState extends State<CompletionOverlay>
                     size: 72,
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    "Today's Plan\nComplete!",
+                  Text(
+                    AppLocalizations.of(context)!.todayPlanComplete,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
@@ -73,9 +74,9 @@ class _CompletionOverlayState extends State<CompletionOverlay>
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'All rounds completed',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.allRoundsCompleted,
+                    style: const TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,
                       color: Color(0xFF666666),

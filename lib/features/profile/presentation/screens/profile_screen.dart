@@ -4,6 +4,8 @@ import '../../../../core/database/database.dart';
 import '../../../../core/database/models/plan_progress_summary.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
+import '../../../../l10n/app_localizations.dart';
+import '../../../settings/presentation/screens/settings_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -46,17 +48,33 @@ class ProfileScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(20, 8, 20, 16),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
           child: Row(
             children: [
               Text(
-                'Profile',
-                style: TextStyle(
+                AppLocalizations.of(context)!.profile,
+                style: const TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF111111),
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const SettingsScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.settings_outlined,
+                  color: Color(0xFF666666),
+                  size: 24,
                 ),
               ),
             ],
@@ -100,7 +118,7 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${user.rankTitle} • ${user.streakDays} Days Streak',
+                    '${user.rankTitle} • ${AppLocalizations.of(context)!.daysStreak(user.streakDays)}',
                     style: const TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,
@@ -119,23 +137,26 @@ class ProfileScreen extends ConsumerWidget {
             children: [
               Expanded(
                 child: _StatCard(
-                  label: 'Total Plans',
+                  label: AppLocalizations.of(context)!.totalPlans,
                   value: formatNumber(plans),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _StatCard(label: 'Rounds', value: formatNumber(rounds)),
+                child: _StatCard(
+                  label: AppLocalizations.of(context)!.rounds,
+                  value: formatNumber(rounds),
+                ),
               ),
             ],
           ),
         ),
         const SizedBox(height: 32),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            'My Plans',
-            style: TextStyle(
+            AppLocalizations.of(context)!.myPlans,
+            style: const TextStyle(
               fontFamily: 'Geist',
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -146,10 +167,10 @@ class ProfileScreen extends ConsumerWidget {
         const SizedBox(height: 16),
         Expanded(
           child: recentPlans.isEmpty
-              ? const Center(
+              ? Center(
                   child: Text(
-                    'No plans yet',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.noPlansYet,
+                    style: const TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,
                       color: Color(0xFF666666),
@@ -222,30 +243,31 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-class _PlanCard extends StatelessWidget {
+class _PlanCard extends ConsumerWidget {
   final PlanProgressSummary plan;
 
   const _PlanCard({required this.plan});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isActive = plan.status == 'active';
     final isFailed = plan.status == 'failed';
     String statusLabel;
     Color statusColor;
     if (isActive) {
-      statusLabel = 'Active';
+      statusLabel = AppLocalizations.of(context)!.active;
       statusColor = const Color(0xFFFF8400);
     } else if (isFailed) {
-      statusLabel = 'Failed';
+      statusLabel = AppLocalizations.of(context)!.failed;
       statusColor = const Color(0xFFEF4444);
     } else {
-      statusLabel = 'Success';
+      statusLabel = AppLocalizations.of(context)!.success;
       statusColor = const Color(0xFF22C55E);
     }
     final daysText = isActive
-        ? 'Day ${plan.currentDay} of ${plan.totalDays}'
-        : '${plan.totalDays} Days';
+        ? AppLocalizations.of(context)!
+            .dayOfTotal(plan.currentDay, plan.totalDays)
+        : AppLocalizations.of(context)!.daysCount(plan.totalDays);
 
     return Container(
       padding: const EdgeInsets.all(16),

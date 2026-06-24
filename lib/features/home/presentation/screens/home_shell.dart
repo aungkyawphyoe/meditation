@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../counter/presentation/screens/counter_screen.dart';
 import '../../../plans/presentation/screens/plans_screen.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
@@ -36,21 +37,21 @@ class HomeShell extends ConsumerWidget {
             _TabItem(
               icon: Icons.circle_outlined,
               activeIcon: Icons.circle,
-              label: 'Counter',
+              label: AppLocalizations.of(context)!.counter,
               isActive: currentTab == 0,
               onTap: () => ref.read(currentTabProvider.notifier).state = 0,
             ),
             _TabItem(
               icon: Icons.calendar_today_outlined,
               activeIcon: Icons.calendar_today,
-              label: 'Plans',
+              label: AppLocalizations.of(context)!.plans,
               isActive: currentTab == 1,
               onTap: () => ref.read(currentTabProvider.notifier).state = 1,
             ),
             _TabItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
-              label: 'Profile',
+              label: AppLocalizations.of(context)!.profile,
               isActive: currentTab == 2,
               onTap: () => ref.read(currentTabProvider.notifier).state = 2,
             ),

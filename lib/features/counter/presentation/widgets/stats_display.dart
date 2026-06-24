@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
 
 class StatsDisplay extends ConsumerWidget {
@@ -23,9 +24,9 @@ class StatsDisplay extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 4),
-        const Text(
-          'TOTAL ROUNDS',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.totalRounds,
+          style: const TextStyle(
             fontFamily: 'Geist',
             fontSize: 10,
             fontWeight: FontWeight.w600,
@@ -34,7 +35,7 @@ class StatsDisplay extends ConsumerWidget {
           ),
         ),
         Text(
-          '+$sessionBeads beads',
+          AppLocalizations.of(context)!.beads(sessionBeads),
           style: const TextStyle(
             fontFamily: 'Geist',
             fontSize: 10,

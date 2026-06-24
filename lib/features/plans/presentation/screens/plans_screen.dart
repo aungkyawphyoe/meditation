@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../widgets/active_plan_card.dart';
 import '../widgets/bead_plan_card.dart';
 import 'add_plan_screen.dart';
@@ -20,9 +21,9 @@ class PlansScreen extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: const Color(0xFFF2F3F0),
           scrolledUnderElevation: 0,
-          title: const Text(
-            'Plans',
-            style: TextStyle(
+          title: Text(
+            AppLocalizations.of(context)!.plans,
+            style: const TextStyle(
               fontFamily: 'Geist',
               fontSize: 28,
               fontWeight: FontWeight.w700,
@@ -63,9 +64,9 @@ class PlansScreen extends ConsumerWidget {
                   fontWeight: FontWeight.w500,
                 ),
                 dividerColor: Colors.transparent,
-                tabs: const [
-                  Tab(text: 'Subscribed'),
-                  Tab(text: 'List'),
+                tabs: [
+                  Tab(text: AppLocalizations.of(context)!.subscribed),
+                  Tab(text: AppLocalizations.of(context)!.list),
                 ],
               ),
             ),
@@ -194,21 +195,19 @@ class _ActivePlanView extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Stop Plan'),
-        content: const Text(
-          'Are you sure you want to stop this plan? It will be marked as failed.',
-        ),
+        title: Text(AppLocalizations.of(context)!.stopPlan),
+        content: Text(AppLocalizations.of(context)!.stopPlanConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
             style: TextButton.styleFrom(
               foregroundColor: const Color(0xFFEF4444),
             ),
-            child: const Text('Stop'),
+            child: Text(AppLocalizations.of(context)!.stop),
           ),
         ],
       ),
@@ -238,9 +237,9 @@ class _EmptyState extends StatelessWidget {
               color: const Color(0xFFFF8400).withOpacity(0.3),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'No Active Plan',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.noActivePlan,
+              style: const TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -248,10 +247,10 @@ class _EmptyState extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Browse the List tab to find\na plan that speaks to you',
+            Text(
+              AppLocalizations.of(context)!.noActivePlanSubtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -277,10 +276,10 @@ class _ListTab extends ConsumerWidget {
         error: (e, _) => Center(child: Text('Error: $e')),
         data: (plans) {
           if (plans.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
-                'No plans yet. Tap + to create one.',
-                style: TextStyle(
+                AppLocalizations.of(context)!.noPlansYetTab,
+                style: const TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 14,
                   color: Color(0xFF888888),
