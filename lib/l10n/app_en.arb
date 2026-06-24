@@ -151,5 +151,8 @@
   "language": "Language",
   "english": "English",
   "burmese": "Myanmar",
-  "youAlreadyHaveActivePlan": "You already have an active plan. Complete or pause it first."
+  "youAlreadyHaveActivePlan": "You already have an active plan. Complete or pause it first.",
+  "notificationTitle": "Daily Reminder",
+  "notificationBodyGeneric": "Take a moment to pray and find peace today.",
+  "notificationBodyPlan": "You have a plan to continue. Open the app to start today's practice."
 }

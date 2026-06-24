@@ -637,6 +637,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You already have an active plan. Complete or pause it first.'**
   String get youAlreadyHaveActivePlan;
+
+  /// No description provided for @notificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Reminder'**
+  String get notificationTitle;
+
+  /// No description provided for @notificationBodyGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a moment to pray and find peace today.'**
+  String get notificationBodyGeneric;
+
+  /// No description provided for @notificationBodyPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'You have a plan to continue. Open the app to start today\'s practice.'**
+  String get notificationBodyPlan;
 }
 
 class _AppLocalizationsDelegate

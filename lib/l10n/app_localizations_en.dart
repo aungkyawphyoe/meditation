@@ -298,4 +298,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get youAlreadyHaveActivePlan =>
       'You already have an active plan. Complete or pause it first.';
+
+  @override
+  String get notificationTitle => 'Daily Reminder';
+
+  @override
+  String get notificationBodyGeneric =>
+      'Take a moment to pray and find peace today.';
+
+  @override
+  String get notificationBodyPlan =>
+      'You have a plan to continue. Open the app to start today\'s practice.';
 }
