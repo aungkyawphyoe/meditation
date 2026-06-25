@@ -154,5 +154,15 @@
   "youAlreadyHaveActivePlan": "You already have an active plan. Complete or pause it first.",
   "notificationTitle": "Daily Reminder",
   "notificationBodyGeneric": "Take a moment to pray and find peace today.",
-  "notificationBodyPlan": "You have a plan to continue. Open the app to start today's practice."
+  "notificationBodyPlan": "You have a plan to continue. Open the app to start today's practice.",
+  "rankNoviceChanter": "Novice Chanter",
+  "rankAspiringDevotee": "Aspiring Devotee",
+  "rankSteadyPractitioner": "Steady Practitioner",
+  "rankDevotedChanter": "Devoted Chanter",
+  "rankFaithfulReciter": "Faithful Reciter",
+  "rankVenerableChanter": "Venerable Chanter",
+  "rankSeniorDevotee": "Senior Devotee",
+  "rankNobleChanter": "Noble Chanter",
+  "rankElderDevotee": "Elder Devotee",
+  "rankMasterChanter": "Master Chanter"
 }

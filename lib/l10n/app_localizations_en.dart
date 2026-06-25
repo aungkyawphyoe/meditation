@@ -309,4 +309,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notificationBodyPlan =>
       'You have a plan to continue. Open the app to start today\'s practice.';
+
+  @override
+  String get rankNoviceChanter => 'Novice Chanter';
+
+  @override
+  String get rankAspiringDevotee => 'Aspiring Devotee';
+
+  @override
+  String get rankSteadyPractitioner => 'Steady Practitioner';
+
+  @override
+  String get rankDevotedChanter => 'Devoted Chanter';
+
+  @override
+  String get rankFaithfulReciter => 'Faithful Reciter';
+
+  @override
+  String get rankVenerableChanter => 'Venerable Chanter';
+
+  @override
+  String get rankSeniorDevotee => 'Senior Devotee';
+
+  @override
+  String get rankNobleChanter => 'Noble Chanter';
+
+  @override
+  String get rankElderDevotee => 'Elder Devotee';
+
+  @override
+  String get rankMasterChanter => 'Master Chanter';
 }

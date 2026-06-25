@@ -47,7 +47,7 @@ class CounterScreen extends ConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 4),
                         if (counterState.isTodayPlanActive)
                           const TodayPlanDetail()
                         else

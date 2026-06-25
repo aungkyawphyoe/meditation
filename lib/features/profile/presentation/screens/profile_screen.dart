@@ -4,6 +4,7 @@ import '../../../../core/database/database.dart';
 import '../../../../core/database/models/plan_progress_summary.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
+import '../../../../core/utils/rank_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../settings/presentation/screens/settings_screen.dart';
 
@@ -118,7 +119,16 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${user.rankTitle} • ${AppLocalizations.of(context)!.daysStreak(user.streakDays)}',
+                    '${localizedRankTitle(AppLocalizations.of(context)!, user.rankTitle)}',
+                    style: const TextStyle(
+                      fontFamily: 'Geist',
+                      fontSize: 14,
+                      color: Color(0xFF666666),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${AppLocalizations.of(context)!.daysStreak(user.streakDays)}',
                     style: const TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,

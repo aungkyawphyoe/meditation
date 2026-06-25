@@ -655,6 +655,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have a plan to continue. Open the app to start today\'s practice.'**
   String get notificationBodyPlan;
+
+  /// No description provided for @rankNoviceChanter.
+  ///
+  /// In en, this message translates to:
+  /// **'Novice Chanter'**
+  String get rankNoviceChanter;
+
+  /// No description provided for @rankAspiringDevotee.
+  ///
+  /// In en, this message translates to:
+  /// **'Aspiring Devotee'**
+  String get rankAspiringDevotee;
+
+  /// No description provided for @rankSteadyPractitioner.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady Practitioner'**
+  String get rankSteadyPractitioner;
+
+  /// No description provided for @rankDevotedChanter.
+  ///
+  /// In en, this message translates to:
+  /// **'Devoted Chanter'**
+  String get rankDevotedChanter;
+
+  /// No description provided for @rankFaithfulReciter.
+  ///
+  /// In en, this message translates to:
+  /// **'Faithful Reciter'**
+  String get rankFaithfulReciter;
+
+  /// No description provided for @rankVenerableChanter.
+  ///
+  /// In en, this message translates to:
+  /// **'Venerable Chanter'**
+  String get rankVenerableChanter;
+
+  /// No description provided for @rankSeniorDevotee.
+  ///
+  /// In en, this message translates to:
+  /// **'Senior Devotee'**
+  String get rankSeniorDevotee;
+
+  /// No description provided for @rankNobleChanter.
+  ///
+  /// In en, this message translates to:
+  /// **'Noble Chanter'**
+  String get rankNobleChanter;
+
+  /// No description provided for @rankElderDevotee.
+  ///
+  /// In en, this message translates to:
+  /// **'Elder Devotee'**
+  String get rankElderDevotee;
+
+  /// No description provided for @rankMasterChanter.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Chanter'**
+  String get rankMasterChanter;
 }
 
 class _AppLocalizationsDelegate

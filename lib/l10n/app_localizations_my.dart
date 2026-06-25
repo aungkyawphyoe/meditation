@@ -312,4 +312,34 @@ class AppLocalizationsMy extends AppLocalizations {
   @override
   String get notificationBodyPlan =>
       'ဆက်လက်ဆောင်ရွက်ရန် အစီအစဉ်ရှိနေပါသည်။ ယနေ့အတွက် လေ့ကျင့်ခန်းကို စတင်ရန် အက်ပ်ကို ဖွင့်ပါ။';
+
+  @override
+  String get rankNoviceChanter => 'ဝတ်ရွတ်သူအသစ်';
+
+  @override
+  String get rankAspiringDevotee => 'ကြိုးပမ်းဆဲသဒ္ဓါကြည်ညိုသူ';
+
+  @override
+  String get rankSteadyPractitioner => 'ပုံမှန်ကျင့်ကြံအားထုတ်သူ';
+
+  @override
+  String get rankDevotedChanter => 'စိတ်အားထက်သန်သောဝတ်ရွတ်သူ';
+
+  @override
+  String get rankFaithfulReciter => 'သဒ္ဓါတရားထက်သန်စွာရွတ်ဖတ်သူ';
+
+  @override
+  String get rankVenerableChanter => 'ရိုသေလေးမြတ်အပ်သောဝတ်ရွတ်သူ';
+
+  @override
+  String get rankSeniorDevotee => 'ဝါရင့်သဒ္ဓါကြည်ညိုသူ';
+
+  @override
+  String get rankNobleChanter => 'မွန်မြတ်သောဝတ်ရွတ်သူ';
+
+  @override
+  String get rankElderDevotee => 'အကြီးတန်းသဒ္ဓါကြည်ညိုသူ';
+
+  @override
+  String get rankMasterChanter => 'ဝတ်ရွတ်စဉ်ဓမ္မဆရာကြီး';
 }
