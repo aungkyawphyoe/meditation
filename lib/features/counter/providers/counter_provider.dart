@@ -139,6 +139,15 @@ class CounterNotifier extends StateNotifier<CounterState> {
     state = const CounterState(mode: CounterMode.standard);
   }
 
+  void resetSession() {
+    state = state.copyWith(
+      beadCount: 0,
+      roundsCompleted: 0,
+      sessionBeads: 0,
+      sessionStartedAt: null,
+    );
+  }
+
   void setMode(CounterMode mode) {
     if (state.mode == mode) return;
     state = CounterState(mode: mode);

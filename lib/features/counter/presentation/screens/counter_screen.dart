@@ -12,6 +12,7 @@ import '../widgets/tap_to_count.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/today_plan_detail.dart';
 import '../widgets/completion_overlay.dart';
+import '../widgets/action_buttons.dart';
 
 class CounterScreen extends ConsumerWidget {
   const CounterScreen({super.key});
@@ -70,6 +71,15 @@ class CounterScreen extends ConsumerWidget {
             ),
           ),
           if (counterState.isTodayPlanComplete) const CompletionOverlay(),
+          Positioned(
+            left: 24,
+            bottom: 24,
+            child: ActionButtons(
+              onSave: () => _saveSession(context, ref),
+              onReset: () =>
+                  ref.read(counterProvider.notifier).resetSession(),
+            ),
+          ),
           if (showPlanButton)
             Positioned(
               right: 24,
@@ -151,7 +161,6 @@ class CounterScreen extends ConsumerWidget {
       return;
     }
 
-    final dao = ref.read(chantSessionDaoProvider);
     final result = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -202,34 +211,44 @@ class CounterScreen extends ConsumerWidget {
     );
 
     if (result == true) {
-      await dao.insertSession(
-        ChantSessionsTableCompanion(
-          mode: Value(state.mode.label),
-          beadsCount: Value(state.sessionBeads),
-          roundsCompleted: Value(state.roundsCompleted),
-          startedAt: Value(state.sessionStartedAt ?? DateTime.now()),
-          completedAt: Value(DateTime.now()),
-        ),
-      );
-      // Recalculate lifetime stats and rank
-      final sessionDao = ref.read(chantSessionDaoProvider);
-      final totalBeads = await sessionDao.getTotalBeads();
-      final totalRounds = await sessionDao.getTotalRounds();
-      await ref
-          .read(userInfoDaoProvider)
-          .updateLifetimeStats(
-            totalBeads: totalBeads,
-            totalRounds: totalRounds,
-          );
-      ref.invalidate(recentSessionsProvider);
-      ref.invalidate(lifetimeBeadsProvider);
-      ref.invalidate(lifetimeRoundsProvider);
-      ref.invalidate(userInfoProvider);
-      ref.invalidate(completedPlansProvider);
-      ref.invalidate(recentPlansProvider);
+      await _saveSession(context, ref);
     }
 
     ref.read(counterProvider.notifier).setMode(newMode);
+  }
+
+  Future<void> _saveSession(BuildContext context, WidgetRef ref) async {
+    final state = ref.read(counterProvider);
+    if (state.sessionBeads <= 0) return;
+
+    final dao = ref.read(chantSessionDaoProvider);
+    await dao.insertSession(
+      ChantSessionsTableCompanion(
+        mode: Value(state.mode.label),
+        beadsCount: Value(state.sessionBeads),
+        roundsCompleted: Value(state.roundsCompleted),
+        startedAt: Value(state.sessionStartedAt ?? DateTime.now()),
+        completedAt: Value(DateTime.now()),
+      ),
+    );
+
+    final totalBeads = await dao.getTotalBeads();
+    final totalRounds = await dao.getTotalRounds();
+    await ref
+        .read(userInfoDaoProvider)
+        .updateLifetimeStats(
+          totalBeads: totalBeads,
+          totalRounds: totalRounds,
+        );
+
+    ref.invalidate(recentSessionsProvider);
+    ref.invalidate(lifetimeBeadsProvider);
+    ref.invalidate(lifetimeRoundsProvider);
+    ref.invalidate(userInfoProvider);
+    ref.invalidate(completedPlansProvider);
+    ref.invalidate(recentPlansProvider);
+
+    ref.read(counterProvider.notifier).resetSession();
   }
 }
 

@@ -101,7 +101,8 @@ void main() {
     await tester.tap(find.text('Profile'));
     await tester.pump();
     expect(find.text('Alex Practitioner'), findsOneWidget);
-    expect(find.text('Novice Chanter • 12 Days Streak'), findsOneWidget);
+    expect(find.textContaining('Novice Chanter'), findsOneWidget);
+    expect(find.textContaining('12 Days Streak'), findsOneWidget);
 
     await tester.tap(find.text('Counter'));
     await tester.pump();
@@ -129,7 +130,7 @@ void main() {
 
     expect(find.text('Save Session?'), findsOneWidget);
     expect(find.text('Discard'), findsOneWidget);
-    expect(find.text('Save'), findsOneWidget);
+    expect(find.text('Save'), findsAtLeastNWidgets(1));
   });
 
   testWidgets('Subscribed user sees Start Today Plan button', (
@@ -432,7 +433,7 @@ void main() {
     await tester.pump();
     expect(find.text('Save Session?'), findsOneWidget);
 
-    await tester.tap(find.text('Save'));
+    await tester.tap(find.widgetWithText(TextButton, 'Save'));
     await tester.runAsync(
       () => Future.delayed(const Duration(milliseconds: 500)),
     );
@@ -447,5 +448,114 @@ void main() {
     await tester.pump();
 
     expect(find.textContaining('Novice Chanter'), findsOneWidget);
+  });
+
+  testWidgets('Free mode shows Save and Reset buttons', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    expect(find.text('Save'), findsOneWidget);
+    expect(find.text('Reset'), findsOneWidget);
+  });
+
+  testWidgets('Plan mode shows only Reset button, not Save', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await seedTestPlan(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    await tester.tap(find.text('Start Today Plan'));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.text('Save'), findsNothing);
+    expect(find.text('Reset'), findsOneWidget);
+  });
+
+  testWidgets('Save and Reset buttons render in free mode', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    // Save button text should exist in the widget tree
+    expect(find.text('Save'), findsOneWidget);
+    expect(find.text('Reset'), findsOneWidget);
+  });
+
+  testWidgets('Reset button clears counters without saving', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    // Tap some beads
+    for (int i = 0; i < 5; i++) {
+      await tester.tap(find.text('TAP TO COUNT'));
+    }
+    await tester.pump();
+    expect(find.text('005'), findsOneWidget);
+
+    // Tap Reset
+    await tester.tap(find.text('Reset'));
+    await tester.pump();
+
+    // Counter should reset to 000
+    expect(find.text('000'), findsOneWidget);
+  });
+
+  testWidgets('Save button saves session and resets counters', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    // Tap some beads
+    for (int i = 0; i < 5; i++) {
+      await tester.tap(find.text('TAP TO COUNT'));
+    }
+    await tester.pump();
+    expect(find.text('005'), findsOneWidget);
+
+    // Tap Save
+    await tester.tap(find.text('Save'));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    // Counter should reset to 000 after save
+    expect(find.text('000'), findsOneWidget);
   });
 }

@@ -147,6 +147,7 @@
   },
   "discard": "Discard",
   "save": "Save",
+  "reset": "Reset",
   "errorLoadingApp": "Error loading app",
   "language": "Language",
   "english": "English",

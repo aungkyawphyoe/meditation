@@ -608,6 +608,12 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get save;
 
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
   /// No description provided for @errorLoadingApp.
   ///
   /// In en, this message translates to:

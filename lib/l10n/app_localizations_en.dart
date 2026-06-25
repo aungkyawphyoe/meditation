@@ -284,6 +284,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
+  String get reset => 'Reset';
+
+  @override
   String get errorLoadingApp => 'Error loading app';
 
   @override

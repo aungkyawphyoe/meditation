@@ -287,6 +287,9 @@ class AppLocalizationsMy extends AppLocalizations {
   String get save => 'သိမ်းဆည်းရန်';
 
   @override
+  String get reset => 'ပယ်ဖျက်ရန်';
+
+  @override
   String get errorLoadingApp => 'အက်ပ်ဖွင့်ရာတွင် အမှားအယွင်းရှိနေပါသည်';
 
   @override
