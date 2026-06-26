@@ -14,8 +14,7 @@ Future<void> main() async {
 
   tz.initializeTimeZones();
 
-  const androidSettings =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
   const darwinSettings = DarwinInitializationSettings(
     requestAlertPermission: false,
     requestBadgePermission: false,
@@ -37,16 +36,19 @@ Future<void> main() async {
   );
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin
+      >()
       ?.createNotificationChannel(androidChannel);
 
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin
+      >()
       ?.requestNotificationsPermission();
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin>()
+        IOSFlutterLocalNotificationsPlugin
+      >()
       ?.requestPermissions(alert: true, badge: true, sound: true);
 
   final prefs = await SharedPreferences.getInstance();

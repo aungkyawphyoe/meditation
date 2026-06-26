@@ -67,9 +67,7 @@ class ProfileScreen extends ConsumerWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => const SettingsScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
                   );
                 },
                 icon: const Icon(
@@ -275,8 +273,9 @@ class _PlanCard extends ConsumerWidget {
       statusColor = const Color(0xFF22C55E);
     }
     final daysText = isActive
-        ? AppLocalizations.of(context)!
-            .dayOfTotal(plan.currentDay, plan.totalDays)
+        ? AppLocalizations.of(
+            context,
+          )!.dayOfTotal(plan.currentDay, plan.totalDays)
         : AppLocalizations.of(context)!.daysCount(plan.totalDays);
 
     return Container(

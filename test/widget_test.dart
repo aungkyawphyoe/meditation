@@ -27,7 +27,13 @@ void main() {
     );
     await tester.pump();
 
+    // Step 1: Enter name and tap Start (goes to mode selection page)
     await tester.enterText(find.byType(TextField), 'Test User');
+    await tester.tap(find.text('Start'));
+    await tester.pumpAndSettle();
+
+    // Step 2: Mode selection page — keep Standard (default) and tap Start
+    expect(find.text('Standard (108)'), findsOneWidget);
     await tester.tap(find.text('Start'));
     await tester.pump();
     // Let async DB write + provider invalidation complete
@@ -58,9 +64,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text('Meditation'), findsOneWidget);
+    // Mode badge shows only the current mode (standard by default)
     expect(find.text('Standard (108)'), findsOneWidget);
-    expect(find.text('Short (8)'), findsOneWidget);
-    expect(find.text('Continuous'), findsOneWidget);
     expect(find.text('000'), findsOneWidget);
     expect(find.text('TAP TO COUNT'), findsOneWidget);
     expect(find.text('TOTAL ROUNDS'), findsOneWidget);
@@ -109,7 +114,7 @@ void main() {
     expect(find.text('Meditation'), findsOneWidget);
   });
 
-  testWidgets('Mode switch shows save dialog with session beads', (
+  testWidgets('Mode switch via settings resets session state', (
     WidgetTester tester,
   ) async {
     final db = createTestDatabase();
@@ -119,18 +124,37 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 100));
 
+    // Tap some beads
     for (int i = 0; i < 5; i++) {
       await tester.tap(find.text('TAP TO COUNT'));
     }
     await tester.pump();
     expect(find.text('005'), findsOneWidget);
 
-    await tester.tap(find.text('Short (8)'));
+    // Navigate to Profile tab, then open Settings
+    await tester.tap(find.text('Profile'));
     await tester.pump();
+    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.pumpAndSettle();
 
-    expect(find.text('Save Session?'), findsOneWidget);
-    expect(find.text('Discard'), findsOneWidget);
-    expect(find.text('Save'), findsAtLeastNWidgets(1));
+    // Tap Change Mode to open bottom sheet
+    await tester.tap(find.text('Change'));
+    await tester.pumpAndSettle();
+
+    // Select Short mode
+    await tester.tap(find.text('Short (8)'));
+    await tester.pumpAndSettle();
+
+    // Go back to counter via Navigator pop then counter tab
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Counter'));
+    await tester.pumpAndSettle();
+
+    // Mode badge should now show Short (8)
+    expect(find.text('Short (8)'), findsOneWidget);
+    // Session should be reset after mode switch
+    expect(find.text('000'), findsOneWidget);
   });
 
   testWidgets('Subscribed user sees Start Today Plan button', (
@@ -152,7 +176,7 @@ void main() {
     expect(find.text('Standard (108)'), findsOneWidget);
   });
 
-  testWidgets('Start Today Plan enters plan mode and hides mode selector', (
+  testWidgets('Start Today Plan enters plan mode and shows plan details', (
     WidgetTester tester,
   ) async {
     final db = createTestDatabase();
@@ -175,11 +199,10 @@ void main() {
     await tester.pump();
 
     expect(find.text('Exit Today Plan'), findsOneWidget);
-    expect(find.text('Standard (108)'), findsNothing);
-    expect(find.text('Short (8)'), findsNothing);
-    expect(find.text('Continuous'), findsNothing);
     expect(find.text('Test Plan'), findsAtLeast(1));
     expect(find.text('3 beads per round · 2 days'), findsOneWidget);
+    // Mode badge is always visible in TapToCount (not hidden during plan mode)
+    expect(find.text('Standard (108)'), findsOneWidget);
   });
 
   testWidgets('Exiting today plan returns to free mode', (
@@ -424,22 +447,21 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 100));
 
+    // Complete 1 full round in standard mode (108 beads)
     for (int i = 0; i < 108; i++) {
       await tester.tap(find.text('TAP TO COUNT'));
     }
     await tester.pump();
 
-    await tester.tap(find.text('Short (8)'));
-    await tester.pump();
-    expect(find.text('Save Session?'), findsOneWidget);
-
-    await tester.tap(find.widgetWithText(TextButton, 'Save'));
+    // Save session
+    await tester.tap(find.text('Save'));
     await tester.runAsync(
       () => Future.delayed(const Duration(milliseconds: 500)),
     );
     await tester.pump();
     await tester.pump();
 
+    // Check profile for rank update
     await tester.tap(find.text('Profile'));
     await tester.runAsync(
       () => Future.delayed(const Duration(milliseconds: 500)),
@@ -557,5 +579,90 @@ void main() {
 
     // Counter should reset to 000 after save
     expect(find.text('000'), findsOneWidget);
+  });
+
+  testWidgets('Short mode rounds increment after 8 taps', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    // Switch to Short mode via settings
+    await tester.tap(find.text('Profile'));
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Change'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Short (8)'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Counter'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Short (8)'), findsOneWidget);
+
+    // Tap 7 times — should show 007 with 0 rounds
+    for (int i = 0; i < 7; i++) {
+      await tester.tap(find.text('TAP TO COUNT'));
+    }
+    await tester.pump();
+    expect(find.text('007'), findsOneWidget);
+    expect(find.text('0'), findsWidgets); // Total Rounds = 0
+
+    // 8th tap — counter wraps to 000, rounds should be 1
+    await tester.tap(find.text('TAP TO COUNT'));
+    await tester.pump();
+    expect(find.text('000'), findsOneWidget);
+
+    // Total Rounds display should show 1
+    expect(find.text('1'), findsWidgets);
+  });
+
+  testWidgets('Short mode rounds increment across multiple rounds', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    // Switch to Short mode via settings
+    await tester.tap(find.text('Profile'));
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Change'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Short (8)'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Counter'));
+    await tester.pumpAndSettle();
+
+    // Tap 16 times — should complete 2 rounds
+    for (int i = 0; i < 16; i++) {
+      await tester.tap(find.text('TAP TO COUNT'));
+    }
+    await tester.pump();
+
+    expect(find.text('000'), findsOneWidget);
+
+    // Total Rounds display should show 2
+    expect(find.text('2'), findsWidgets);
   });
 }

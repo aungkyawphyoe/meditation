@@ -7,11 +7,7 @@ class ActionButtons extends ConsumerWidget {
   final VoidCallback? onSave;
   final VoidCallback onReset;
 
-  const ActionButtons({
-    super.key,
-    required this.onSave,
-    required this.onReset,
-  });
+  const ActionButtons({super.key, required this.onSave, required this.onReset});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

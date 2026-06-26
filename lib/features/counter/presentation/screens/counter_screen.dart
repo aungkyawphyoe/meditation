@@ -50,11 +50,11 @@ class CounterScreen extends ConsumerWidget {
                         const SizedBox(height: 4),
                         if (counterState.isTodayPlanActive)
                           const TodayPlanDetail(),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 24),
                         const CounterDisplay(),
                         const SizedBox(height: 32),
                         const TapToCount(),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 32),
                         const StatsDisplay(),
                         const SizedBox(height: 24),
                       ],
@@ -70,8 +70,7 @@ class CounterScreen extends ConsumerWidget {
             bottom: 24,
             child: ActionButtons(
               onSave: () => _saveSession(context, ref),
-              onReset: () =>
-                  ref.read(counterProvider.notifier).resetSession(),
+              onReset: () => ref.read(counterProvider.notifier).resetSession(),
             ),
           ),
           if (showPlanButton)
@@ -163,10 +162,7 @@ class CounterScreen extends ConsumerWidget {
     final totalRounds = await dao.getTotalRounds();
     await ref
         .read(userInfoDaoProvider)
-        .updateLifetimeStats(
-          totalBeads: totalBeads,
-          totalRounds: totalRounds,
-        );
+        .updateLifetimeStats(totalBeads: totalBeads, totalRounds: totalRounds);
 
     ref.invalidate(recentSessionsProvider);
     ref.invalidate(lifetimeBeadsProvider);

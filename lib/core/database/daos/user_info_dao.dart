@@ -38,10 +38,7 @@ class UserInfoDao extends DatabaseAccessor<AppDatabase>
     final user = await getUser();
     if (user == null) return;
     await upsertUser(
-      user.copyWith(
-        defaultMode: mode,
-        updatedAt: DateTime.now(),
-      ),
+      user.copyWith(defaultMode: mode, updatedAt: DateTime.now()),
     );
   }
 }

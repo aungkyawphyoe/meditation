@@ -64,10 +64,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       body: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
-        children: [
-          _buildNamePage(),
-          _buildModePage(),
-        ],
+        children: [_buildNamePage(), _buildModePage()],
       ),
     );
   }
@@ -192,7 +189,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             const Spacer(flex: 2),
             _ModeOption(
               label: AppLocalizations.of(context)!.standardMode,
-              description: AppLocalizations.of(context)!.modeStandardDescription,
+              description: AppLocalizations.of(
+                context,
+              )!.modeStandardDescription,
               isSelected: _selectedMode == CounterMode.standard,
               onTap: () => setState(() => _selectedMode = CounterMode.standard),
             ),
@@ -206,9 +205,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             const SizedBox(height: 12),
             _ModeOption(
               label: AppLocalizations.of(context)!.continuousMode,
-              description: AppLocalizations.of(context)!.modeContinuousDescription,
+              description: AppLocalizations.of(
+                context,
+              )!.modeContinuousDescription,
               isSelected: _selectedMode == CounterMode.continuous,
-              onTap: () => setState(() => _selectedMode = CounterMode.continuous),
+              onTap: () =>
+                  setState(() => _selectedMode = CounterMode.continuous),
             ),
             const Spacer(flex: 2),
             SizedBox(

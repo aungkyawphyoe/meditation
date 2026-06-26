@@ -200,8 +200,9 @@ class ActivePlanCard extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            AppLocalizations.of(context)!
-                                .dayOfTotal(dayIndex, totalDays),
+                            AppLocalizations.of(
+                              context,
+                            )!.dayOfTotal(dayIndex, totalDays),
                             style: const TextStyle(
                               fontFamily: 'JetBrains Mono',
                               fontSize: 11,
@@ -212,8 +213,9 @@ class ActivePlanCard extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          AppLocalizations.of(context)!
-                              .roundsCount(currentDayDetail!.targetRounds),
+                          AppLocalizations.of(
+                            context,
+                          )!.roundsCount(currentDayDetail!.targetRounds),
                           style: TextStyle(
                             fontFamily: 'JetBrains Mono',
                             fontSize: 12,

@@ -33,8 +33,9 @@ class TodayPlanDetail extends ConsumerWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            AppLocalizations.of(context)!
-                .beadsPerRound(beadsPerRound, targetRounds),
+            AppLocalizations.of(
+              context,
+            )!.beadsPerRound(beadsPerRound, targetRounds),
             style: const TextStyle(
               fontFamily: 'Geist',
               fontSize: 13,
