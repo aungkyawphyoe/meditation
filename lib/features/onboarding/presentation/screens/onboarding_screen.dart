@@ -191,7 +191,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             const Spacer(flex: 2),
             _ModeOption(
-              mode: CounterMode.standard,
               label: AppLocalizations.of(context)!.standardMode,
               description: AppLocalizations.of(context)!.modeStandardDescription,
               isSelected: _selectedMode == CounterMode.standard,
@@ -199,7 +198,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             const SizedBox(height: 12),
             _ModeOption(
-              mode: CounterMode.short,
               label: AppLocalizations.of(context)!.shortMode,
               description: AppLocalizations.of(context)!.modeShortDescription,
               isSelected: _selectedMode == CounterMode.short,
@@ -207,7 +205,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             const SizedBox(height: 12),
             _ModeOption(
-              mode: CounterMode.continuous,
               label: AppLocalizations.of(context)!.continuousMode,
               description: AppLocalizations.of(context)!.modeContinuousDescription,
               isSelected: _selectedMode == CounterMode.continuous,
@@ -254,14 +251,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 }
 
 class _ModeOption extends StatelessWidget {
-  final CounterMode mode;
   final String label;
   final String description;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _ModeOption({
-    required this.mode,
     required this.label,
     required this.description,
     required this.isSelected,
