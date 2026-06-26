@@ -33,4 +33,15 @@ class UserInfoDao extends DatabaseAccessor<AppDatabase>
       ),
     );
   }
+
+  Future<void> updateDefaultMode(String mode) async {
+    final user = await getUser();
+    if (user == null) return;
+    await upsertUser(
+      user.copyWith(
+        defaultMode: mode,
+        updatedAt: DateTime.now(),
+      ),
+    );
+  }
 }
