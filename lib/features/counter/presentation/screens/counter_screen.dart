@@ -39,28 +39,21 @@ class CounterScreen extends ConsumerWidget {
       body: Stack(
         children: [
           SafeArea(
+            bottom: false,
             child: Column(
               children: [
                 _Header(title: AppLocalizations.of(context)!.appTitle),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 4),
-                        if (counterState.isTodayPlanActive)
-                          const TodayPlanDetail(),
-                        const SizedBox(height: 24),
-                        const CounterDisplay(),
-                        const SizedBox(height: 32),
-                        const TapToCount(),
-                        const SizedBox(height: 32),
-                        const StatsDisplay(),
-                        const SizedBox(height: 24),
-                      ],
-                    ),
-                  ),
-                ),
+                if (counterState.isTodayPlanActive) ...[
+                  const SizedBox(height: 4),
+                  const TodayPlanDetail(),
+                ],
+                const Spacer(),
+                const CounterDisplay(),
+                const SizedBox(height: 8),
+                const TapToCount(),
+                const SizedBox(height: 8),
+                const StatsDisplay(),
+                const Spacer(),
               ],
             ),
           ),

@@ -19,35 +19,36 @@ class TodayPlanDetail extends ConsumerWidget {
         color: const Color(0xFFE7E8E5),
         borderRadius: BorderRadius.circular(12),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             planName,
             style: const TextStyle(
               fontFamily: 'Geist',
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w600,
               color: Color(0xFF111111),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             AppLocalizations.of(
               context,
             )!.beadsPerRound(beadsPerRound, targetRounds),
             style: const TextStyle(
               fontFamily: 'Geist',
-              fontSize: 13,
+              fontSize: 11,
               color: Color(0xFF666666),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Text(
             '$completedRounds / $targetRounds',
             style: const TextStyle(
               fontFamily: 'JetBrains Mono',
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.w700,
               color: Color(0xFFFF8400),
             ),

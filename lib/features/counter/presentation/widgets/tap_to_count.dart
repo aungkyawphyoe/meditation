@@ -9,6 +9,10 @@ class TapToCount extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(counterProvider.select((s) => s.mode));
+    final isCompact = ref.watch(
+      counterProvider.select((s) => s.isTodayPlanActive),
+    );
+    final circleSize = isCompact ? 150.0 : 200.0;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -16,8 +20,8 @@ class TapToCount extends ConsumerWidget {
         GestureDetector(
           onTap: () => ref.read(counterProvider.notifier).increment(),
           child: Container(
-            width: 240,
-            height: 240,
+            width: circleSize,
+            height: circleSize,
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,

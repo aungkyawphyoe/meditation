@@ -8,13 +8,16 @@ class CounterDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final beadCount = ref.watch(counterProvider.select((s) => s.beadCount));
+    final isPlanActive = ref.watch(
+      counterProvider.select((s) => s.isTodayPlanActive),
+    );
     return Text(
       beadCount.toString().padLeft(3, '0'),
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'JetBrains Mono',
-        fontSize: 80,
+        fontSize: isPlanActive ? 56 : 80,
         fontWeight: FontWeight.w700,
-        color: Color(0xFF111111),
+        color: const Color(0xFF111111),
       ),
       textAlign: TextAlign.center,
     );
