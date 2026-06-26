@@ -6,6 +6,7 @@ import 'l10n/app_localizations.dart';
 import 'core/localization/providers/locale_provider.dart';
 import 'features/home/presentation/screens/home_shell.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
+import 'features/counter/providers/counter_provider.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -56,6 +57,15 @@ class App extends ConsumerWidget {
           if (user.name == 'Meditator' && user.totalLifetimeBeads == 0) {
             return const OnboardingScreen();
           }
+          // Load persisted mode into counter provider
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final modeName = user.defaultMode ?? 'standard';
+            final mode = CounterMode.values.firstWhere(
+              (m) => m.name == modeName,
+              orElse: () => CounterMode.standard,
+            );
+            ref.read(counterProvider.notifier).loadMode(mode);
+          });
           return const HomeShell();
         },
       ),
