@@ -153,6 +153,10 @@ class CounterNotifier extends StateNotifier<CounterState> {
     state = CounterState(mode: mode);
   }
 
+  void loadMode(CounterMode mode) {
+    state = state.copyWith(mode: mode);
+  }
+
   void startTodayPlan(String planName, int beadsPerRound, int targetRounds) {
     state = state.copyWith(
       isTodayPlanActive: true,
