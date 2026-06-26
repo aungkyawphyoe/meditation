@@ -6,7 +6,6 @@ import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../widgets/mode_selector.dart';
 import '../widgets/counter_display.dart';
 import '../widgets/tap_to_count.dart';
 import '../widgets/stats_display.dart';
@@ -50,12 +49,7 @@ class CounterScreen extends ConsumerWidget {
                       children: [
                         const SizedBox(height: 4),
                         if (counterState.isTodayPlanActive)
-                          const TodayPlanDetail()
-                        else
-                          ModeSelector(
-                            onModeChange: (mode) =>
-                                _onModeChange(context, ref, mode),
-                          ),
+                          const TodayPlanDetail(),
                         const SizedBox(height: 40),
                         const CounterDisplay(),
                         const SizedBox(height: 32),
@@ -148,73 +142,6 @@ class CounterScreen extends ConsumerWidget {
     ref
         .read(counterProvider.notifier)
         .startTodayPlan(plan.title, plan.beadsPerRound, todayDay.targetRounds);
-  }
-
-  Future<void> _onModeChange(
-    BuildContext context,
-    WidgetRef ref,
-    CounterMode newMode,
-  ) async {
-    final state = ref.read(counterProvider);
-    if (state.sessionBeads <= 0) {
-      ref.read(counterProvider.notifier).setMode(newMode);
-      return;
-    }
-
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          AppLocalizations.of(context)!.saveSession,
-          style: const TextStyle(
-            fontFamily: 'Geist',
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF111111),
-          ),
-        ),
-        content: Text(
-          AppLocalizations.of(context)!.saveSessionContent(state.sessionBeads),
-          style: const TextStyle(
-            fontFamily: 'Geist',
-            fontSize: 14,
-            color: Color(0xFF666666),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(
-              AppLocalizations.of(context)!.discard,
-              style: const TextStyle(
-                fontFamily: 'Geist',
-                fontSize: 14,
-                color: Color(0xFF666666),
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(
-              AppLocalizations.of(context)!.save,
-              style: const TextStyle(
-                fontFamily: 'Geist',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFFFF8400),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (result == true) {
-      await _saveSession(context, ref);
-    }
-
-    ref.read(counterProvider.notifier).setMode(newMode);
   }
 
   Future<void> _saveSession(BuildContext context, WidgetRef ref) async {
