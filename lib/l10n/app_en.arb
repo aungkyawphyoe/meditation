@@ -165,5 +165,12 @@
   "rankSeniorDevotee": "Senior Devotee",
   "rankNobleChanter": "Noble Chanter",
   "rankElderDevotee": "Elder Devotee",
-  "rankMasterChanter": "Master Chanter"
+  "rankMasterChanter": "Master Chanter",
+  "selectMode": "Select your counting mode",
+  "selectModeSubtitle": "Choose how you want to count beads",
+  "modeStandardDescription": "Count 108 beads per round",
+  "modeShortDescription": "Count 8 beads per round",
+  "modeContinuousDescription": "Count without rounds",
+  "currentMode": "Counting Mode",
+  "changeMode": "Change"
 }

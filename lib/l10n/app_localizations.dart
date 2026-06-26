@@ -721,6 +721,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Master Chanter'**
   String get rankMasterChanter;
+
+  /// No description provided for @selectMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your counting mode'**
+  String get selectMode;
+
+  /// No description provided for @selectModeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how you want to count beads'**
+  String get selectModeSubtitle;
+
+  /// No description provided for @modeStandardDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Count 108 beads per round'**
+  String get modeStandardDescription;
+
+  /// No description provided for @modeShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Count 8 beads per round'**
+  String get modeShortDescription;
+
+  /// No description provided for @modeContinuousDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Count without rounds'**
+  String get modeContinuousDescription;
+
+  /// No description provided for @currentMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Counting Mode'**
+  String get currentMode;
+
+  /// No description provided for @changeMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get changeMode;
 }
 
 class _AppLocalizationsDelegate

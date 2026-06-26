@@ -345,4 +345,25 @@ class AppLocalizationsMy extends AppLocalizations {
 
   @override
   String get rankMasterChanter => 'ဝတ်ရွတ်စဉ်ဓမ္မဆရာကြီး';
+
+  @override
+  String get selectMode => 'ရေတွက်နည်းကို ရွေးချယ်ပါ';
+
+  @override
+  String get selectModeSubtitle => 'ပုတီးစိပ်နည်းကို ရွေးချယ်ပါ';
+
+  @override
+  String get modeStandardDescription => 'တစ်ပတ်လျှင် ၁၀၈ လုံး ရေတွက်ပါ';
+
+  @override
+  String get modeShortDescription => 'တစ်ပတ်လျှင် ၈ လုံး ရေတွက်ပါ';
+
+  @override
+  String get modeContinuousDescription => 'ပတ်ရေမရှိဘဲ ဆက်တိုက်ရေတွက်ပါ';
+
+  @override
+  String get currentMode => 'ရေတွက်နည်း';
+
+  @override
+  String get changeMode => 'ပြောင်းရန်';
 }

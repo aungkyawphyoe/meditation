@@ -342,4 +342,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rankMasterChanter => 'Master Chanter';
+
+  @override
+  String get selectMode => 'Select your counting mode';
+
+  @override
+  String get selectModeSubtitle => 'Choose how you want to count beads';
+
+  @override
+  String get modeStandardDescription => 'Count 108 beads per round';
+
+  @override
+  String get modeShortDescription => 'Count 8 beads per round';
+
+  @override
+  String get modeContinuousDescription => 'Count without rounds';
+
+  @override
+  String get currentMode => 'Counting Mode';
+
+  @override
+  String get changeMode => 'Change';
 }

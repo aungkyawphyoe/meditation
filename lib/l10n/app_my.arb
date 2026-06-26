@@ -165,5 +165,12 @@
   "rankSeniorDevotee": "ဝါရင့်သဒ္ဓါကြည်ညိုသူ",
   "rankNobleChanter": "မွန်မြတ်သောဝတ်ရွတ်သူ",
   "rankElderDevotee": "အကြီးတန်းသဒ္ဓါကြည်ညိုသူ",
-  "rankMasterChanter": "ဝတ်ရွတ်စဉ်ဓမ္မဆရာကြီး"
+  "rankMasterChanter": "ဝတ်ရွတ်စဉ်ဓမ္မဆရာကြီး",
+  "selectMode": "ရေတွက်နည်းကို ရွေးချယ်ပါ",
+  "selectModeSubtitle": "ပုတီးစိပ်နည်းကို ရွေးချယ်ပါ",
+  "modeStandardDescription": "တစ်ပတ်လျှင် ၁၀၈ လုံး ရေတွက်ပါ",
+  "modeShortDescription": "တစ်ပတ်လျှင် ၈ လုံး ရေတွက်ပါ",
+  "modeContinuousDescription": "ပတ်ရေမရှိဘဲ ဆက်တိုက်ရေတွက်ပါ",
+  "currentMode": "ရေတွက်နည်း",
+  "changeMode": "ပြောင်းရန်"
 }
