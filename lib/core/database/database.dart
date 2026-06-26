@@ -34,7 +34,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.fromExecutor(QueryExecutor executor) : super(executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration {
@@ -46,6 +46,7 @@ class AppDatabase extends _$AppDatabase {
             id: 1,
             name: 'Meditator',
             rankTitle: 'Novice Chanter',
+            defaultMode: 'standard',
             streakDays: 0,
             totalLifetimeBeads: 0,
             totalLifetimeRounds: 0,
@@ -65,6 +66,9 @@ class AppDatabase extends _$AppDatabase {
         }
         if (from < 3) {
           await m.addColumn(planDaysTable, planDaysTable.gongDawName);
+        }
+        if (from < 4) {
+          await m.addColumn(userInfoTable, userInfoTable.defaultMode);
         }
       },
     );

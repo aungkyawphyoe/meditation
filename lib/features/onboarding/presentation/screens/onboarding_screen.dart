@@ -34,6 +34,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         id: 1,
         name: name,
         rankTitle: 'Novice Chanter',
+        defaultMode: 'standard',
         streakDays: 0,
         totalLifetimeBeads: 0,
         totalLifetimeRounds: 0,

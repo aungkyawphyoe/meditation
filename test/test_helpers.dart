@@ -40,6 +40,7 @@ Future<void> seedTestUser(AppDatabase db) async {
           id: 1,
           name: 'Alex Practitioner',
           rankTitle: 'Novice Chanter',
+          defaultMode: 'standard',
           streakDays: 12,
           totalLifetimeBeads: 0,
           totalLifetimeRounds: 0,

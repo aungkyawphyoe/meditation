@@ -38,6 +38,18 @@ class $UserInfoTableTable extends UserInfoTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _defaultModeMeta = const VerificationMeta(
+    'defaultMode',
+  );
+  @override
+  late final GeneratedColumn<String> defaultMode = GeneratedColumn<String>(
+    'default_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('standard'),
+  );
   static const VerificationMeta _streakDaysMeta = const VerificationMeta(
     'streakDays',
   );
@@ -96,6 +108,7 @@ class $UserInfoTableTable extends UserInfoTable
     id,
     name,
     rankTitle,
+    defaultMode,
     streakDays,
     totalLifetimeBeads,
     totalLifetimeRounds,
@@ -132,6 +145,15 @@ class $UserInfoTableTable extends UserInfoTable
       );
     } else if (isInserting) {
       context.missing(_rankTitleMeta);
+    }
+    if (data.containsKey('default_mode')) {
+      context.handle(
+        _defaultModeMeta,
+        defaultMode.isAcceptableOrUnknown(
+          data['default_mode']!,
+          _defaultModeMeta,
+        ),
+      );
     }
     if (data.containsKey('streak_days')) {
       context.handle(
@@ -200,6 +222,10 @@ class $UserInfoTableTable extends UserInfoTable
         DriftSqlType.string,
         data['${effectivePrefix}rank_title'],
       )!,
+      defaultMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}default_mode'],
+      )!,
       streakDays: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}streak_days'],
@@ -233,6 +259,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
   final int id;
   final String name;
   final String rankTitle;
+  final String defaultMode;
   final int streakDays;
   final int totalLifetimeBeads;
   final int totalLifetimeRounds;
@@ -242,6 +269,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     required this.id,
     required this.name,
     required this.rankTitle,
+    required this.defaultMode,
     required this.streakDays,
     required this.totalLifetimeBeads,
     required this.totalLifetimeRounds,
@@ -254,6 +282,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['rank_title'] = Variable<String>(rankTitle);
+    map['default_mode'] = Variable<String>(defaultMode);
     map['streak_days'] = Variable<int>(streakDays);
     map['total_lifetime_beads'] = Variable<int>(totalLifetimeBeads);
     map['total_lifetime_rounds'] = Variable<int>(totalLifetimeRounds);
@@ -267,6 +296,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       id: Value(id),
       name: Value(name),
       rankTitle: Value(rankTitle),
+      defaultMode: Value(defaultMode),
       streakDays: Value(streakDays),
       totalLifetimeBeads: Value(totalLifetimeBeads),
       totalLifetimeRounds: Value(totalLifetimeRounds),
@@ -284,6 +314,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       rankTitle: serializer.fromJson<String>(json['rankTitle']),
+      defaultMode: serializer.fromJson<String>(json['defaultMode']),
       streakDays: serializer.fromJson<int>(json['streakDays']),
       totalLifetimeBeads: serializer.fromJson<int>(json['totalLifetimeBeads']),
       totalLifetimeRounds: serializer.fromJson<int>(
@@ -300,6 +331,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'rankTitle': serializer.toJson<String>(rankTitle),
+      'defaultMode': serializer.toJson<String>(defaultMode),
       'streakDays': serializer.toJson<int>(streakDays),
       'totalLifetimeBeads': serializer.toJson<int>(totalLifetimeBeads),
       'totalLifetimeRounds': serializer.toJson<int>(totalLifetimeRounds),
@@ -312,6 +344,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     int? id,
     String? name,
     String? rankTitle,
+    String? defaultMode,
     int? streakDays,
     int? totalLifetimeBeads,
     int? totalLifetimeRounds,
@@ -321,6 +354,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     id: id ?? this.id,
     name: name ?? this.name,
     rankTitle: rankTitle ?? this.rankTitle,
+    defaultMode: defaultMode ?? this.defaultMode,
     streakDays: streakDays ?? this.streakDays,
     totalLifetimeBeads: totalLifetimeBeads ?? this.totalLifetimeBeads,
     totalLifetimeRounds: totalLifetimeRounds ?? this.totalLifetimeRounds,
@@ -332,6 +366,9 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       rankTitle: data.rankTitle.present ? data.rankTitle.value : this.rankTitle,
+      defaultMode: data.defaultMode.present
+          ? data.defaultMode.value
+          : this.defaultMode,
       streakDays: data.streakDays.present
           ? data.streakDays.value
           : this.streakDays,
@@ -352,6 +389,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('rankTitle: $rankTitle, ')
+          ..write('defaultMode: $defaultMode, ')
           ..write('streakDays: $streakDays, ')
           ..write('totalLifetimeBeads: $totalLifetimeBeads, ')
           ..write('totalLifetimeRounds: $totalLifetimeRounds, ')
@@ -366,6 +404,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     id,
     name,
     rankTitle,
+    defaultMode,
     streakDays,
     totalLifetimeBeads,
     totalLifetimeRounds,
@@ -379,6 +418,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
           other.id == this.id &&
           other.name == this.name &&
           other.rankTitle == this.rankTitle &&
+          other.defaultMode == this.defaultMode &&
           other.streakDays == this.streakDays &&
           other.totalLifetimeBeads == this.totalLifetimeBeads &&
           other.totalLifetimeRounds == this.totalLifetimeRounds &&
@@ -390,6 +430,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> rankTitle;
+  final Value<String> defaultMode;
   final Value<int> streakDays;
   final Value<int> totalLifetimeBeads;
   final Value<int> totalLifetimeRounds;
@@ -399,6 +440,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.rankTitle = const Value.absent(),
+    this.defaultMode = const Value.absent(),
     this.streakDays = const Value.absent(),
     this.totalLifetimeBeads = const Value.absent(),
     this.totalLifetimeRounds = const Value.absent(),
@@ -409,6 +451,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     this.id = const Value.absent(),
     required String name,
     required String rankTitle,
+    this.defaultMode = const Value.absent(),
     required int streakDays,
     required int totalLifetimeBeads,
     required int totalLifetimeRounds,
@@ -425,6 +468,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? rankTitle,
+    Expression<String>? defaultMode,
     Expression<int>? streakDays,
     Expression<int>? totalLifetimeBeads,
     Expression<int>? totalLifetimeRounds,
@@ -435,6 +479,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (rankTitle != null) 'rank_title': rankTitle,
+      if (defaultMode != null) 'default_mode': defaultMode,
       if (streakDays != null) 'streak_days': streakDays,
       if (totalLifetimeBeads != null)
         'total_lifetime_beads': totalLifetimeBeads,
@@ -449,6 +494,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     Value<int>? id,
     Value<String>? name,
     Value<String>? rankTitle,
+    Value<String>? defaultMode,
     Value<int>? streakDays,
     Value<int>? totalLifetimeBeads,
     Value<int>? totalLifetimeRounds,
@@ -459,6 +505,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
       id: id ?? this.id,
       name: name ?? this.name,
       rankTitle: rankTitle ?? this.rankTitle,
+      defaultMode: defaultMode ?? this.defaultMode,
       streakDays: streakDays ?? this.streakDays,
       totalLifetimeBeads: totalLifetimeBeads ?? this.totalLifetimeBeads,
       totalLifetimeRounds: totalLifetimeRounds ?? this.totalLifetimeRounds,
@@ -478,6 +525,9 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     }
     if (rankTitle.present) {
       map['rank_title'] = Variable<String>(rankTitle.value);
+    }
+    if (defaultMode.present) {
+      map['default_mode'] = Variable<String>(defaultMode.value);
     }
     if (streakDays.present) {
       map['streak_days'] = Variable<int>(streakDays.value);
@@ -503,6 +553,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('rankTitle: $rankTitle, ')
+          ..write('defaultMode: $defaultMode, ')
           ..write('streakDays: $streakDays, ')
           ..write('totalLifetimeBeads: $totalLifetimeBeads, ')
           ..write('totalLifetimeRounds: $totalLifetimeRounds, ')
@@ -2520,6 +2571,7 @@ typedef $$UserInfoTableTableCreateCompanionBuilder =
       Value<int> id,
       required String name,
       required String rankTitle,
+      Value<String> defaultMode,
       required int streakDays,
       required int totalLifetimeBeads,
       required int totalLifetimeRounds,
@@ -2531,6 +2583,7 @@ typedef $$UserInfoTableTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> name,
       Value<String> rankTitle,
+      Value<String> defaultMode,
       Value<int> streakDays,
       Value<int> totalLifetimeBeads,
       Value<int> totalLifetimeRounds,
@@ -2596,6 +2649,11 @@ class $$UserInfoTableTableFilterComposer
 
   ColumnFilters<String> get rankTitle => $composableBuilder(
     column: $table.rankTitle,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get defaultMode => $composableBuilder(
+    column: $table.defaultMode,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2675,6 +2733,11 @@ class $$UserInfoTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get defaultMode => $composableBuilder(
+    column: $table.defaultMode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get streakDays => $composableBuilder(
     column: $table.streakDays,
     builder: (column) => ColumnOrderings(column),
@@ -2718,6 +2781,11 @@ class $$UserInfoTableTableAnnotationComposer
 
   GeneratedColumn<String> get rankTitle =>
       $composableBuilder(column: $table.rankTitle, builder: (column) => column);
+
+  GeneratedColumn<String> get defaultMode => $composableBuilder(
+    column: $table.defaultMode,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get streakDays => $composableBuilder(
     column: $table.streakDays,
@@ -2798,6 +2866,7 @@ class $$UserInfoTableTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> rankTitle = const Value.absent(),
+                Value<String> defaultMode = const Value.absent(),
                 Value<int> streakDays = const Value.absent(),
                 Value<int> totalLifetimeBeads = const Value.absent(),
                 Value<int> totalLifetimeRounds = const Value.absent(),
@@ -2807,6 +2876,7 @@ class $$UserInfoTableTableTableManager
                 id: id,
                 name: name,
                 rankTitle: rankTitle,
+                defaultMode: defaultMode,
                 streakDays: streakDays,
                 totalLifetimeBeads: totalLifetimeBeads,
                 totalLifetimeRounds: totalLifetimeRounds,
@@ -2818,6 +2888,7 @@ class $$UserInfoTableTableTableManager
                 Value<int> id = const Value.absent(),
                 required String name,
                 required String rankTitle,
+                Value<String> defaultMode = const Value.absent(),
                 required int streakDays,
                 required int totalLifetimeBeads,
                 required int totalLifetimeRounds,
@@ -2827,6 +2898,7 @@ class $$UserInfoTableTableTableManager
                 id: id,
                 name: name,
                 rankTitle: rankTitle,
+                defaultMode: defaultMode,
                 streakDays: streakDays,
                 totalLifetimeBeads: totalLifetimeBeads,
                 totalLifetimeRounds: totalLifetimeRounds,
