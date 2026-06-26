@@ -169,12 +169,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           children: [
-            const Spacer(flex: 2),
+            const Spacer(flex: 4),
             Text(
               AppLocalizations.of(context)!.selectMode,
               style: const TextStyle(
                 fontFamily: 'Geist',
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF111111),
               ),
