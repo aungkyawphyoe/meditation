@@ -59,7 +59,7 @@ class App extends ConsumerWidget {
           }
           // Load persisted mode into counter provider
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            final modeName = user.defaultMode ?? 'standard';
+            final modeName = user.defaultMode;
             final mode = CounterMode.values.firstWhere(
               (m) => m.name == modeName,
               orElse: () => CounterMode.standard,
