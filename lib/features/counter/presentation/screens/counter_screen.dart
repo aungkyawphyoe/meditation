@@ -44,10 +44,10 @@ class CounterScreen extends ConsumerWidget {
               children: [
                 _Header(title: AppLocalizations.of(context)!.appTitle),
                 if (counterState.isTodayPlanActive) ...[
-                  const SizedBox(height: 4),
                   const TodayPlanDetail(),
+                ] else ...[
+                  const Spacer(),
                 ],
-                const Spacer(),
                 const CounterDisplay(),
                 const SizedBox(height: 8),
                 const TapToCount(),
