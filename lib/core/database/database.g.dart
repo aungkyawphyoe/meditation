@@ -81,6 +81,18 @@ class $UserInfoTableTable extends UserInfoTable
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _counterRoundsMeta = const VerificationMeta(
+    'counterRounds',
+  );
+  @override
+  late final GeneratedColumn<int> counterRounds = GeneratedColumn<int>(
+    'counter_rounds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -112,6 +124,7 @@ class $UserInfoTableTable extends UserInfoTable
     streakDays,
     totalLifetimeBeads,
     totalLifetimeRounds,
+    counterRounds,
     createdAt,
     updatedAt,
   ];
@@ -185,6 +198,15 @@ class $UserInfoTableTable extends UserInfoTable
     } else if (isInserting) {
       context.missing(_totalLifetimeRoundsMeta);
     }
+    if (data.containsKey('counter_rounds')) {
+      context.handle(
+        _counterRoundsMeta,
+        counterRounds.isAcceptableOrUnknown(
+          data['counter_rounds']!,
+          _counterRoundsMeta,
+        ),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -238,6 +260,10 @@ class $UserInfoTableTable extends UserInfoTable
         DriftSqlType.int,
         data['${effectivePrefix}total_lifetime_rounds'],
       )!,
+      counterRounds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}counter_rounds'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -263,6 +289,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
   final int streakDays;
   final int totalLifetimeBeads;
   final int totalLifetimeRounds;
+  final int counterRounds;
   final DateTime createdAt;
   final DateTime updatedAt;
   const UserInfo({
@@ -273,6 +300,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     required this.streakDays,
     required this.totalLifetimeBeads,
     required this.totalLifetimeRounds,
+    required this.counterRounds,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -286,6 +314,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     map['streak_days'] = Variable<int>(streakDays);
     map['total_lifetime_beads'] = Variable<int>(totalLifetimeBeads);
     map['total_lifetime_rounds'] = Variable<int>(totalLifetimeRounds);
+    map['counter_rounds'] = Variable<int>(counterRounds);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -300,6 +329,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       streakDays: Value(streakDays),
       totalLifetimeBeads: Value(totalLifetimeBeads),
       totalLifetimeRounds: Value(totalLifetimeRounds),
+      counterRounds: Value(counterRounds),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -320,6 +350,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       totalLifetimeRounds: serializer.fromJson<int>(
         json['totalLifetimeRounds'],
       ),
+      counterRounds: serializer.fromJson<int>(json['counterRounds']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -335,6 +366,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       'streakDays': serializer.toJson<int>(streakDays),
       'totalLifetimeBeads': serializer.toJson<int>(totalLifetimeBeads),
       'totalLifetimeRounds': serializer.toJson<int>(totalLifetimeRounds),
+      'counterRounds': serializer.toJson<int>(counterRounds),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -348,6 +380,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     int? streakDays,
     int? totalLifetimeBeads,
     int? totalLifetimeRounds,
+    int? counterRounds,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => UserInfo(
@@ -358,6 +391,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     streakDays: streakDays ?? this.streakDays,
     totalLifetimeBeads: totalLifetimeBeads ?? this.totalLifetimeBeads,
     totalLifetimeRounds: totalLifetimeRounds ?? this.totalLifetimeRounds,
+    counterRounds: counterRounds ?? this.counterRounds,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -378,6 +412,9 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       totalLifetimeRounds: data.totalLifetimeRounds.present
           ? data.totalLifetimeRounds.value
           : this.totalLifetimeRounds,
+      counterRounds: data.counterRounds.present
+          ? data.counterRounds.value
+          : this.counterRounds,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -393,6 +430,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
           ..write('streakDays: $streakDays, ')
           ..write('totalLifetimeBeads: $totalLifetimeBeads, ')
           ..write('totalLifetimeRounds: $totalLifetimeRounds, ')
+          ..write('counterRounds: $counterRounds, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -408,6 +446,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     streakDays,
     totalLifetimeBeads,
     totalLifetimeRounds,
+    counterRounds,
     createdAt,
     updatedAt,
   );
@@ -422,6 +461,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
           other.streakDays == this.streakDays &&
           other.totalLifetimeBeads == this.totalLifetimeBeads &&
           other.totalLifetimeRounds == this.totalLifetimeRounds &&
+          other.counterRounds == this.counterRounds &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -434,6 +474,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
   final Value<int> streakDays;
   final Value<int> totalLifetimeBeads;
   final Value<int> totalLifetimeRounds;
+  final Value<int> counterRounds;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const UserInfoTableCompanion({
@@ -444,6 +485,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     this.streakDays = const Value.absent(),
     this.totalLifetimeBeads = const Value.absent(),
     this.totalLifetimeRounds = const Value.absent(),
+    this.counterRounds = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -455,6 +497,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     required int streakDays,
     required int totalLifetimeBeads,
     required int totalLifetimeRounds,
+    this.counterRounds = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : name = Value(name),
@@ -472,6 +515,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     Expression<int>? streakDays,
     Expression<int>? totalLifetimeBeads,
     Expression<int>? totalLifetimeRounds,
+    Expression<int>? counterRounds,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -485,6 +529,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
         'total_lifetime_beads': totalLifetimeBeads,
       if (totalLifetimeRounds != null)
         'total_lifetime_rounds': totalLifetimeRounds,
+      if (counterRounds != null) 'counter_rounds': counterRounds,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -498,6 +543,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     Value<int>? streakDays,
     Value<int>? totalLifetimeBeads,
     Value<int>? totalLifetimeRounds,
+    Value<int>? counterRounds,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
   }) {
@@ -509,6 +555,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
       streakDays: streakDays ?? this.streakDays,
       totalLifetimeBeads: totalLifetimeBeads ?? this.totalLifetimeBeads,
       totalLifetimeRounds: totalLifetimeRounds ?? this.totalLifetimeRounds,
+      counterRounds: counterRounds ?? this.counterRounds,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -538,6 +585,9 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     if (totalLifetimeRounds.present) {
       map['total_lifetime_rounds'] = Variable<int>(totalLifetimeRounds.value);
     }
+    if (counterRounds.present) {
+      map['counter_rounds'] = Variable<int>(counterRounds.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -557,6 +607,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
           ..write('streakDays: $streakDays, ')
           ..write('totalLifetimeBeads: $totalLifetimeBeads, ')
           ..write('totalLifetimeRounds: $totalLifetimeRounds, ')
+          ..write('counterRounds: $counterRounds, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -2575,6 +2626,7 @@ typedef $$UserInfoTableTableCreateCompanionBuilder =
       required int streakDays,
       required int totalLifetimeBeads,
       required int totalLifetimeRounds,
+      Value<int> counterRounds,
       required DateTime createdAt,
       required DateTime updatedAt,
     });
@@ -2587,6 +2639,7 @@ typedef $$UserInfoTableTableUpdateCompanionBuilder =
       Value<int> streakDays,
       Value<int> totalLifetimeBeads,
       Value<int> totalLifetimeRounds,
+      Value<int> counterRounds,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -2672,6 +2725,11 @@ class $$UserInfoTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<int> get counterRounds => $composableBuilder(
+    column: $table.counterRounds,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
@@ -2753,6 +2811,11 @@ class $$UserInfoTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get counterRounds => $composableBuilder(
+    column: $table.counterRounds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -2799,6 +2862,11 @@ class $$UserInfoTableTableAnnotationComposer
 
   GeneratedColumn<int> get totalLifetimeRounds => $composableBuilder(
     column: $table.totalLifetimeRounds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get counterRounds => $composableBuilder(
+    column: $table.counterRounds,
     builder: (column) => column,
   );
 
@@ -2870,6 +2938,7 @@ class $$UserInfoTableTableTableManager
                 Value<int> streakDays = const Value.absent(),
                 Value<int> totalLifetimeBeads = const Value.absent(),
                 Value<int> totalLifetimeRounds = const Value.absent(),
+                Value<int> counterRounds = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => UserInfoTableCompanion(
@@ -2880,6 +2949,7 @@ class $$UserInfoTableTableTableManager
                 streakDays: streakDays,
                 totalLifetimeBeads: totalLifetimeBeads,
                 totalLifetimeRounds: totalLifetimeRounds,
+                counterRounds: counterRounds,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -2892,6 +2962,7 @@ class $$UserInfoTableTableTableManager
                 required int streakDays,
                 required int totalLifetimeBeads,
                 required int totalLifetimeRounds,
+                Value<int> counterRounds = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
               }) => UserInfoTableCompanion.insert(
@@ -2902,6 +2973,7 @@ class $$UserInfoTableTableTableManager
                 streakDays: streakDays,
                 totalLifetimeBeads: totalLifetimeBeads,
                 totalLifetimeRounds: totalLifetimeRounds,
+                counterRounds: counterRounds,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),

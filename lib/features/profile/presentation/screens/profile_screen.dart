@@ -15,7 +15,6 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(userInfoProvider);
     final plansAsync = ref.watch(completedPlansProvider);
-    final roundsAsync = ref.watch(lifetimeRoundsProvider);
     final recentPlansAsync = ref.watch(recentPlansProvider);
 
     return Scaffold(
@@ -27,7 +26,6 @@ class ProfileScreen extends ConsumerWidget {
             context,
             user!,
             plansAsync,
-            roundsAsync,
             recentPlansAsync,
           ),
         ),
@@ -39,11 +37,10 @@ class ProfileScreen extends ConsumerWidget {
     BuildContext context,
     UserInfo user,
     AsyncValue<int> plansAsync,
-    AsyncValue<int> roundsAsync,
     AsyncValue<List<PlanProgressSummary>> recentPlansAsync,
   ) {
     final plans = plansAsync.asData?.value ?? 0;
-    final rounds = roundsAsync.asData?.value ?? 0;
+    final rounds = user.totalLifetimeRounds;
     final recentPlans = recentPlansAsync.asData?.value ?? [];
 
     return Column(

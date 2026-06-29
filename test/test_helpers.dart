@@ -44,6 +44,7 @@ Future<void> seedTestUser(AppDatabase db) async {
           streakDays: 12,
           totalLifetimeBeads: 0,
           totalLifetimeRounds: 0,
+          counterRounds: 0,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         ),

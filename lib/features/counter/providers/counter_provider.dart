@@ -25,8 +25,6 @@ class CounterState {
   final int roundsCompleted;
   final int sessionBeads;
   final CounterMode mode;
-  final int? activeSessionId;
-  final DateTime? sessionStartedAt;
   final bool isTodayPlanActive;
   final bool isTodayPlanComplete;
   final bool isCompletedThisSession;
@@ -39,8 +37,6 @@ class CounterState {
     this.roundsCompleted = 0,
     this.sessionBeads = 0,
     this.mode = CounterMode.standard,
-    this.activeSessionId,
-    this.sessionStartedAt,
     this.isTodayPlanActive = false,
     this.isTodayPlanComplete = false,
     this.isCompletedThisSession = false,
@@ -54,8 +50,6 @@ class CounterState {
     int? roundsCompleted,
     int? sessionBeads,
     CounterMode? mode,
-    int? activeSessionId,
-    DateTime? sessionStartedAt,
     bool? isTodayPlanActive,
     bool? isTodayPlanComplete,
     bool? isCompletedThisSession,
@@ -68,8 +62,6 @@ class CounterState {
       roundsCompleted: roundsCompleted ?? this.roundsCompleted,
       sessionBeads: sessionBeads ?? this.sessionBeads,
       mode: mode ?? this.mode,
-      activeSessionId: activeSessionId ?? this.activeSessionId,
-      sessionStartedAt: sessionStartedAt ?? this.sessionStartedAt,
       isTodayPlanActive: isTodayPlanActive ?? this.isTodayPlanActive,
       isTodayPlanComplete: isTodayPlanComplete ?? this.isTodayPlanComplete,
       isCompletedThisSession:
@@ -83,6 +75,10 @@ class CounterState {
 
 class CounterNotifier extends StateNotifier<CounterState> {
   CounterNotifier() : super(const CounterState());
+
+  void setInitialRounds(int rounds) {
+    state = state.copyWith(roundsCompleted: rounds);
+  }
 
   void increment() {
     final nextBead = state.beadCount + 1;
@@ -144,7 +140,6 @@ class CounterNotifier extends StateNotifier<CounterState> {
       beadCount: 0,
       roundsCompleted: 0,
       sessionBeads: 0,
-      sessionStartedAt: null,
     );
   }
 
@@ -190,17 +185,6 @@ class CounterNotifier extends StateNotifier<CounterState> {
       planBeadsPerRound: null,
       planTargetRounds: null,
     );
-  }
-
-  void startSession(int sessionId, DateTime startedAt) {
-    state = state.copyWith(
-      activeSessionId: sessionId,
-      sessionStartedAt: startedAt,
-    );
-  }
-
-  void clearSession() {
-    state = state.copyWith(activeSessionId: null, sessionStartedAt: null);
   }
 }
 

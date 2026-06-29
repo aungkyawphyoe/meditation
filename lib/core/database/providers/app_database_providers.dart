@@ -22,17 +22,12 @@ final userInfoProvider = FutureProvider<UserInfo?>((ref) async {
   return dao.getUser();
 });
 
-final recentSessionsProvider = FutureProvider<List<ChantSession>>((ref) async {
-  final dao = ref.watch(chantSessionDaoProvider);
-  return dao.getRecentSessions();
-});
-
-final lifetimeBeadsProvider = FutureProvider<int>((ref) async {
-  final dao = ref.watch(chantSessionDaoProvider);
-  return dao.getTotalBeads();
-});
-
 final lifetimeRoundsProvider = FutureProvider<int>((ref) async {
-  final dao = ref.watch(chantSessionDaoProvider);
-  return dao.getTotalRounds();
+  final user = await ref.watch(userInfoProvider.future);
+  return user?.totalLifetimeRounds ?? 0;
+});
+
+final counterRoundsProvider = FutureProvider<int>((ref) async {
+  final dao = ref.watch(userInfoDaoProvider);
+  return dao.getCounterRounds();
 });

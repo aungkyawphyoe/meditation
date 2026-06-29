@@ -41,4 +41,35 @@ class UserInfoDao extends DatabaseAccessor<AppDatabase>
       user.copyWith(defaultMode: mode, updatedAt: DateTime.now()),
     );
   }
+
+  Future<int> getCounterRounds() async {
+    final user = await getUser();
+    return user?.counterRounds ?? 0;
+  }
+
+  Future<void> saveCompletedRound() async {
+    final user = await getUser();
+    if (user == null) return;
+    final newCounterRounds = user.counterRounds + 1;
+    final newLifetimeRounds = user.totalLifetimeRounds + 1;
+    await upsertUser(
+      user.copyWith(
+        counterRounds: newCounterRounds,
+        totalLifetimeRounds: newLifetimeRounds,
+        rankTitle: rankForRounds(newLifetimeRounds),
+        updatedAt: DateTime.now(),
+      ),
+    );
+  }
+
+  Future<void> resetCounterRounds() async {
+    final user = await getUser();
+    if (user == null) return;
+    await upsertUser(
+      user.copyWith(
+        counterRounds: 0,
+        updatedAt: DateTime.now(),
+      ),
+    );
+  }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:drift/drift.dart' hide Column;
 import '../../providers/counter_provider.dart';
-import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -26,6 +24,30 @@ class CounterScreen extends ConsumerWidget {
         Future.delayed(const Duration(seconds: 2), () {
           ref.read(counterProvider.notifier).completeTodayPlan();
         });
+      }
+    });
+
+    ref.listen<AsyncValue<int>>(counterRoundsProvider, (prev, next) {
+      if (prev == null || prev.isLoading) {
+        next.whenData((rounds) {
+          ref.read(counterProvider.notifier).setInitialRounds(rounds);
+        });
+      }
+    });
+
+    ref.listen<int>(counterProvider.select((s) => s.roundsCompleted), (
+      prev,
+      next,
+    ) {
+      if (prev != null && next == prev + 1) {
+        final mode = ref.read(counterProvider.select((s) => s.mode));
+        if (mode != CounterMode.continuous) {
+          ref.read(userInfoDaoProvider).saveCompletedRound().then((_) {
+            ref.invalidate(counterRoundsProvider);
+            ref.invalidate(lifetimeRoundsProvider);
+            ref.invalidate(userInfoProvider);
+          });
+        }
       }
     });
 
@@ -62,8 +84,7 @@ class CounterScreen extends ConsumerWidget {
             left: 24,
             bottom: 24,
             child: ActionButtons(
-              onSave: () => _saveSession(context, ref),
-              onReset: () => ref.read(counterProvider.notifier).resetSession(),
+              onReset: () => _handleReset(context, ref),
             ),
           ),
           if (showPlanButton)
@@ -136,35 +157,12 @@ class CounterScreen extends ConsumerWidget {
         .startTodayPlan(plan.title, plan.beadsPerRound, todayDay.targetRounds);
   }
 
-  Future<void> _saveSession(BuildContext context, WidgetRef ref) async {
-    final state = ref.read(counterProvider);
-    if (state.sessionBeads <= 0) return;
-
-    final dao = ref.read(chantSessionDaoProvider);
-    await dao.insertSession(
-      ChantSessionsTableCompanion(
-        mode: Value(state.mode.label),
-        beadsCount: Value(state.sessionBeads),
-        roundsCompleted: Value(state.roundsCompleted),
-        startedAt: Value(state.sessionStartedAt ?? DateTime.now()),
-        completedAt: Value(DateTime.now()),
-      ),
-    );
-
-    final totalBeads = await dao.getTotalBeads();
-    final totalRounds = await dao.getTotalRounds();
-    await ref
-        .read(userInfoDaoProvider)
-        .updateLifetimeStats(totalBeads: totalBeads, totalRounds: totalRounds);
-
-    ref.invalidate(recentSessionsProvider);
-    ref.invalidate(lifetimeBeadsProvider);
+  Future<void> _handleReset(BuildContext context, WidgetRef ref) async {
+    ref.read(counterProvider.notifier).resetSession();
+    await ref.read(userInfoDaoProvider).resetCounterRounds();
+    ref.invalidate(counterRoundsProvider);
     ref.invalidate(lifetimeRoundsProvider);
     ref.invalidate(userInfoProvider);
-    ref.invalidate(completedPlansProvider);
-    ref.invalidate(recentPlansProvider);
-
-    ref.read(counterProvider.notifier).resetSession();
   }
 }
 

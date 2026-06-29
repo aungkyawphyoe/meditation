@@ -49,6 +49,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         streakDays: 0,
         totalLifetimeBeads: 0,
         totalLifetimeRounds: 0,
+        counterRounds: 0,
         createdAt: now,
         updatedAt: now,
       ),

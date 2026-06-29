@@ -34,7 +34,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.fromExecutor(QueryExecutor executor) : super(executor);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration {
@@ -50,6 +50,7 @@ class AppDatabase extends _$AppDatabase {
             streakDays: 0,
             totalLifetimeBeads: 0,
             totalLifetimeRounds: 0,
+            counterRounds: 0,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),
@@ -69,6 +70,9 @@ class AppDatabase extends _$AppDatabase {
         }
         if (from < 4) {
           await m.addColumn(userInfoTable, userInfoTable.defaultMode);
+        }
+        if (from < 5) {
+          await m.addColumn(userInfoTable, userInfoTable.counterRounds);
         }
       },
     );

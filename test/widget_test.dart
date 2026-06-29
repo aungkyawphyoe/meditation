@@ -437,7 +437,7 @@ void main() {
     expect(find.text('Failed'), findsOneWidget);
   });
 
-  testWidgets('Rank updates after completing rounds and saving session', (
+  testWidgets('Completing a round auto-saves counterRounds and updates rank', (
     WidgetTester tester,
   ) async {
     final db = createTestDatabase();
@@ -453,13 +453,17 @@ void main() {
     }
     await tester.pump();
 
-    // Save session
-    await tester.tap(find.text('Save'));
+    // Allow async save to complete
     await tester.runAsync(
       () => Future.delayed(const Duration(milliseconds: 500)),
     );
     await tester.pump();
     await tester.pump();
+
+    // Verify DB: counterRounds = 1, totalLifetimeRounds = 1
+    final user = await (db.select(db.userInfoTable)..limit(1)).getSingle();
+    expect(user.counterRounds, 1);
+    expect(user.totalLifetimeRounds, 1);
 
     // Check profile for rank update
     await tester.tap(find.text('Profile'));
@@ -472,62 +476,7 @@ void main() {
     expect(find.textContaining('Novice Chanter'), findsOneWidget);
   });
 
-  testWidgets('Free mode shows Save and Reset buttons', (
-    WidgetTester tester,
-  ) async {
-    final db = createTestDatabase();
-    await seedTestUser(db);
-    await tester.pumpWidget(
-      createTestProviderScope(child: const App(), database: db),
-    );
-    await tester.pump(const Duration(milliseconds: 100));
-
-    expect(find.text('Save'), findsOneWidget);
-    expect(find.text('Reset'), findsOneWidget);
-  });
-
-  testWidgets('Plan mode shows only Reset button, not Save', (
-    WidgetTester tester,
-  ) async {
-    final db = createTestDatabase();
-    await seedTestUser(db);
-    await seedTestPlan(db);
-    await tester.pumpWidget(
-      createTestProviderScope(child: const App(), database: db),
-    );
-    await tester.runAsync(
-      () => Future.delayed(const Duration(milliseconds: 500)),
-    );
-    await tester.pump();
-    await tester.pump();
-
-    await tester.tap(find.text('Start Today Plan'));
-    await tester.runAsync(
-      () => Future.delayed(const Duration(milliseconds: 500)),
-    );
-    await tester.pump();
-    await tester.pump();
-
-    expect(find.text('Save'), findsNothing);
-    expect(find.text('Reset'), findsOneWidget);
-  });
-
-  testWidgets('Save and Reset buttons render in free mode', (
-    WidgetTester tester,
-  ) async {
-    final db = createTestDatabase();
-    await seedTestUser(db);
-    await tester.pumpWidget(
-      createTestProviderScope(child: const App(), database: db),
-    );
-    await tester.pump(const Duration(milliseconds: 100));
-
-    // Save button text should exist in the widget tree
-    expect(find.text('Save'), findsOneWidget);
-    expect(find.text('Reset'), findsOneWidget);
-  });
-
-  testWidgets('Reset button clears counters without saving', (
+  testWidgets('Reset button clears counters and resets counterRounds in DB', (
     WidgetTester tester,
   ) async {
     final db = createTestDatabase();
@@ -552,7 +501,7 @@ void main() {
     expect(find.text('000'), findsOneWidget);
   });
 
-  testWidgets('Save button saves session and resets counters', (
+  testWidgets('Reset resets counterRounds but not totalLifetimeRounds', (
     WidgetTester tester,
   ) async {
     final db = createTestDatabase();
@@ -562,23 +511,80 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 100));
 
-    // Tap some beads
-    for (int i = 0; i < 5; i++) {
+    // Complete 1 round (108 taps = 1 round in standard mode)
+    for (int i = 0; i < 108; i++) {
       await tester.tap(find.text('TAP TO COUNT'));
     }
-    await tester.pump();
-    expect(find.text('005'), findsOneWidget);
-
-    // Tap Save
-    await tester.tap(find.text('Save'));
     await tester.runAsync(
       () => Future.delayed(const Duration(milliseconds: 500)),
     );
     await tester.pump();
     await tester.pump();
 
-    // Counter should reset to 000 after save
-    expect(find.text('000'), findsOneWidget);
+    // Verify DB before reset
+    var user = await (db.select(db.userInfoTable)..limit(1)).getSingle();
+    expect(user.counterRounds, 1);
+    expect(user.totalLifetimeRounds, 1);
+
+    // Tap Reset
+    await tester.tap(find.text('Reset'));
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    // Verify DB after reset: counterRounds = 0, totalLifetimeRounds = 1
+    user = await (db.select(db.userInfoTable)..limit(1)).getSingle();
+    expect(user.counterRounds, 0);
+    expect(user.totalLifetimeRounds, 1);
+  });
+
+  testWidgets('Continuous mode does not auto-save rounds', (
+    WidgetTester tester,
+  ) async {
+    final db = createTestDatabase();
+    await seedTestUser(db);
+    await tester.pumpWidget(
+      createTestProviderScope(child: const App(), database: db),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+
+    // Switch to Continuous mode via settings
+    await tester.tap(find.text('Profile'));
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Change'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Continuous'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Counter'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Continuous'), findsOneWidget);
+
+    // Tap many times — continuous mode has no round boundary
+    for (int i = 0; i < 50; i++) {
+      await tester.tap(find.text('TAP TO COUNT'));
+    }
+    await tester.pump();
+
+    await tester.runAsync(
+      () => Future.delayed(const Duration(milliseconds: 500)),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    // Verify DB: counterRounds and totalLifetimeRounds unchanged (still 0)
+    final user = await (db.select(db.userInfoTable)..limit(1)).getSingle();
+    expect(user.counterRounds, 0);
+    expect(user.totalLifetimeRounds, 0);
   });
 
   testWidgets('Short mode rounds increment after 8 taps', (

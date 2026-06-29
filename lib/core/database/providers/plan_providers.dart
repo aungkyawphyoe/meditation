@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../daos/plan_dao.dart';
 import '../database.dart';
 import '../models/plan_progress_summary.dart';
-import '../tables/gong_daw_details_table.dart';
 import 'app_database_providers.dart';
 
 final planDaoProvider = Provider<PlanDao>((ref) {
