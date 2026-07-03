@@ -363,4 +363,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changeMode => 'Change';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get nameEmptyError => 'Name should not be empty';
+
+  @override
+  String get ok => 'OK';
 }

@@ -366,4 +366,13 @@ class AppLocalizationsMy extends AppLocalizations {
 
   @override
   String get changeMode => 'ပြောင်းရန်';
+
+  @override
+  String get error => 'မှားနေသည်';
+
+  @override
+  String get nameEmptyError => 'နာမည်ထည့်ပါ';
+
+  @override
+  String get ok => 'အိုကေ';
 }

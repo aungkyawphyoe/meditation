@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
+import '../../../../core/localization/providers/locale_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
+
+enum LanguageOptions { english, burmese }
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -17,6 +20,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _pageController = PageController();
   bool _saving = false;
   CounterMode _selectedMode = CounterMode.standard;
+  LanguageOptions _selectedLanguage = LanguageOptions.english;
 
   @override
   void dispose() {
@@ -26,6 +30,25 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   void _goToModeSelection() {
+    final name = _nameController.text.trim();
+    if (name.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context)!.error),
+            content: Text(AppLocalizations.of(context)!.nameEmptyError),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(AppLocalizations.of(context)!.ok),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
     _pageController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -77,6 +100,38 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DropdownButton<LanguageOptions>(
+                  value: _selectedLanguage,
+                  onChanged: (LanguageOptions? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        _selectedLanguage = newValue;
+                      });
+                      // Change the app locale when language is selected
+                      if (newValue == LanguageOptions.burmese) {
+                        ref.read(localeProvider.notifier).setLocale(const Locale('my'));
+                      } else {
+                        ref.read(localeProvider.notifier).setLocale(const Locale('en'));
+                      }
+                    }
+                  },
+                  items: [
+                    DropdownMenuItem(
+                      value: LanguageOptions.english,
+                      child: Text(AppLocalizations.of(context)!.english),
+                    ),
+                    DropdownMenuItem(
+                      value: LanguageOptions.burmese,
+                      child: Text(AppLocalizations.of(context)!.burmese),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Spacer(),
             Text(
               AppLocalizations.of(context)!.welcomeTo,
               style: const TextStyle(
@@ -95,7 +150,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 color: Color(0xFF111111),
               ),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 36),
             Text(
               AppLocalizations.of(context)!.enterNamePrompt,
               style: const TextStyle(
@@ -131,8 +186,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 color: Color(0xFF111111),
               ),
               onSubmitted: (_) => _goToModeSelection(),
+              maxLength: 50,
             ),
-            const SizedBox(height: 32),
+            Spacer(),
             SizedBox(
               width: double.infinity,
               height: 52,
