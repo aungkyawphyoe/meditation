@@ -172,5 +172,8 @@
   "modeShortDescription": "တစ်ပတ်လျှင် ၈ လုံး ရေတွက်ပါ",
   "modeContinuousDescription": "ပတ်ရေမရှိဘဲ ဆက်တိုက်ရေတွက်ပါ",
   "currentMode": "ရေတွက်နည်း",
-  "changeMode": "ပြောင်းရန်"
+  "changeMode": "ပြောင်းရန်",
+  "error": "မှားနေသည်",
+  "nameEmptyError": "နာမည်ထည့်ပါ",
+  "ok": "အိုကေ"
 }

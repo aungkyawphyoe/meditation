@@ -172,5 +172,8 @@
   "modeShortDescription": "Count 8 beads per round",
   "modeContinuousDescription": "Count without rounds",
   "currentMode": "Counting Mode",
-  "changeMode": "Change"
+  "changeMode": "Change",
+  "error": "Error",
+  "nameEmptyError": "Name should not be empty",
+  "ok": "OK"
 }
