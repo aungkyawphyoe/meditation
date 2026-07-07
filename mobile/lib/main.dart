@@ -6,6 +6,7 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'app.dart';
 import 'l10n/app_localizations.dart';
+import 'services/wear_communication.dart';
 
 final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -56,6 +57,8 @@ Future<void> main() async {
   final locale = Locale(localeCode);
 
   await _scheduleDailyReminder(locale);
+
+  await WearCommunication.init();
 
   runApp(const ProviderScope(child: App()));
 }

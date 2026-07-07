@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'services/wear_communication.dart';
 
 void main() {
   runApp(const MeditationWatchApp());
@@ -28,14 +29,40 @@ class MeditationHomePage extends StatefulWidget {
 }
 
 class _MeditationHomePageState extends State<MeditationHomePage> {
-  static const int beadsPerRound = 108;
+  CounterMode _mode = CounterMode.standard;
   int _beadCount = 0;
   int _roundCount = 0;
+
+  int get _beadsPerRound {
+    return switch (_mode) {
+      CounterMode.standard => 108,
+      CounterMode.short => 8,
+      CounterMode.continuous => -1,
+    };
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initCommunication();
+  }
+
+  Future<void> _initCommunication() async {
+    await WearCommunication.init();
+    WearCommunication.modeStream.listen((mode) {
+      if (!mounted) return;
+      setState(() {
+        _mode = mode;
+        _beadCount = 0;
+        _roundCount = 0;
+      });
+    });
+  }
 
   void _incrementBead() {
     setState(() {
       _beadCount++;
-      if (_beadCount >= beadsPerRound) {
+      if (_beadsPerRound > 0 && _beadCount >= _beadsPerRound) {
         _beadCount = 0;
         _roundCount++;
       }
@@ -49,14 +76,32 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
     });
   }
 
-  void _syncWithMobile() {
+  Future<void> _syncWithMobile() async {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Syncing beads: $_beadCount, rounds: $_roundCount'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+
+    final modeName = _mode.name;
+    try {
+      await WearCommunication.sendSyncData(
+        beadCount: _beadCount,
+        roundsCompleted: _roundCount,
+        mode: modeName,
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Synced: $_beadCount beads, $_roundCount rounds'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Sync failed. Make sure phone app is running.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override
@@ -89,10 +134,11 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      '/ $beadsPerRound',
-                      style: const TextStyle(fontSize: 16),
-                    ),
+                    if (_beadsPerRound > 0)
+                      Text(
+                        '/ $_beadsPerRound',
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     const SizedBox(height: 8),
                     Text(
                       'Rounds: $_roundCount',
