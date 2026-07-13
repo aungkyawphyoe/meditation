@@ -1,11 +1,10 @@
-package com.example.meditation.wear
+package com.akp.meditation
 
 import android.util.Log
 import com.google.android.gms.wearable.*
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import java.util.concurrent.TimeUnit
 
 class WearCommunicationPlugin private constructor(
     private val channel: MethodChannel,
@@ -13,8 +12,8 @@ class WearCommunicationPlugin private constructor(
 ) : DataClient.OnDataChangedListener {
 
     companion object {
-        private const val TAG = "WearComm"
-        private const val CHANNEL = "com.example.meditation.wear/communication"
+        private const val TAG = "WearCommMobile"
+        private const val CHANNEL = "com.akp.meditation/communication"
         private const val PATH_MODE = "/meditation/mode"
         private const val PATH_SYNC = "/meditation/sync"
 
@@ -34,11 +33,17 @@ class WearCommunicationPlugin private constructor(
                 val uri = event.dataItem.uri
                 Log.d(TAG, "DataItem changed: ${uri.path}")
 
-                if (uri.path == PATH_MODE) {
-                    val mode = DataMapItem.fromDataItem(event.dataItem).dataMap.getString("mode")
-                    if (mode != null) {
-                        channel.invokeMethod("onModeUpdate", mode)
-                    }
+                if (uri.path == PATH_SYNC) {
+                    val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
+                    val beadCount = dataMap.getInt("beadCount")
+                    val roundsCompleted = dataMap.getInt("roundsCompleted")
+                    val mode = dataMap.getString("mode")
+
+                    channel.invokeMethod("onSyncData", mapOf(
+                        "beadCount" to beadCount,
+                        "roundsCompleted" to roundsCompleted,
+                        "mode" to mode,
+                    ))
                 }
             }
         }
@@ -50,26 +55,22 @@ class WearCommunicationPlugin private constructor(
                 Log.d(TAG, "init called")
                 result.success(true)
             }
-            "sendSyncData" -> {
+            "sendMode" -> {
                 val args = call.arguments as Map<*, *>
-                val beadCount = args["beadCount"] as Int
-                val roundsCompleted = args["roundsCompleted"] as Int
                 val mode = args["mode"] as String
 
-                val request = PutDataMapRequest.create(PATH_SYNC).apply {
-                    dataMap.putInt("beadCount", beadCount)
-                    dataMap.putInt("roundsCompleted", roundsCompleted)
+                val request = PutDataMapRequest.create(PATH_MODE).apply {
                     dataMap.putString("mode", mode)
                 }
 
                 dataClient
                     .putDataItem(request.asPutDataRequest())
                     .addOnSuccessListener {
-                        Log.d(TAG, "Sync data sent successfully")
+                        Log.d(TAG, "Mode sent: $mode")
                         result.success(true)
                     }
                     .addOnFailureListener { e ->
-                        Log.e(TAG, "Failed to send sync data", e)
+                        Log.e(TAG, "Failed to send mode", e)
                         result.error("SEND_FAILED", e.message, null)
                     }
             }

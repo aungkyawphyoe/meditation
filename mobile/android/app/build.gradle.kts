@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.meditation"
+    namespace = "com.akp.meditation"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -19,8 +19,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.meditation"
-        minSdk = 23
+        applicationId = "com.akp.meditation"
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

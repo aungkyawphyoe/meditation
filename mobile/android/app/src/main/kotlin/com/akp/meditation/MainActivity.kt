@@ -1,4 +1,4 @@
-package com.example.meditation
+package com.akp.meditation
 
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity

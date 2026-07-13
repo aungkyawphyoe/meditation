@@ -26,7 +26,7 @@ The watch listens for mode changes sent from the phone. When the phone changes c
 |---|---|
 | Framework | Flutter (SDK ^3.11.5) |
 | Platform | Wear OS |
-| Communication | MethodChannel (`com.example.meditation.wear/communication`) |
+| Communication | MethodChannel (`com.akp.meditation.wear/communication`) |
 | Dependencies | wear_plus |
 
 ## Architecture

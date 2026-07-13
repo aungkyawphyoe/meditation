@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.meditation.wear"
+    namespace = "com.akp.meditation.wear"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.meditation.wear"
+        applicationId = "com.akp.meditation.wear"
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

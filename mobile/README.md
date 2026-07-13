@@ -118,7 +118,7 @@ Strings are in `lib/l10n/`. Supported locales:
 
 ## Wear OS Communication
 
-The mobile app communicates with the watch companion via a `MethodChannel` (`com.example.meditation/communication`):
+The mobile app communicates with the watch companion via a `MethodChannel` (`com.akp.meditation/communication`):
 - **Receives** sync data (bead count, rounds, mode) from watch
 - **Sends** counter mode changes to watch
 

@@ -16,7 +16,7 @@ class SyncData {
 
 class WearCommunication {
   static const _channel = MethodChannel(
-    'com.example.meditation/communication',
+    'com.akp.meditation/communication',
   );
 
   static final StreamController<SyncData> _syncController =

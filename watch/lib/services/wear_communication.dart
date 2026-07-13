@@ -5,7 +5,7 @@ enum CounterMode { standard, short, continuous }
 
 class WearCommunication {
   static const _channel = MethodChannel(
-    'com.example.meditation.wear/communication',
+    'com.akp.meditation.wear/communication',
   );
 
   static final StreamController<CounterMode> _modeController =

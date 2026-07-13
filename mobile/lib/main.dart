@@ -58,7 +58,10 @@ Future<void> main() async {
 
   await _scheduleDailyReminder(locale);
 
-  await WearCommunication.init();
+  // Wear Communication is Android/Wear OS only; silently ignored on iOS
+  try {
+    await WearCommunication.init();
+  } catch (_) {}
 
   runApp(const ProviderScope(child: App()));
 }
