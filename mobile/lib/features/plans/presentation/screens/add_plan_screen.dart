@@ -14,15 +14,14 @@ class AddPlanScreen extends ConsumerStatefulWidget {
 class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _beadsController = TextEditingController(text: '108');
   final _days = <_DayEntry>[];
   final _formKey = GlobalKey<FormState>();
+  bool _isRoundsMode = true;
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
-    _beadsController.dispose();
     for (final day in _days) {
       day.dispose();
     }
@@ -55,7 +54,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
     }
 
     final dao = ref.read(planDaoProvider);
-    final beadsPerRound = int.tryParse(_beadsController.text) ?? 108;
+    final beadsPerRound = _isRoundsMode ? 108 : 0;
 
     final planId = await dao.addPlan(
       BeadPlansTableCompanion.insert(
@@ -155,16 +154,85 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
               decoration: _inputDecoration('Optional description'),
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Beads per Round'),
+            _buildSectionTitle('Mode'),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: _beadsController,
-              keyboardType: TextInputType.number,
-              style: const TextStyle(
-                fontFamily: 'JetBrains Mono',
-                fontSize: 16,
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFFE8E9E6),
+                borderRadius: BorderRadius.circular(10),
               ),
-              decoration: _inputDecoration('108'),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => setState(() => _isRoundsMode = true),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        decoration: BoxDecoration(
+                          color: _isRoundsMode
+                              ? Colors.white
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: _isRoundsMode
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.06),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ]
+                              : null,
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Rounds',
+                            style: TextStyle(
+                              fontFamily: 'Geist',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF111111),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => setState(() => _isRoundsMode = false),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        decoration: BoxDecoration(
+                          color: _isRoundsMode
+                              ? Colors.transparent
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: _isRoundsMode
+                              ? null
+                              : [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.06),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Continuous',
+                            style: TextStyle(
+                              fontFamily: 'Geist',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF111111),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 24),
             Row(
@@ -215,6 +283,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                 gongDawController: day.gongDawController,
                 gongDawDetailController: day.gongDawDetailController,
                 targetRoundsController: day.targetRoundsController,
+                isRoundsMode: _isRoundsMode,
                 onRemove: () => _removeDay(i),
               );
             }),
@@ -321,6 +390,7 @@ class _DayCard extends StatelessWidget {
   final TextEditingController gongDawController;
   final TextEditingController gongDawDetailController;
   final TextEditingController targetRoundsController;
+  final bool isRoundsMode;
   final VoidCallback onRemove;
 
   const _DayCard({
@@ -328,6 +398,7 @@ class _DayCard extends StatelessWidget {
     required this.gongDawController,
     required this.gongDawDetailController,
     required this.targetRoundsController,
+    required this.isRoundsMode,
     required this.onRemove,
   });
 
@@ -340,6 +411,129 @@ class _DayCard extends StatelessWidget {
     final current = int.tryParse(targetRoundsController.text) ?? 1;
     if (current > 1) {
       targetRoundsController.text = '${current - 1}';
+    }
+  }
+
+  Widget _buildTargetField() {
+    if (isRoundsMode) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Target Rounds',
+            style: TextStyle(
+              fontFamily: 'Geist',
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF888888),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            height: 40,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF2F3F0),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 48,
+                  child: TextFormField(
+                    controller: targetRoundsController,
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    validator: (v) =>
+                        (v == null || v.trim().isEmpty) ? 'Required' : null,
+                    style: const TextStyle(
+                      fontFamily: 'JetBrains Mono',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
+                      isDense: true,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _increment,
+                  child: Container(
+                    width: 32,
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.add_rounded,
+                      size: 18,
+                      color: Color(0xFFFF8400),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _decrement,
+                  child: Container(
+                    width: 32,
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.remove_rounded,
+                      size: 18,
+                      color: Color(0xFFFF8400),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Bead Counts',
+              style: TextStyle(
+                fontFamily: 'Geist',
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF888888),
+              ),
+            ),
+            const SizedBox(height: 6),
+            TextFormField(
+              controller: targetRoundsController,
+              keyboardType: TextInputType.number,
+              style: const TextStyle(
+                fontFamily: 'JetBrains Mono',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+              decoration: InputDecoration(
+                hintText: 'e.g., 500',
+                hintStyle: const TextStyle(
+                  fontFamily: 'Geist',
+                  fontSize: 14,
+                  color: Color(0xFF999999),
+                ),
+                filled: true,
+                fillColor: const Color(0xFFF2F3F0),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -448,80 +642,7 @@ class _DayCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Target Rounds',
-                      style: TextStyle(
-                        fontFamily: 'Geist',
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF888888),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF2F3F0),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: 48,
-                            child: TextFormField(
-                              controller: targetRoundsController,
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              validator: (v) => (v == null || v.trim().isEmpty)
-                                  ? 'Required'
-                                  : null,
-                              style: const TextStyle(
-                                fontFamily: 'JetBrains Mono',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.zero,
-                                isDense: true,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: _increment,
-                            child: Container(
-                              width: 32,
-                              height: 40,
-                              alignment: Alignment.center,
-                              child: const Icon(
-                                Icons.add_rounded,
-                                size: 18,
-                                color: Color(0xFFFF8400),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: _decrement,
-                            child: Container(
-                              width: 32,
-                              height: 40,
-                              alignment: Alignment.center,
-                              child: const Icon(
-                                Icons.remove_rounded,
-                                size: 18,
-                                color: Color(0xFFFF8400),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                _buildTargetField(),
               ],
             ),
             const SizedBox(height: 12),
