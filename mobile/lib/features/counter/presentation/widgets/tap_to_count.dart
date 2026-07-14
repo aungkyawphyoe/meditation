@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
+import '../../../../core/widgets/app_badge.dart';
 
 class TapToCount extends ConsumerWidget {
   const TapToCount({super.key});
@@ -43,22 +44,7 @@ class TapToCount extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFF8400).withAlpha(25),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Text(
-            mode.label,
-            style: const TextStyle(
-              fontFamily: 'Geist',
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFFFF8400),
-            ),
-          ),
-        ),
+        AppBadge.mode(text: mode.label),
       ],
     );
   }

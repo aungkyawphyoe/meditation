@@ -6,6 +6,9 @@ import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
 import '../../../../core/utils/rank_utils.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/app_badge.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../settings/presentation/screens/settings_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -56,7 +59,7 @@ class ProfileScreen extends ConsumerWidget {
                   fontFamily: 'Geist',
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF111111),
+                  color: AppColors.foreground,
                 ),
               ),
               const Spacer(),
@@ -69,7 +72,7 @@ class ProfileScreen extends ConsumerWidget {
                 },
                 icon: const Icon(
                   Icons.settings_outlined,
-                  color: Color(0xFF666666),
+                  color: AppColors.mutedForeground,
                   size: 24,
                 ),
               ),
@@ -84,7 +87,7 @@ class ProfileScreen extends ConsumerWidget {
                 width: 80,
                 height: 80,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFFF8400),
+                  color: AppColors.primary,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -94,7 +97,7 @@ class ProfileScreen extends ConsumerWidget {
                       fontFamily: 'JetBrains Mono',
                       fontSize: 32,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF111111),
+                      color: AppColors.foreground,
                     ),
                   ),
                 ),
@@ -109,26 +112,23 @@ class ProfileScreen extends ConsumerWidget {
                       fontFamily: 'Geist',
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF111111),
+                      color: AppColors.foreground,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    '${localizedRankTitle(AppLocalizations.of(context)!, user.rankTitle)}',
-                    style: const TextStyle(
-                      fontFamily: 'Geist',
-                      fontSize: 14,
-                      color: Color(0xFF666666),
+                  AppLabel(
+                    text: localizedRankTitle(
+                      AppLocalizations.of(context)!,
+                      user.rankTitle,
                     ),
+                    fontSize: 14,
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    '${AppLocalizations.of(context)!.daysStreak(user.streakDays)}',
-                    style: const TextStyle(
-                      fontFamily: 'Geist',
-                      fontSize: 14,
-                      color: Color(0xFF666666),
+                  AppLabel(
+                    text: AppLocalizations.of(context)!.daysStreak(
+                      user.streakDays,
                     ),
+                    fontSize: 14,
                   ),
                 ],
               ),
@@ -141,14 +141,14 @@ class ProfileScreen extends ConsumerWidget {
           child: Row(
             children: [
               Expanded(
-                child: _StatCard(
+                child: AppStatCard(
                   label: AppLocalizations.of(context)!.totalPlans,
                   value: formatNumber(plans),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _StatCard(
+                child: AppStatCard(
                   label: AppLocalizations.of(context)!.rounds,
                   value: formatNumber(rounds),
                 ),
@@ -165,7 +165,7 @@ class ProfileScreen extends ConsumerWidget {
               fontFamily: 'Geist',
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF111111),
+              color: AppColors.foreground,
             ),
           ),
         ),
@@ -173,13 +173,9 @@ class ProfileScreen extends ConsumerWidget {
         Expanded(
           child: recentPlans.isEmpty
               ? Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.noPlansYet,
-                    style: const TextStyle(
-                      fontFamily: 'Geist',
-                      fontSize: 14,
-                      color: Color(0xFF666666),
-                    ),
+                  child: AppLabel(
+                    text: AppLocalizations.of(context)!.noPlansYet,
+                    fontSize: 14,
                   ),
                 )
               : ListView.builder(
@@ -207,47 +203,6 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class _StatCard extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _StatCard({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontFamily: 'Geist',
-              fontSize: 12,
-              color: Color(0xFF666666),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(
-              fontFamily: 'JetBrains Mono',
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFFFF8400),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _PlanCard extends ConsumerWidget {
   final PlanProgressSummary plan;
 
@@ -261,7 +216,7 @@ class _PlanCard extends ConsumerWidget {
     Color statusColor;
     if (isActive) {
       statusLabel = AppLocalizations.of(context)!.active;
-      statusColor = const Color(0xFFFF8400);
+      statusColor = AppColors.primary;
     } else if (isFailed) {
       statusLabel = AppLocalizations.of(context)!.failed;
       statusColor = const Color(0xFFEF4444);
@@ -275,12 +230,7 @@ class _PlanCard extends ConsumerWidget {
           )!.dayOfTotal(plan.currentDay, plan.totalDays)
         : AppLocalizations.of(context)!.daysCount(plan.totalDays);
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
+    return AppCard.white(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -294,29 +244,14 @@ class _PlanCard extends ConsumerWidget {
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF111111),
+                    color: AppColors.foreground,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: statusColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  statusLabel,
-                  style: TextStyle(
-                    fontFamily: 'Geist',
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: statusColor,
-                  ),
-                ),
-              ),
+              AppStatusBadge(label: statusLabel, statusColor: statusColor),
             ],
           ),
           const SizedBox(height: 4),
@@ -325,7 +260,7 @@ class _PlanCard extends ConsumerWidget {
             style: const TextStyle(
               fontFamily: 'Geist',
               fontSize: 12,
-              color: Color(0xFF666666),
+              color: AppColors.mutedForeground,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

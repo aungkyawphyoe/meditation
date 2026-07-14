@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/plan_providers.dart';
+import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/app_badge.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class AddPlanScreen extends ConsumerStatefulWidget {
   const AddPlanScreen({super.key});
@@ -112,9 +116,9 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F3F0),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF2F3F0),
+        backgroundColor: AppColors.background,
         scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
@@ -126,7 +130,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
             fontFamily: 'Geist',
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF111111),
+            color: AppColors.foreground,
           ),
         ),
       ),
@@ -135,7 +139,8 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
           children: [
-            _buildSectionTitle('Title'),
+            const AppSectionTitle(text: 'Title'),
+            // ignore: prefer_const_constructors
             const SizedBox(height: 8),
             TextFormField(
               controller: _titleController,
@@ -145,7 +150,8 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
               decoration: _inputDecoration('e.g., 21-Day Challenge'),
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Description'),
+            const AppSectionTitle(text: 'Description'),
+            // ignore: prefer_const_constructors
             const SizedBox(height: 8),
             TextFormField(
               controller: _descriptionController,
@@ -154,7 +160,8 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
               decoration: _inputDecoration('Optional description'),
             ),
             const SizedBox(height: 20),
-            _buildSectionTitle('Mode'),
+            const AppSectionTitle(text: 'Mode'),
+            // ignore: prefer_const_constructors
             const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(
@@ -190,7 +197,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                               fontFamily: 'Geist',
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFF111111),
+                              color: AppColors.foreground,
                             ),
                           ),
                         ),
@@ -224,7 +231,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                               fontFamily: 'Geist',
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFF111111),
+                              color: AppColors.foreground,
                             ),
                           ),
                         ),
@@ -243,7 +250,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                     fontFamily: 'Geist',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF111111),
+                    color: AppColors.foreground,
                   ),
                 ),
                 const Spacer(),
@@ -255,7 +262,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                     style: TextStyle(fontFamily: 'Geist', fontSize: 14),
                   ),
                   style: TextButton.styleFrom(
-                    foregroundColor: const Color(0xFFFF8400),
+                    foregroundColor: AppColors.primary,
                   ),
                 ),
               ],
@@ -293,7 +300,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
         decoration: BoxDecoration(
-          color: const Color(0xFFF2F3F0),
+          color: AppColors.background,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.04),
@@ -304,38 +311,12 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
         ),
         child: SizedBox(
           width: double.infinity,
-          child: TextButton(
+          child: AppButton.primary(
+            label: 'Save Plan',
             onPressed: _save,
-            style: TextButton.styleFrom(
-              backgroundColor: const Color(0xFFFF8400),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text(
-              'Save Plan',
-              style: TextStyle(
-                fontFamily: 'Geist',
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            height: 16,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontFamily: 'Geist',
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Color(0xFF111111),
       ),
     );
   }
@@ -361,7 +342,7 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Color(0xFFFF8400), width: 1.5),
+        borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
       ),
     );
   }
@@ -467,7 +448,7 @@ class _DayCard extends StatelessWidget {
                     child: const Icon(
                       Icons.add_rounded,
                       size: 18,
-                      color: Color(0xFFFF8400),
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -480,7 +461,7 @@ class _DayCard extends StatelessWidget {
                     child: const Icon(
                       Icons.remove_rounded,
                       size: 18,
-                      color: Color(0xFFFF8400),
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -553,25 +534,7 @@ class _DayCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Container(
-                  width: 28,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF8400),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '$dayNumber',
-                      style: const TextStyle(
-                        fontFamily: 'JetBrains Mono',
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                AppDayIndicator(number: dayNumber),
                 const SizedBox(width: 10),
                 const Text(
                   'Day',
@@ -579,7 +542,7 @@ class _DayCard extends StatelessWidget {
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF111111),
+                    color: AppColors.foreground,
                   ),
                 ),
                 const Spacer(),

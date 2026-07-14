@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
+import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_badge.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../widgets/day_list_tile.dart';
 
 class PlanDetailScreen extends ConsumerStatefulWidget {
@@ -203,9 +206,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
     final userAsync = ref.watch(userInfoProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F3F0),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF2F3F0),
+        backgroundColor: AppColors.background,
         scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
@@ -217,7 +220,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
             fontFamily: 'Geist',
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF111111),
+            color: AppColors.foreground,
           ),
         ),
         actions: [
@@ -227,7 +230,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
             PopupMenuButton<String>(
               icon: const Icon(
                 Icons.more_vert_rounded,
-                color: Color(0xFF111111),
+                color: AppColors.foreground,
               ),
               onSelected: (value) {
                 if (value == 'edit') {
@@ -363,25 +366,14 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (plan.isPredefined)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF8400).withAlpha(25),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const Text(
-                    'PREDEFINED',
-                    style: TextStyle(
-                      fontFamily: 'Geist',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFFFF8400),
-                      letterSpacing: 1,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: AppBadge(
+                    text: 'PREDEFINED',
+                    color: AppColors.primary.withAlpha(25),
+                    textColor: AppColors.primary,
+                    fontSize: 10,
+                    letterSpacing: 1,
                   ),
                 ),
               const SizedBox(height: 4),
@@ -391,7 +383,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                   fontFamily: 'Geist',
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF111111),
+                  color: AppColors.foreground,
                 ),
               ),
               const SizedBox(height: 8),
@@ -400,7 +392,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                 style: const TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 14,
-                  color: Color(0xFF666666),
+                  color: AppColors.mutedForeground,
                 ),
               ),
               if (plan.description.isNotEmpty) ...[
@@ -411,7 +403,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF666666),
+                    color: AppColors.mutedForeground,
                     height: 1.5,
                   ),
                 ),
@@ -427,7 +419,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
               fontFamily: 'Geist',
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF111111),
+              color: AppColors.foreground,
             ),
           ),
         ),
@@ -466,7 +458,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                   fontFamily: 'Geist',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF111111),
+                  color: AppColors.foreground,
                 ),
               ),
               const Spacer(),
@@ -478,7 +470,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                   style: TextStyle(fontFamily: 'Geist', fontSize: 14),
                 ),
                 style: TextButton.styleFrom(
-                  foregroundColor: const Color(0xFFFF8400),
+                  foregroundColor: AppColors.primary,
                 ),
               ),
             ],
@@ -563,24 +555,12 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF5F5F5),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '$dayNum',
-                              style: const TextStyle(
-                                fontFamily: 'JetBrains Mono',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF666666),
-                              ),
-                            ),
-                          ),
+                        AppDayIndicator(
+                          number: dayNum,
+                          size: 36,
+                          borderRadius: 8,
+                          backgroundColor: const Color(0xFFF5F5F5),
+                          textColor: AppColors.mutedForeground,
                         ),
                       ],
                     ),
@@ -590,7 +570,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                         fontFamily: 'Geist',
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF111111),
+                        color: AppColors.foreground,
                       ),
                     ),
                     subtitle: Text(
@@ -629,7 +609,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
       decoration: BoxDecoration(
-        color: const Color(0xFFF2F3F0),
+        color: AppColors.background,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(10),
@@ -641,30 +621,16 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
       child: Row(
         children: [
           Expanded(
-            child: TextButton(
+            child: AppButton.outlined(
+              label: 'Cancel',
               onPressed: _cancelEdit,
-              style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF666666),
-                backgroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: const BorderSide(color: Color(0xFFDDDDDD)),
-                ),
-              ),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                  fontFamily: 'Geist',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              height: 16,
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: TextButton(
+            child: AppButton.primary(
+              label: 'Save Changes',
               onPressed: () {
                 if (_editableDays.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -676,22 +642,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                 }
                 _saveEdit();
               },
-              style: TextButton.styleFrom(
-                backgroundColor: const Color(0xFFFF8400),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text(
-                'Save Changes',
-                style: TextStyle(
-                  fontFamily: 'Geist',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              height: 16,
             ),
           ),
         ],
@@ -819,7 +770,7 @@ class _BottomAction extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
       decoration: BoxDecoration(
-        color: const Color(0xFFF2F3F0),
+        color: AppColors.background,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(10),
@@ -830,38 +781,18 @@ class _BottomAction extends StatelessWidget {
       ),
       child: SizedBox(
         width: double.infinity,
-        child: TextButton(
+        child: AppButton.primary(
+          label: isCompleted
+              ? 'Completed'
+              : isThisPlanActive
+              ? 'Complete Plan'
+              : 'Start This Plan',
           onPressed: isCompleted
               ? null
               : isThisPlanActive
               ? onCompletePlan ?? onCompleteDay
               : onStart,
-          style: TextButton.styleFrom(
-            backgroundColor: isCompleted
-                ? const Color(0xFFE0E0E0)
-                : const Color(0xFFFF8400),
-            foregroundColor: isCompleted
-                ? const Color(0xFF999999)
-                : Colors.white,
-            disabledBackgroundColor: const Color(0xFFE0E0E0),
-            disabledForegroundColor: const Color(0xFF999999),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: Text(
-            isCompleted
-                ? 'Completed'
-                : isThisPlanActive
-                ? 'Complete Plan'
-                : 'Start This Plan',
-            style: const TextStyle(
-              fontFamily: 'Geist',
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          height: 16,
         ),
       ),
     );
@@ -915,25 +846,7 @@ class _AddDayCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Container(
-                  width: 28,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF8400),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '$dayNumber',
-                      style: const TextStyle(
-                        fontFamily: 'JetBrains Mono',
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                AppDayIndicator(number: dayNumber),
                 const SizedBox(width: 10),
                 const Text(
                   'Day',
@@ -941,7 +854,7 @@ class _AddDayCard extends StatelessWidget {
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF111111),
+                    color: AppColors.foreground,
                   ),
                 ),
                 const Spacer(),
@@ -951,7 +864,7 @@ class _AddDayCard extends StatelessWidget {
                     Icons.check_rounded,
                     size: 20,
                     color: isValid
-                        ? const Color(0xFFFF8400)
+                        ? AppColors.primary
                         : const Color(0xFFCCCCCC),
                   ),
                   constraints: const BoxConstraints(
@@ -1067,7 +980,7 @@ class _AddDayCard extends StatelessWidget {
                               child: const Icon(
                                 Icons.add_rounded,
                                 size: 18,
-                                color: Color(0xFFFF8400),
+                                color: AppColors.primary,
                               ),
                             ),
                           ),
@@ -1080,7 +993,7 @@ class _AddDayCard extends StatelessWidget {
                               child: const Icon(
                                 Icons.remove_rounded,
                                 size: 18,
-                                color: Color(0xFFFF8400),
+                                color: AppColors.primary,
                               ),
                             ),
                           ),

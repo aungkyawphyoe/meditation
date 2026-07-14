@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
+import '../../../../core/widgets/app_card.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class TodayPlanDetail extends ConsumerWidget {
   const TodayPlanDetail({super.key});
@@ -14,11 +16,9 @@ class TodayPlanDetail extends ConsumerWidget {
     final targetRounds = state.planTargetRounds ?? 0;
     final completedRounds = state.roundsCompleted;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFE7E8E5),
-        borderRadius: BorderRadius.circular(12),
-      ),
+    return AppCard(
+      backgroundColor: AppColors.secondary,
+      boxShadow: const [],
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -33,15 +33,12 @@ class TodayPlanDetail extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 2),
-          Text(
-            AppLocalizations.of(
-              context,
-            )!.beadsPerRound(beadsPerRound, targetRounds),
-            style: const TextStyle(
-              fontFamily: 'Geist',
-              fontSize: 11,
-              color: Color(0xFF666666),
+          AppLabel(
+            text: AppLocalizations.of(context)!.beadsPerRound(
+              beadsPerRound,
+              targetRounds,
             ),
+            fontSize: 11,
           ),
           const SizedBox(height: 4),
           Text(
@@ -50,7 +47,7 @@ class TodayPlanDetail extends ConsumerWidget {
               fontFamily: 'JetBrains Mono',
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xFFFF8400),
+              color: AppColors.primary,
             ),
           ),
         ],

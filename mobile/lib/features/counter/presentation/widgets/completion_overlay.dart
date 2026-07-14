@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/widgets/app_card.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class CompletionOverlay extends StatefulWidget {
   const CompletionOverlay({super.key});
@@ -46,19 +48,14 @@ class _CompletionOverlayState extends State<CompletionOverlay>
         child: Center(
           child: ScaleTransition(
             scale: _scaleAnim,
-            child: Container(
-              margin: const EdgeInsets.all(40),
+            child: AppCard(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 48),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
                     Icons.check_circle,
-                    color: Color(0xFFFF8400),
+                    color: AppColors.primary,
                     size: 72,
                   ),
                   const SizedBox(height: 20),
@@ -69,18 +66,14 @@ class _CompletionOverlayState extends State<CompletionOverlay>
                       fontFamily: 'Geist',
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF111111),
+                      color: AppColors.foreground,
                       height: 1.3,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    AppLocalizations.of(context)!.allRoundsCompleted,
-                    style: const TextStyle(
-                      fontFamily: 'Geist',
-                      fontSize: 14,
-                      color: Color(0xFF666666),
-                    ),
+                  AppLabel(
+                    text: AppLocalizations.of(context)!.allRoundsCompleted,
+                    fontSize: 14,
                   ),
                 ],
               ),

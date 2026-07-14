@@ -4,6 +4,7 @@ import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../widgets/active_plan_card.dart';
 import '../widgets/bead_plan_card.dart';
 import 'add_plan_screen.dart';
@@ -17,17 +18,17 @@ class PlansScreen extends ConsumerWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: const Color(0xFFF2F3F0),
+        backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF2F3F0),
+          backgroundColor: AppColors.background,
           scrolledUnderElevation: 0,
-          title: Text(
-            AppLocalizations.of(context)!.plans,
-            style: const TextStyle(
+          title: const Text(
+            'Plans',
+            style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 28,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF111111),
+              color: AppColors.foreground,
             ),
           ),
           bottom: PreferredSize(
@@ -51,7 +52,7 @@ class PlansScreen extends ConsumerWidget {
                   ],
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: const Color(0xFF111111),
+                labelColor: AppColors.foreground,
                 unselectedLabelColor: const Color(0xFF888888),
                 labelStyle: const TextStyle(
                   fontFamily: 'Geist',
@@ -234,7 +235,7 @@ class _EmptyState extends StatelessWidget {
             Icon(
               Icons.auto_awesome_rounded,
               size: 64,
-              color: const Color(0xFFFF8400).withOpacity(0.3),
+              color: AppColors.primary.withOpacity(0.3),
             ),
             const SizedBox(height: 20),
             Text(
@@ -243,7 +244,7 @@ class _EmptyState extends StatelessWidget {
                 fontFamily: 'Geist',
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF111111),
+                color: AppColors.foreground,
               ),
             ),
             const SizedBox(height: 8),
@@ -270,7 +271,7 @@ class _ListTab extends ConsumerWidget {
     final plansAsync = ref.watch(allPlansProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F3F0),
+      backgroundColor: AppColors.background,
       body: plansAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
@@ -327,7 +328,7 @@ class _ListTab extends ConsumerWidget {
             MaterialPageRoute(builder: (_) => const AddPlanScreen()),
           );
         },
-        backgroundColor: const Color(0xFFFF8400),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),

@@ -4,6 +4,7 @@ import '../../providers/counter_provider.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/widgets/app_card.dart';
 import '../widgets/counter_display.dart';
 import '../widgets/tap_to_count.dart';
 import '../widgets/stats_display.dart';
@@ -64,7 +65,7 @@ class CounterScreen extends ConsumerWidget {
             bottom: false,
             child: Column(
               children: [
-                _Header(title: AppLocalizations.of(context)!.appTitle),
+                AppScreenTitle(text: AppLocalizations.of(context)!.appTitle),
                 if (counterState.isTodayPlanActive) ...[
                   const TodayPlanDetail(),
                 ] else ...[
@@ -163,31 +164,5 @@ class CounterScreen extends ConsumerWidget {
     ref.invalidate(counterRoundsProvider);
     ref.invalidate(lifetimeRoundsProvider);
     ref.invalidate(userInfoProvider);
-  }
-}
-
-class _Header extends StatelessWidget {
-  final String title;
-
-  const _Header({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontFamily: 'Geist',
-              fontSize: 28,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF111111),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

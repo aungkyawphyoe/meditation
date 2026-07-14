@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
+import '../../../../core/widgets/app_card.dart';
 
 class StatsDisplay extends ConsumerWidget {
   const StatsDisplay({super.key});
@@ -24,24 +25,8 @@ class StatsDisplay extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 4),
-        Text(
-          AppLocalizations.of(context)!.totalRounds,
-          style: const TextStyle(
-            fontFamily: 'Geist',
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1.2,
-            color: Color(0xFF666666),
-          ),
-        ),
-        Text(
-          AppLocalizations.of(context)!.beads(sessionBeads),
-          style: const TextStyle(
-            fontFamily: 'Geist',
-            fontSize: 10,
-            color: Color(0xFFFF8400),
-          ),
-        ),
+        AppLabel(text: AppLocalizations.of(context)!.totalRounds, fontSize: 10, fontWeight: FontWeight.w600),
+        AppLabel(text: AppLocalizations.of(context)!.beads(sessionBeads), fontSize: 10, color: const Color(0xFFFF8400)),
       ],
     );
   }

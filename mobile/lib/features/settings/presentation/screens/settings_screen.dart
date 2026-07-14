@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/localization/providers/locale_provider.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
+import '../../../../core/widgets/app_card.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../counter/providers/counter_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -14,9 +16,9 @@ class SettingsScreen extends ConsumerWidget {
     final currentMode = ref.watch(counterProvider.select((s) => s.mode));
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F3F0),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF2F3F0),
+        backgroundColor: AppColors.background,
         scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
@@ -28,7 +30,7 @@ class SettingsScreen extends ConsumerWidget {
             fontFamily: 'Geist',
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF111111),
+            color: AppColors.foreground,
           ),
         ),
       ),
@@ -43,22 +45,19 @@ class SettingsScreen extends ConsumerWidget {
                 fontFamily: 'Geist',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF666666),
+                color: AppColors.mutedForeground,
               ),
             ),
             const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
+            AppCard(
+              padding: EdgeInsets.zero,
               child: ListTile(
                 title: Text(
                   currentMode.label,
                   style: const TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 16,
-                    color: Color(0xFF111111),
+                    color: AppColors.foreground,
                   ),
                 ),
                 trailing: TextButton(
@@ -69,7 +68,7 @@ class SettingsScreen extends ConsumerWidget {
                       fontFamily: 'Geist',
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFFFF8400),
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
@@ -82,15 +81,12 @@ class SettingsScreen extends ConsumerWidget {
                 fontFamily: 'Geist',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF666666),
+                color: AppColors.mutedForeground,
               ),
             ),
             const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
+            AppCard(
+              padding: EdgeInsets.zero,
               child: Column(
                 children: [
                   _LanguageOption(
@@ -154,7 +150,7 @@ class _ModeBottomSheet extends StatelessWidget {
               fontFamily: 'Geist',
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF111111),
+              color: AppColors.foreground,
             ),
           ),
           const SizedBox(height: 16),
@@ -165,13 +161,13 @@ class _ModeBottomSheet extends StatelessWidget {
                 style: const TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 16,
-                  color: Color(0xFF111111),
+                  color: AppColors.foreground,
                 ),
               ),
               trailing: mode == currentMode
                   ? const Icon(
                       Icons.check_rounded,
-                      color: Color(0xFFFF8400),
+                      color: AppColors.primary,
                       size: 20,
                     )
                   : null,
@@ -210,14 +206,14 @@ class _LanguageOption extends StatelessWidget {
               style: const TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 16,
-                color: Color(0xFF111111),
+                color: AppColors.foreground,
               ),
             ),
             const Spacer(),
             if (isSelected)
               const Icon(
                 Icons.check_rounded,
-                color: Color(0xFFFF8400),
+                color: AppColors.primary,
                 size: 20,
               ),
           ],

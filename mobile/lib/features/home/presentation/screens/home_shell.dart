@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../counter/presentation/screens/counter_screen.dart';
 import '../../../plans/presentation/screens/plans_screen.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
@@ -79,6 +80,9 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final activeColor = AppColors.primary;
+    final inactiveColor = AppColors.mutedForeground;
+
     return GestureDetector(
       onTap: onTap,
       child: Padding(
@@ -88,9 +92,7 @@ class _TabItem extends StatelessWidget {
           children: [
             Icon(
               isActive ? activeIcon : icon,
-              color: isActive
-                  ? const Color(0xFFFF8400)
-                  : const Color(0xFF666666),
+              color: isActive ? activeColor : inactiveColor,
               size: 24,
             ),
             const SizedBox(height: 4),
@@ -100,9 +102,7 @@ class _TabItem extends StatelessWidget {
                 fontFamily: 'Geist',
                 fontSize: 10,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-                color: isActive
-                    ? const Color(0xFFFF8400)
-                    : const Color(0xFF666666),
+                color: isActive ? activeColor : inactiveColor,
               ),
             ),
           ],
