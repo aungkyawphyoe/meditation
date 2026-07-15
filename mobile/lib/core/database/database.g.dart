@@ -115,6 +115,17 @@ class $UserInfoTableTable extends UserInfoTable
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _themeModeMeta = const VerificationMeta(
+    'themeMode',
+  );
+  @override
+  late final GeneratedColumn<String> themeMode = GeneratedColumn<String>(
+    'theme_mode',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -127,6 +138,7 @@ class $UserInfoTableTable extends UserInfoTable
     counterRounds,
     createdAt,
     updatedAt,
+    themeMode,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -223,6 +235,12 @@ class $UserInfoTableTable extends UserInfoTable
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
+    if (data.containsKey('theme_mode')) {
+      context.handle(
+        _themeModeMeta,
+        themeMode.isAcceptableOrUnknown(data['theme_mode']!, _themeModeMeta),
+      );
+    }
     return context;
   }
 
@@ -272,6 +290,10 @@ class $UserInfoTableTable extends UserInfoTable
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
       )!,
+      themeMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}theme_mode'],
+      ),
     );
   }
 
@@ -292,6 +314,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
   final int counterRounds;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String? themeMode;
   const UserInfo({
     required this.id,
     required this.name,
@@ -303,6 +326,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     required this.counterRounds,
     required this.createdAt,
     required this.updatedAt,
+    this.themeMode,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -317,6 +341,9 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     map['counter_rounds'] = Variable<int>(counterRounds);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || themeMode != null) {
+      map['theme_mode'] = Variable<String>(themeMode);
+    }
     return map;
   }
 
@@ -332,6 +359,9 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       counterRounds: Value(counterRounds),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
+      themeMode: themeMode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(themeMode),
     );
   }
 
@@ -353,6 +383,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       counterRounds: serializer.fromJson<int>(json['counterRounds']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      themeMode: serializer.fromJson<String?>(json['themeMode']),
     );
   }
   @override
@@ -369,6 +400,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
       'counterRounds': serializer.toJson<int>(counterRounds),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'themeMode': serializer.toJson<String?>(themeMode),
     };
   }
 
@@ -383,6 +415,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     int? counterRounds,
     DateTime? createdAt,
     DateTime? updatedAt,
+    Value<String?> themeMode = const Value.absent(),
   }) => UserInfo(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -394,6 +427,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     counterRounds: counterRounds ?? this.counterRounds,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
+    themeMode: themeMode.present ? themeMode.value : this.themeMode,
   );
   UserInfo copyWithCompanion(UserInfoTableCompanion data) {
     return UserInfo(
@@ -417,6 +451,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
           : this.counterRounds,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      themeMode: data.themeMode.present ? data.themeMode.value : this.themeMode,
     );
   }
 
@@ -432,7 +467,8 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
           ..write('totalLifetimeRounds: $totalLifetimeRounds, ')
           ..write('counterRounds: $counterRounds, ')
           ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('themeMode: $themeMode')
           ..write(')'))
         .toString();
   }
@@ -449,6 +485,7 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
     counterRounds,
     createdAt,
     updatedAt,
+    themeMode,
   );
   @override
   bool operator ==(Object other) =>
@@ -463,7 +500,8 @@ class UserInfo extends DataClass implements Insertable<UserInfo> {
           other.totalLifetimeRounds == this.totalLifetimeRounds &&
           other.counterRounds == this.counterRounds &&
           other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt);
+          other.updatedAt == this.updatedAt &&
+          other.themeMode == this.themeMode);
 }
 
 class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
@@ -477,6 +515,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
   final Value<int> counterRounds;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
+  final Value<String?> themeMode;
   const UserInfoTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -488,6 +527,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     this.counterRounds = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.themeMode = const Value.absent(),
   });
   UserInfoTableCompanion.insert({
     this.id = const Value.absent(),
@@ -500,6 +540,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     this.counterRounds = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
+    this.themeMode = const Value.absent(),
   }) : name = Value(name),
        rankTitle = Value(rankTitle),
        streakDays = Value(streakDays),
@@ -518,6 +559,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     Expression<int>? counterRounds,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
+    Expression<String>? themeMode,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -532,6 +574,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
       if (counterRounds != null) 'counter_rounds': counterRounds,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
+      if (themeMode != null) 'theme_mode': themeMode,
     });
   }
 
@@ -546,6 +589,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     Value<int>? counterRounds,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
+    Value<String?>? themeMode,
   }) {
     return UserInfoTableCompanion(
       id: id ?? this.id,
@@ -558,6 +602,7 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
       counterRounds: counterRounds ?? this.counterRounds,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      themeMode: themeMode ?? this.themeMode,
     );
   }
 
@@ -594,6 +639,9 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
+    if (themeMode.present) {
+      map['theme_mode'] = Variable<String>(themeMode.value);
+    }
     return map;
   }
 
@@ -609,7 +657,8 @@ class UserInfoTableCompanion extends UpdateCompanion<UserInfo> {
           ..write('totalLifetimeRounds: $totalLifetimeRounds, ')
           ..write('counterRounds: $counterRounds, ')
           ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('themeMode: $themeMode')
           ..write(')'))
         .toString();
   }
@@ -2629,6 +2678,7 @@ typedef $$UserInfoTableTableCreateCompanionBuilder =
       Value<int> counterRounds,
       required DateTime createdAt,
       required DateTime updatedAt,
+      Value<String?> themeMode,
     });
 typedef $$UserInfoTableTableUpdateCompanionBuilder =
     UserInfoTableCompanion Function({
@@ -2642,6 +2692,7 @@ typedef $$UserInfoTableTableUpdateCompanionBuilder =
       Value<int> counterRounds,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
+      Value<String?> themeMode,
     });
 
 final class $$UserInfoTableTableReferences
@@ -2740,6 +2791,11 @@ class $$UserInfoTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get themeMode => $composableBuilder(
+    column: $table.themeMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
   Expression<bool> userPlanProgressTableRefs(
     Expression<bool> Function($$UserPlanProgressTableTableFilterComposer f) f,
   ) {
@@ -2825,6 +2881,11 @@ class $$UserInfoTableTableOrderingComposer
     column: $table.updatedAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get themeMode => $composableBuilder(
+    column: $table.themeMode,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$UserInfoTableTableAnnotationComposer
@@ -2875,6 +2936,9 @@ class $$UserInfoTableTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get themeMode =>
+      $composableBuilder(column: $table.themeMode, builder: (column) => column);
 
   Expression<T> userPlanProgressTableRefs<T extends Object>(
     Expression<T> Function($$UserPlanProgressTableTableAnnotationComposer a) f,
@@ -2941,6 +3005,7 @@ class $$UserInfoTableTableTableManager
                 Value<int> counterRounds = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
+                Value<String?> themeMode = const Value.absent(),
               }) => UserInfoTableCompanion(
                 id: id,
                 name: name,
@@ -2952,6 +3017,7 @@ class $$UserInfoTableTableTableManager
                 counterRounds: counterRounds,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
+                themeMode: themeMode,
               ),
           createCompanionCallback:
               ({
@@ -2965,6 +3031,7 @@ class $$UserInfoTableTableTableManager
                 Value<int> counterRounds = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
+                Value<String?> themeMode = const Value.absent(),
               }) => UserInfoTableCompanion.insert(
                 id: id,
                 name: name,
@@ -2976,6 +3043,7 @@ class $$UserInfoTableTableTableManager
                 counterRounds: counterRounds,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
+                themeMode: themeMode,
               ),
           withReferenceMapper: (p0) => p0
               .map(

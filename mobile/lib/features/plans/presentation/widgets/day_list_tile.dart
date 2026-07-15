@@ -22,22 +22,23 @@ class DayListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final accentColor = isCompleted
         ? const Color(0xFF4CAF50)
         : isCurrentDay
-        ? AppColors.primary
-        : const Color(0xFFF5F5F5);
+        ? colors.primary
+        : colors.secondary;
 
     return AppCard(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       backgroundColor: isCurrentDay
-          ? AppColors.primary.withOpacity(0.08)
-          : Colors.white,
+          ? colors.primary.withValues(alpha:0.08)
+          : colors.card,
       border: Border.all(
         color: isCurrentDay
-            ? AppColors.primary
-            : const Color(0xFFEEEEEE),
+            ? colors.primary
+            : colors.border,
         width: isCurrentDay ? 1.5 : 1,
       ),
       child: Row(
@@ -49,7 +50,7 @@ class DayListTile extends StatelessWidget {
             backgroundColor: accentColor,
             textColor: (isCompleted || isCurrentDay)
                 ? Colors.white
-                : AppColors.mutedForeground,
+                : colors.mutedForeground,
           ),
           if (isCompleted)
             const Center(
@@ -62,21 +63,21 @@ class DayListTile extends StatelessWidget {
               children: [
                 Text(
                   'Day $dayNumber',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.foreground,
+                    color: colors.foreground,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   '$gongDawName · ${planDay.targetRounds} rounds',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF888888),
+                    color: colors.mutedForeground,
                   ),
                 ),
               ],
@@ -86,7 +87,7 @@ class DayListTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: colors.primary,
                 borderRadius: BorderRadius.circular(6),
               ),
               child: const Text(

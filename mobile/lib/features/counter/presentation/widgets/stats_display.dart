@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../counter/providers/counter_provider.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class StatsDisplay extends ConsumerWidget {
   const StatsDisplay({super.key});
@@ -13,20 +14,21 @@ class StatsDisplay extends ConsumerWidget {
     final sessionBeads = ref.watch(
       counterProvider.select((s) => s.sessionBeads),
     );
+    final colors = context.colors;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           formatNumber(rounds + (sessionBeads > 0 ? 0 : 0)),
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'JetBrains Mono',
             fontSize: 24,
-            color: Color(0xFF111111),
+            color: colors.foreground,
           ),
         ),
         const SizedBox(height: 4),
         AppLabel(text: AppLocalizations.of(context)!.totalRounds, fontSize: 10, fontWeight: FontWeight.w600),
-        AppLabel(text: AppLocalizations.of(context)!.beads(sessionBeads), fontSize: 10, color: const Color(0xFFFF8400)),
+        AppLabel(text: AppLocalizations.of(context)!.beads(sessionBeads), fontSize: 10, color: colors.primary),
       ],
     );
   }

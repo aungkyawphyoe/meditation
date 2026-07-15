@@ -25,7 +25,7 @@ class AppButton extends StatelessWidget {
     this.fontSize = 16,
   });
 
-  AppButton.primary({
+  const AppButton.primary({
     super.key,
     required this.label,
     this.onPressed,
@@ -36,7 +36,7 @@ class AppButton extends StatelessWidget {
     this.fontSize = 16,
   }) : variant = AppButtonVariant.primary;
 
-  AppButton.outlined({
+  const AppButton.outlined({
     super.key,
     required this.label,
     this.onPressed,
@@ -47,50 +47,36 @@ class AppButton extends StatelessWidget {
     this.fontSize = 16,
   }) : variant = AppButtonVariant.outlined;
 
-  AppButton.text({
-    super.key,
-    required this.label,
-    this.onPressed,
-    this.width,
-    this.height = 16,
-    this.borderRadius = 12,
-    this.icon,
-    this.fontSize = 16,
-  }) : variant = AppButtonVariant.text;
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final isDisabled = onPressed == null;
+    final disabledColor = colors.mutedForeground.withValues(alpha:0.4);
+
     final style = switch (variant) {
       AppButtonVariant.primary => TextButton.styleFrom(
-        backgroundColor:
-            isDisabled ? const Color(0xFFE0E0E0) : AppColors.primary,
-        foregroundColor:
-            isDisabled ? const Color(0xFF999999) : Colors.white,
-        disabledBackgroundColor: const Color(0xFFE0E0E0),
-        disabledForegroundColor: const Color(0xFF999999),
+        backgroundColor: isDisabled ? disabledColor : colors.primary,
+        foregroundColor: isDisabled ? disabledColor : Colors.white,
+        disabledBackgroundColor: disabledColor,
+        disabledForegroundColor: disabledColor,
         padding: EdgeInsets.symmetric(vertical: height),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
       ),
       AppButtonVariant.outlined => TextButton.styleFrom(
-        foregroundColor:
-            isDisabled ? const Color(0xFFBBBBBB) : const Color(0xFF666666),
-        backgroundColor: Colors.white,
+        foregroundColor: isDisabled ? disabledColor : colors.mutedForeground,
+        backgroundColor: colors.card,
         padding: EdgeInsets.symmetric(vertical: height),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
           side: BorderSide(
-            color: isDisabled
-                ? const Color(0xFFDDDDDD)
-                : const Color(0xFFDDDDDD),
+            color: isDisabled ? disabledColor : colors.border,
           ),
         ),
       ),
       AppButtonVariant.text => TextButton.styleFrom(
-        foregroundColor:
-            isDisabled ? const Color(0xFFBBBBBB) : AppColors.primary,
+        foregroundColor: isDisabled ? disabledColor : colors.primary,
         padding: EdgeInsets.symmetric(vertical: height),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
@@ -147,7 +133,8 @@ class AppIconCircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = enabled ? const Color(0xFF111111) : const Color(0xFFBBBBBB);
+    final colors = context.colors;
+    final color = enabled ? colors.foreground : colors.mutedForeground.withValues(alpha:0.6);
 
     return GestureDetector(
       onTap: onTap,
@@ -155,12 +142,12 @@ class AppIconCircleButton extends StatelessWidget {
         width: 72,
         height: 72,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colors.card,
           shape: BoxShape.circle,
           boxShadow: enabled
               ? [
                   BoxShadow(
-                    color: const Color(0xFF000000).withAlpha(13),
+                    color: colors.foreground.withValues(alpha:0.05),
                     blurRadius: 30,
                     offset: const Offset(0, 10),
                   ),

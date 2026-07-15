@@ -8,6 +8,8 @@ import 'core/database/providers/app_database_providers.dart';
 import 'core/database/database.dart';
 import 'l10n/app_localizations.dart';
 import 'core/localization/providers/locale_provider.dart';
+import 'core/theme/app_theme.dart';
+import 'core/theme/theme_provider.dart';
 import 'features/home/presentation/screens/home_shell.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'features/counter/providers/counter_provider.dart';
@@ -69,6 +71,7 @@ class _AppState extends ConsumerState<App> {
   Widget build(BuildContext context) {
     final userAsync = ref.watch(userInfoProvider);
     final locale = ref.watch(localeProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     ref.listen<CounterMode>(
       counterProvider.select((s) => s.mode),
@@ -90,16 +93,9 @@ class _AppState extends ConsumerState<App> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF2F3F0),
-        colorScheme: const ColorScheme.light(
-          primary: Color(0xFFFF8400),
-          surface: Color(0xFFF2F3F0),
-          onSurface: Color(0xFF111111),
-        ),
-        fontFamily: 'Geist',
-      ),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: themeMode,
       home: userAsync.when(
         loading: () =>
             const Scaffold(body: Center(child: CircularProgressIndicator())),
@@ -107,7 +103,7 @@ class _AppState extends ConsumerState<App> {
           body: Center(
             child: Text(
               'Error loading app',
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 16,
                 color: Color(0xFF666666),

@@ -11,57 +11,61 @@ class BeadPlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppCard.white(
+    final colors = context.colors;
+    return GestureDetector(
       onTap: onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            plan.isPredefined ? 'Predefined' : 'Custom',
-            style: const TextStyle(
-              fontFamily: 'Geist',
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
-              color: AppColors.primary,
-              letterSpacing: 1.2,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            plan.title,
-            style: const TextStyle(
-              fontFamily: 'Geist',
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.foreground,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${plan.beadsPerRound} beads/round',
-            style: const TextStyle(
-              fontFamily: 'JetBrains Mono',
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: AppColors.mutedForeground,
-            ),
-          ),
-          const Spacer(),
-          if (plan.description.isNotEmpty)
+      child: AppCard(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
-              plan.description,
-              style: const TextStyle(
+              plan.isPredefined ? 'Predefined' : 'Custom',
+              style: TextStyle(
                 fontFamily: 'Geist',
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF888888),
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+                color: colors.primary,
+                letterSpacing: 1.2,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              plan.title,
+              style: TextStyle(
+                fontFamily: 'Geist',
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: colors.foreground,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              '${plan.beadsPerRound} beads/round',
+              style: TextStyle(
+                fontFamily: 'JetBrains Mono',
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: colors.mutedForeground,
+              ),
+            ),
+            const Spacer(),
+            if (plan.description.isNotEmpty)
+              Text(
+                plan.description,
+                style: TextStyle(
+                  fontFamily: 'Geist',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: colors.mutedForeground,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+          ],
+        ),
       ),
     );
   }

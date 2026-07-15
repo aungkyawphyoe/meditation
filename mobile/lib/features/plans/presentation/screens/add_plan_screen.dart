@@ -115,22 +115,23 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: colors.background,
         scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'New Plan',
           style: TextStyle(
             fontFamily: 'Geist',
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: AppColors.foreground,
+            color: colors.foreground,
           ),
         ),
       ),
@@ -140,32 +141,37 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
           children: [
             const AppSectionTitle(text: 'Title'),
-            // ignore: prefer_const_constructors
             const SizedBox(height: 8),
             TextFormField(
               controller: _titleController,
               validator: (v) =>
                   (v == null || v.trim().isEmpty) ? 'Required' : null,
-              style: const TextStyle(fontFamily: 'Geist', fontSize: 16),
+              style: TextStyle(
+                fontFamily: 'Geist',
+                fontSize: 16,
+                color: colors.foreground,
+              ),
               decoration: _inputDecoration('e.g., 21-Day Challenge'),
             ),
             const SizedBox(height: 20),
             const AppSectionTitle(text: 'Description'),
-            // ignore: prefer_const_constructors
             const SizedBox(height: 8),
             TextFormField(
               controller: _descriptionController,
               maxLines: 3,
-              style: const TextStyle(fontFamily: 'Geist', fontSize: 16),
+              style: TextStyle(
+                fontFamily: 'Geist',
+                fontSize: 16,
+                color: colors.foreground,
+              ),
               decoration: _inputDecoration('Optional description'),
             ),
             const SizedBox(height: 20),
             const AppSectionTitle(text: 'Mode'),
-            // ignore: prefer_const_constructors
             const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(
-                color: const Color(0xFFE8E9E6),
+                color: colors.secondary,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -177,27 +183,27 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
                           color: _isRoundsMode
-                              ? Colors.white
+                              ? colors.card
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: _isRoundsMode
                               ? [
                                   BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.06),
+                                    color: colors.foreground.withValues(alpha: 0.06),
                                     blurRadius: 4,
                                     offset: const Offset(0, 2),
                                   ),
                                 ]
                               : null,
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Rounds',
                             style: TextStyle(
                               fontFamily: 'Geist',
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.foreground,
+                              color: colors.foreground,
                             ),
                           ),
                         ),
@@ -212,26 +218,26 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                         decoration: BoxDecoration(
                           color: _isRoundsMode
                               ? Colors.transparent
-                              : Colors.white,
+                              : colors.card,
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: _isRoundsMode
                               ? null
                               : [
                                   BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.06),
+                                    color: colors.foreground.withValues(alpha: 0.06),
                                     blurRadius: 4,
                                     offset: const Offset(0, 2),
                                   ),
                                 ],
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Continuous',
                             style: TextStyle(
                               fontFamily: 'Geist',
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.foreground,
+                              color: colors.foreground,
                             ),
                           ),
                         ),
@@ -244,13 +250,13 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
             const SizedBox(height: 24),
             Row(
               children: [
-                const Text(
+                Text(
                   'Days',
                   style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.foreground,
+                    color: colors.foreground,
                   ),
                 ),
                 const Spacer(),
@@ -262,22 +268,22 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
                     style: TextStyle(fontFamily: 'Geist', fontSize: 14),
                   ),
                   style: TextButton.styleFrom(
-                    foregroundColor: AppColors.primary,
+                    foregroundColor: colors.primary,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 8),
             if (_days.isEmpty)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
                 child: Center(
                   child: Text(
                     'Tap "Add Day" to create your plan schedule',
                     style: TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,
-                      color: Color(0xFF888888),
+                      color: colors.mutedForeground,
                     ),
                   ),
                 ),
@@ -300,10 +306,10 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: colors.background,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: colors.foreground.withValues(alpha:0.04),
               blurRadius: 8,
               offset: const Offset(0, -2),
             ),
@@ -322,27 +328,28 @@ class _AddPlanScreenState extends ConsumerState<AddPlanScreen> {
   }
 
   InputDecoration _inputDecoration(String hint) {
+    final colors = context.colors;
     return InputDecoration(
       hintText: hint,
-      hintStyle: const TextStyle(
+      hintStyle: TextStyle(
         fontFamily: 'Geist',
         fontSize: 16,
-        color: Color(0xFF999999),
+        color: colors.mutedForeground,
       ),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: colors.card,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Color(0xFFEEEEEE)),
+        borderSide: BorderSide(color: colors.border),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Color(0xFFEEEEEE)),
+        borderSide: BorderSide(color: colors.border),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+        borderSide: BorderSide(color: colors.primary, width: 1.5),
       ),
     );
   }
@@ -395,25 +402,26 @@ class _DayCard extends StatelessWidget {
     }
   }
 
-  Widget _buildTargetField() {
+  Widget _buildTargetField(BuildContext context) {
+    final colors = context.colors;
     if (isRoundsMode) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Target Rounds',
             style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF888888),
+              color: colors.mutedForeground,
             ),
           ),
           const SizedBox(height: 6),
           Container(
             height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFFF2F3F0),
+              color: colors.secondary,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -445,10 +453,10 @@ class _DayCard extends StatelessWidget {
                     width: 32,
                     height: 40,
                     alignment: Alignment.center,
-                    child: const Icon(
+                    child: Icon(
                       Icons.add_rounded,
                       size: 18,
-                      color: AppColors.primary,
+                      color: colors.primary,
                     ),
                   ),
                 ),
@@ -458,10 +466,10 @@ class _DayCard extends StatelessWidget {
                     width: 32,
                     height: 40,
                     alignment: Alignment.center,
-                    child: const Icon(
+                    child: Icon(
                       Icons.remove_rounded,
                       size: 18,
-                      color: AppColors.primary,
+                      color: colors.primary,
                     ),
                   ),
                 ),
@@ -475,13 +483,13 @@ class _DayCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Bead Counts',
               style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF888888),
+                color: colors.mutedForeground,
               ),
             ),
             const SizedBox(height: 6),
@@ -495,13 +503,13 @@ class _DayCard extends StatelessWidget {
               ),
               decoration: InputDecoration(
                 hintText: 'e.g., 500',
-                hintStyle: const TextStyle(
+                hintStyle: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 14,
-                  color: Color(0xFF999999),
+                  color: colors.mutedForeground,
                 ),
                 filled: true,
-                fillColor: const Color(0xFFF2F3F0),
+                fillColor: colors.secondary,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 10,
@@ -520,12 +528,13 @@ class _DayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colors.card,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFEEEEEE)),
+        border: Border.all(color: colors.border),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -536,22 +545,22 @@ class _DayCard extends StatelessWidget {
               children: [
                 AppDayIndicator(number: dayNumber),
                 const SizedBox(width: 10),
-                const Text(
+                Text(
                   'Day',
                   style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.foreground,
+                    color: colors.foreground,
                   ),
                 ),
                 const Spacer(),
                 GestureDetector(
                   onTap: onRemove,
-                  child: const Icon(
+                  child: Icon(
                     Icons.close_rounded,
                     size: 20,
-                    color: Color(0xFF999999),
+                    color: colors.mutedForeground,
                   ),
                 ),
               ],
@@ -564,13 +573,13 @@ class _DayCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Gong/Daw Name',
                         style: TextStyle(
                           fontFamily: 'Geist',
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF888888),
+                          color: colors.mutedForeground,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -578,19 +587,20 @@ class _DayCard extends StatelessWidget {
                         controller: gongDawController,
                         validator: (v) =>
                             (v == null || v.trim().isEmpty) ? 'Required' : null,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Geist',
                           fontSize: 14,
+                          color: colors.foreground,
                         ),
                         decoration: InputDecoration(
                           hintText: 'e.g., အရဟံ',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontFamily: 'Geist',
                             fontSize: 14,
-                            color: Color(0xFF999999),
+                            color: colors.mutedForeground,
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFF2F3F0),
+                          fillColor: colors.secondary,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 10,
@@ -605,35 +615,39 @@ class _DayCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                _buildTargetField(),
+                _buildTargetField(context),
               ],
             ),
             const SizedBox(height: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Gong/Daw Detail',
                   style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF888888),
+                    color: colors.mutedForeground,
                   ),
                 ),
                 const SizedBox(height: 6),
                 TextFormField(
                   controller: gongDawDetailController,
-                  style: const TextStyle(fontFamily: 'Geist', fontSize: 14),
+                  style: TextStyle(
+                    fontFamily: 'Geist',
+                    fontSize: 14,
+                    color: colors.foreground,
+                  ),
                   decoration: InputDecoration(
                     hintText: 'e.g., ပူဇော်အထူးကို ခံတော်မူထိုက်သော',
-                    hintStyle: const TextStyle(
+                    hintStyle: TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,
-                      color: Color(0xFF999999),
+                      color: colors.mutedForeground,
                     ),
                     filled: true,
-                    fillColor: const Color(0xFFF2F3F0),
+                    fillColor: colors.secondary,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 10,

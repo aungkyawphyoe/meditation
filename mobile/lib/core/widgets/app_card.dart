@@ -25,36 +25,19 @@ class AppCard extends StatelessWidget {
     this.onTap,
   });
 
-  AppCard.white({
-    super.key,
-    required this.child,
-    this.padding = const EdgeInsets.all(16),
-    this.margin,
-    this.borderRadius = 12,
-    this.border,
-    this.onTap,
-  }) : backgroundColor = Colors.white,
-       boxShadow = [
-         BoxShadow(
-           color: Colors.black.withOpacity(0.04),
-           blurRadius: 8,
-           offset: const Offset(0, 2),
-         ),
-       ],
-       gradient = null;
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final card = Container(
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(
-        color: backgroundColor ?? Colors.white,
+        color: backgroundColor ?? colors.card,
         borderRadius: BorderRadius.circular(borderRadius),
         boxShadow: boxShadow ??
             [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04),
+                color: colors.foreground.withValues(alpha:0.04),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -89,11 +72,11 @@ class AppStatCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'JetBrains Mono',
               fontSize: 24,
               fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+              color: context.colors.primary,
             ),
           ),
         ],
@@ -124,7 +107,7 @@ class AppLabel extends StatelessWidget {
         fontFamily: 'Geist',
         fontSize: fontSize,
         fontWeight: fontWeight,
-        color: color ?? AppColors.mutedForeground,
+        color: color ?? context.colors.mutedForeground,
       ),
     );
   }
@@ -139,11 +122,11 @@ class AppSectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'Geist',
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: AppColors.foreground,
+        color: context.colors.foreground,
       ),
     );
   }
@@ -158,11 +141,11 @@ class AppFieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'Geist',
         fontSize: 11,
         fontWeight: FontWeight.w500,
-        color: Color(0xFF888888),
+        color: context.colors.mutedForeground,
       ),
     );
   }
@@ -181,11 +164,11 @@ class AppScreenTitle extends StatelessWidget {
         children: [
           Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 28,
               fontWeight: FontWeight.w700,
-              color: AppColors.foreground,
+              color: context.colors.foreground,
             ),
           ),
         ],

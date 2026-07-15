@@ -21,29 +21,20 @@ class AppTextField extends StatelessWidget {
     this.compact = false,
   });
 
-  AppTextField.compact({
-    super.key,
-    this.controller,
-    this.hintText,
-    this.label,
-    this.validator,
-    this.keyboardType,
-    this.maxLines = 1,
-  }) : compact = true;
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null) ...[
           Text(
             label!,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF888888),
+              color: colors.mutedForeground,
             ),
           ),
           const SizedBox(height: 6),
@@ -53,17 +44,21 @@ class AppTextField extends StatelessWidget {
           validator: validator,
           keyboardType: keyboardType,
           maxLines: maxLines,
-          style: const TextStyle(fontFamily: 'Geist', fontSize: 16),
+          style: TextStyle(
+            fontFamily: 'Geist',
+            fontSize: 16,
+            color: colors.foreground,
+          ),
           decoration: compact
               ? InputDecoration(
                   hintText: hintText,
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 14,
-                    color: Color(0xFF999999),
+                    color: colors.mutedForeground,
                   ),
                   filled: true,
-                  fillColor: const Color(0xFFF2F3F0),
+                  fillColor: colors.secondary,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 10,
@@ -75,29 +70,29 @@ class AppTextField extends StatelessWidget {
                 )
               : InputDecoration(
                   hintText: hintText,
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 16,
-                    color: Color(0xFF999999),
+                    color: colors.mutedForeground,
                   ),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: colors.card,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 14,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFFEEEEEE)),
+                    borderSide: BorderSide(color: colors.border),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFFEEEEEE)),
+                    borderSide: BorderSide(color: colors.border),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(
-                      color: AppColors.primary,
+                    borderSide: BorderSide(
+                      color: colors.primary,
                       width: 1.5,
                     ),
                   ),

@@ -72,4 +72,12 @@ class UserInfoDao extends DatabaseAccessor<AppDatabase>
       ),
     );
   }
+
+  Future<void> updateThemeMode(String? mode) async {
+    final user = await getUser();
+    if (user == null) return;
+    await upsertUser(
+      user.copyWith(themeMode: Value(mode), updatedAt: DateTime.now()),
+    );
+  }
 }

@@ -4,6 +4,7 @@ import '../../../../core/database/database.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/localization/providers/locale_provider.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../counter/providers/counter_provider.dart';
 
 enum LanguageOptions { english, burmese }
@@ -35,13 +36,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
+          final colors = context.colors;
           return AlertDialog(
             title: Text(AppLocalizations.of(context)!.error),
             content: Text(AppLocalizations.of(context)!.nameEmptyError),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(AppLocalizations.of(context)!.ok),
+                child: Text(
+                  AppLocalizations.of(context)!.ok,
+                  style: TextStyle(color: colors.primary),
+                ),
               ),
             ],
           );
@@ -94,6 +99,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Widget _buildNamePage() {
+    final colors = context.colors;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -110,7 +116,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       setState(() {
                         _selectedLanguage = newValue;
                       });
-                      // Change the app locale when language is selected
                       if (newValue == LanguageOptions.burmese) {
                         ref.read(localeProvider.notifier).setLocale(const Locale('my'));
                       } else {
@@ -131,32 +136,32 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             Text(
               AppLocalizations.of(context)!.welcomeTo,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 20,
-                color: Color(0xFF666666),
+                color: colors.mutedForeground,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               AppLocalizations.of(context)!.appTitle,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 36,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF111111),
+                color: colors.foreground,
               ),
             ),
             const SizedBox(height: 36),
             Text(
               AppLocalizations.of(context)!.enterNamePrompt,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 14,
-                color: Color(0xFF666666),
+                color: colors.mutedForeground,
               ),
             ),
             const SizedBox(height: 16),
@@ -167,36 +172,36 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.nameHint,
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: colors.card,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFCBCCC9)),
+                  borderSide: BorderSide(color: colors.border),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Color(0xFFFF8400),
+                  borderSide: BorderSide(
+                    color: colors.primary,
                     width: 2,
                   ),
                 ),
               ),
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 18,
-                color: Color(0xFF111111),
+                color: colors.foreground,
               ),
               onSubmitted: (_) => _goToModeSelection(),
               maxLength: 50,
             ),
-            Spacer(),
+            const Spacer(),
             SizedBox(
               width: double.infinity,
               height: 52,
               child: ElevatedButton(
                 onPressed: _goToModeSelection,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF8400),
-                  foregroundColor: const Color(0xFF111111),
+                  backgroundColor: colors.primary,
+                  foregroundColor: colors.foreground,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -218,6 +223,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Widget _buildModePage() {
+    final colors = context.colors;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -226,20 +232,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             const Spacer(flex: 4),
             Text(
               AppLocalizations.of(context)!.selectMode,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF111111),
+                color: colors.foreground,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.selectModeSubtitle,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 14,
-                color: Color(0xFF666666),
+                color: colors.mutedForeground,
               ),
               textAlign: TextAlign.center,
             ),
@@ -276,19 +282,19 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               child: ElevatedButton(
                 onPressed: _saving ? null : _save,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF8400),
-                  foregroundColor: const Color(0xFF111111),
+                  backgroundColor: colors.primary,
+                  foregroundColor: colors.foreground,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 child: _saving
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: Color(0xFF111111),
+                          color: colors.foreground,
                         ),
                       )
                     : Text(
@@ -324,17 +330,18 @@ class _ModeOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colors.card,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFFFF8400)
-                : const Color(0xFFE7E8E5),
+                ? colors.primary
+                : colors.border,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -347,17 +354,17 @@ class _ModeOption extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: isSelected
-                      ? const Color(0xFFFF8400)
-                      : const Color(0xFFCBCCC9),
+                      ? colors.primary
+                      : colors.border,
                   width: 2,
                 ),
               ),
               child: isSelected
-                  ? const Center(
+                  ? Center(
                       child: Icon(
                         Icons.circle,
                         size: 10,
-                        color: Color(0xFFFF8400),
+                        color: colors.primary,
                       ),
                     )
                   : null,
@@ -369,20 +376,20 @@ class _ModeOption extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF111111),
+                      color: colors.foreground,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 12,
-                      color: Color(0xFF666666),
+                      color: colors.mutedForeground,
                     ),
                   ),
                 ],

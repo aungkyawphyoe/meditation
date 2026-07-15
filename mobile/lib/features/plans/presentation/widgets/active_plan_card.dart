@@ -31,6 +31,7 @@ class ActivePlanCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colors = context.colors;
     if (totalDays == 0) return const SizedBox.shrink();
     final isLastDay = progress.currentDay > totalDays;
     final dayIndex = isLastDay ? totalDays : progress.currentDay;
@@ -45,7 +46,7 @@ class ActivePlanCard extends ConsumerWidget {
       ),
       boxShadow: [
         BoxShadow(
-          color: AppColors.primary.withOpacity(0.3),
+          color: colors.primary.withValues(alpha:0.3),
           blurRadius: 16,
           offset: const Offset(0, 6),
         ),
@@ -110,7 +111,7 @@ class ActivePlanCard extends ConsumerWidget {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: dayIndex / totalDays,
-              backgroundColor: Colors.white.withOpacity(0.2),
+              backgroundColor: Colors.white.withValues(alpha:0.2),
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
               minHeight: 6,
             ),
@@ -120,7 +121,7 @@ class ActivePlanCard extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
+                color: Colors.white.withValues(alpha:0.15),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -136,7 +137,7 @@ class ActivePlanCard extends ConsumerWidget {
                             fontFamily: 'Geist',
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white.withOpacity(0.7),
+                            color: Colors.white.withValues(alpha:0.7),
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -157,7 +158,7 @@ class ActivePlanCard extends ConsumerWidget {
                               fontFamily: 'Geist',
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.white.withValues(alpha:0.6),
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -185,7 +186,7 @@ class ActivePlanCard extends ConsumerWidget {
                           fontFamily: 'JetBrains Mono',
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha:0.7),
                         ),
                       ),
                     ],
@@ -201,7 +202,7 @@ class ActivePlanCard extends ConsumerWidget {
               onPressed: isLastDay ? onCompletePlan : onCompleteDay,
               style: TextButton.styleFrom(
                 backgroundColor: Colors.white,
-                foregroundColor: AppColors.primary,
+                foregroundColor: colors.primary,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -228,11 +229,11 @@ class ActivePlanCard extends ConsumerWidget {
                 icon: const Icon(Icons.stop_rounded, size: 18),
                 label: Text(AppLocalizations.of(context)!.stopPlan),
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.white.withOpacity(0.8),
+                  foregroundColor: Colors.white.withValues(alpha:0.8),
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                    side: BorderSide(color: Colors.white.withValues(alpha:0.3)),
                   ),
                 ),
               ),
@@ -247,7 +248,7 @@ class ActivePlanCard extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withValues(alpha:0.2),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(

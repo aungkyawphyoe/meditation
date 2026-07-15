@@ -5,6 +5,7 @@ import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/database/providers/plan_providers.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../widgets/counter_display.dart';
 import '../widgets/tap_to_count.dart';
 import '../widgets/stats_display.dart';
@@ -54,6 +55,7 @@ class CounterScreen extends ConsumerWidget {
 
     final counterState = ref.watch(counterProvider);
     final hasActivePlan = ref.watch(hasActivePlanProvider);
+    final colors = context.colors;
 
     final showPlanButton =
         hasActivePlan && !counterState.isCompletedThisSession;
@@ -97,13 +99,13 @@ class CounterScreen extends ConsumerWidget {
                 child: ElevatedButton.icon(
                   onPressed: () => _handlePlanButton(context, ref),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFF8400),
+                    backgroundColor: colors.primary,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
                     elevation: 4,
-                    shadowColor: const Color(0xFFFF8400).withOpacity(0.4),
+                    shadowColor: colors.primary.withValues(alpha:0.4),
                   ),
                   icon: Icon(
                     counterState.isTodayPlanActive

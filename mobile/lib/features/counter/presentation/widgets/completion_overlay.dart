@@ -41,10 +41,11 @@ class _CompletionOverlayState extends State<CompletionOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return FadeTransition(
       opacity: _fadeAnim,
       child: Container(
-        color: Colors.black54,
+        color: colors.foreground.withValues(alpha:0.54),
         child: Center(
           child: ScaleTransition(
             scale: _scaleAnim,
@@ -53,20 +54,20 @@ class _CompletionOverlayState extends State<CompletionOverlay>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.check_circle,
-                    color: AppColors.primary,
+                    color: colors.primary,
                     size: 72,
                   ),
                   const SizedBox(height: 20),
                   Text(
                     AppLocalizations.of(context)!.todayPlanComplete,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.foreground,
+                      color: colors.foreground,
                       height: 1.3,
                     ),
                   ),

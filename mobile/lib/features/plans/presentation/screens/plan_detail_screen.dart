@@ -204,11 +204,12 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
     final planAsync = ref.watch(planProvider(widget.planId));
     final planDaysAsync = ref.watch(planDaysProvider(widget.planId));
     final userAsync = ref.watch(userInfoProvider);
+    final colors = context.colors;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: colors.background,
         scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
@@ -216,11 +217,11 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
         ),
         title: Text(
           _isEditing ? 'Edit Plan' : 'Plan Details',
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Geist',
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: AppColors.foreground,
+            color: colors.foreground,
           ),
         ),
         actions: [
@@ -228,9 +229,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
               planAsync.valueOrNull != null &&
               !planAsync.valueOrNull!.isPredefined)
             PopupMenuButton<String>(
-              icon: const Icon(
+              icon: Icon(
                 Icons.more_vert_rounded,
-                color: AppColors.foreground,
+                color: colors.foreground,
               ),
               onSelected: (value) {
                 if (value == 'edit') {
@@ -357,6 +358,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
     bool isThisPlanActive,
     bool isCompleted,
   ) {
+    final colors = context.colors;
     return ListView(
       padding: const EdgeInsets.only(bottom: 100),
       children: [
@@ -370,8 +372,8 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                   padding: const EdgeInsets.only(bottom: 8),
                   child: AppBadge(
                     text: 'PREDEFINED',
-                    color: AppColors.primary.withAlpha(25),
-                    textColor: AppColors.primary,
+                    color: colors.primary.withAlpha(25),
+                    textColor: colors.primary,
                     fontSize: 10,
                     letterSpacing: 1,
                   ),
@@ -379,31 +381,31 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
               const SizedBox(height: 4),
               Text(
                 plan.title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.foreground,
+                  color: colors.foreground,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 '${plan.beadsPerRound} beads per round · ${planDays.length} days',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 14,
-                  color: AppColors.mutedForeground,
+                  color: colors.mutedForeground,
                 ),
               ),
               if (plan.description.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
                   plan.description,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.mutedForeground,
+                    color: colors.mutedForeground,
                     height: 1.5,
                   ),
                 ),
@@ -411,15 +413,15 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
             ],
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             'Days',
             style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: AppColors.foreground,
+              color: colors.foreground,
             ),
           ),
         ),
@@ -445,6 +447,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
   }
 
   Widget _buildEditDayList(List<PlanDay> days) {
+    final colors = context.colors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -452,13 +455,13 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
           child: Row(
             children: [
-              const Text(
+              Text(
                 'Days',
                 style: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.foreground,
+                  color: colors.foreground,
                 ),
               ),
               const Spacer(),
@@ -470,7 +473,7 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                   style: TextStyle(fontFamily: 'Geist', fontSize: 14),
                 ),
                 style: TextButton.styleFrom(
-                  foregroundColor: AppColors.primary,
+                  foregroundColor: colors.primary,
                 ),
               ),
             ],
@@ -535,9 +538,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                   key: ValueKey(day.id),
                   margin: const EdgeInsets.only(bottom: 8),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colors.card,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: const Color(0xFFEEEEEE)),
+                    border: Border.all(color: colors.border),
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(
@@ -549,9 +552,9 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                       children: [
                         ReorderableDragStartListener(
                           index: index,
-                          child: const Icon(
+                          child: Icon(
                             Icons.drag_handle_rounded,
-                            color: Color(0xFF999999),
+                            color: colors.mutedForeground,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -559,27 +562,27 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                           number: dayNum,
                           size: 36,
                           borderRadius: 8,
-                          backgroundColor: const Color(0xFFF5F5F5),
-                          textColor: AppColors.mutedForeground,
+                          backgroundColor: colors.secondary,
+                          textColor: colors.mutedForeground,
                         ),
                       ],
                     ),
                     title: Text(
                       'Day $dayNum',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Geist',
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.foreground,
+                        color: colors.foreground,
                       ),
                     ),
                     subtitle: Text(
                       '${day.gongDawName ?? 'Gong/Daw #${day.gongDawId}'} · ${day.targetRounds} rounds',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Geist',
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xFF888888),
+                        color: colors.mutedForeground,
                       ),
                     ),
                     trailing: GestureDetector(
@@ -589,10 +592,10 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
                           _editableDays.removeAt(index);
                         });
                       },
-                      child: const Icon(
+                      child: Icon(
                         Icons.close_rounded,
                         size: 20,
-                        color: Color(0xFF999999),
+                        color: colors.mutedForeground,
                       ),
                     ),
                   ),
@@ -606,13 +609,14 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
   }
 
   Widget _buildEditBottomBar() {
+    final colors = context.colors;
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: colors.background,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(10),
+            color: colors.foreground.withAlpha(10),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -767,13 +771,14 @@ class _BottomAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: colors.background,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(10),
+            color: colors.foreground.withAlpha(10),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -832,12 +837,13 @@ class _AddDayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colors.card,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFEEEEEE)),
+        border: Border.all(color: colors.border),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -848,13 +854,13 @@ class _AddDayCard extends StatelessWidget {
               children: [
                 AppDayIndicator(number: dayNumber),
                 const SizedBox(width: 10),
-                const Text(
+                Text(
                   'Day',
                   style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.foreground,
+                    color: colors.foreground,
                   ),
                 ),
                 const Spacer(),
@@ -864,8 +870,8 @@ class _AddDayCard extends StatelessWidget {
                     Icons.check_rounded,
                     size: 20,
                     color: isValid
-                        ? AppColors.primary
-                        : const Color(0xFFCCCCCC),
+                        ? colors.primary
+                        : colors.mutedForeground.withValues(alpha:0.6),
                   ),
                   constraints: const BoxConstraints(
                     minWidth: 32,
@@ -876,10 +882,10 @@ class _AddDayCard extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: onCancel,
-                  child: const Icon(
+                  child: Icon(
                     Icons.close_rounded,
                     size: 20,
-                    color: Color(0xFF999999),
+                    color: colors.mutedForeground,
                   ),
                 ),
               ],
@@ -892,31 +898,32 @@ class _AddDayCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Gong/Daw Name',
                         style: TextStyle(
                           fontFamily: 'Geist',
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF888888),
+                          color: colors.mutedForeground,
                         ),
                       ),
                       const SizedBox(height: 6),
                       TextFormField(
                         controller: gongDawController,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Geist',
                           fontSize: 14,
+                          color: colors.foreground,
                         ),
                         decoration: InputDecoration(
                           hintText: 'e.g., အရဟံ',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontFamily: 'Geist',
                             fontSize: 14,
-                            color: Color(0xFF999999),
+                            color: colors.mutedForeground,
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFF2F3F0),
+                          fillColor: colors.secondary,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 10,
@@ -934,20 +941,20 @@ class _AddDayCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Target Rounds',
                       style: TextStyle(
                         fontFamily: 'Geist',
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF888888),
+                        color: colors.mutedForeground,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Container(
                       height: 40,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF2F3F0),
+                        color: colors.secondary,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -977,10 +984,10 @@ class _AddDayCard extends StatelessWidget {
                               width: 32,
                               height: 40,
                               alignment: Alignment.center,
-                              child: const Icon(
+                              child: Icon(
                                 Icons.add_rounded,
                                 size: 18,
-                                color: AppColors.primary,
+                                color: colors.primary,
                               ),
                             ),
                           ),
@@ -990,10 +997,10 @@ class _AddDayCard extends StatelessWidget {
                               width: 32,
                               height: 40,
                               alignment: Alignment.center,
-                              child: const Icon(
+                              child: Icon(
                                 Icons.remove_rounded,
                                 size: 18,
-                                color: AppColors.primary,
+                                color: colors.primary,
                               ),
                             ),
                           ),
@@ -1008,28 +1015,32 @@ class _AddDayCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Gong/Daw Detail',
                   style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF888888),
+                    color: colors.mutedForeground,
                   ),
                 ),
                 const SizedBox(height: 6),
                 TextFormField(
                   controller: gongDawDetailController,
-                  style: const TextStyle(fontFamily: 'Geist', fontSize: 14),
+                  style: TextStyle(
+                    fontFamily: 'Geist',
+                    fontSize: 14,
+                    color: colors.foreground,
+                  ),
                   decoration: InputDecoration(
                     hintText: 'e.g., ပူဇော်အထူးကို ခံတော်မူထိုက်သော',
-                    hintStyle: const TextStyle(
+                    hintStyle: TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,
-                      color: Color(0xFF999999),
+                      color: colors.mutedForeground,
                     ),
                     filled: true,
-                    fillColor: const Color(0xFFF2F3F0),
+                    fillColor: colors.secondary,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 10,

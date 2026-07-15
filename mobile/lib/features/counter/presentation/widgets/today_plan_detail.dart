@@ -15,9 +15,10 @@ class TodayPlanDetail extends ConsumerWidget {
     final beadsPerRound = state.planBeadsPerRound ?? 0;
     final targetRounds = state.planTargetRounds ?? 0;
     final completedRounds = state.roundsCompleted;
+    final colors = context.colors;
 
     return AppCard(
-      backgroundColor: AppColors.secondary,
+      backgroundColor: colors.secondary,
       boxShadow: const [],
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Column(
@@ -25,11 +26,11 @@ class TodayPlanDetail extends ConsumerWidget {
         children: [
           Text(
             planName,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF111111),
+              color: colors.foreground,
             ),
           ),
           const SizedBox(height: 2),
@@ -43,11 +44,11 @@ class TodayPlanDetail extends ConsumerWidget {
           const SizedBox(height: 4),
           Text(
             '$completedRounds / $targetRounds',
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'JetBrains Mono',
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+              color: colors.primary,
             ),
           ),
         ],

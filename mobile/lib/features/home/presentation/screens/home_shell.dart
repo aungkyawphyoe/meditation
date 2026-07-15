@@ -16,17 +16,18 @@ class HomeShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTab = ref.watch(currentTabProvider);
+    final colors = context.colors;
     return Scaffold(
       body: _screens[currentTab],
       bottomNavigationBar: Container(
         margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
         height: 64,
         decoration: BoxDecoration(
-          color: Colors.white.withAlpha(230),
+          color: colors.card.withAlpha(230),
           borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF000000).withAlpha(26),
+              color: colors.foreground.withAlpha(26),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -80,8 +81,9 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = AppColors.primary;
-    final inactiveColor = AppColors.mutedForeground;
+    final colors = context.colors;
+    final activeColor = colors.primary;
+    final inactiveColor = colors.mutedForeground;
 
     return GestureDetector(
       onTap: onTap,

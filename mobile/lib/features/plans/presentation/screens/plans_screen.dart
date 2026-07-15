@@ -15,20 +15,21 @@ class PlansScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colors = context.colors;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: colors.background,
         appBar: AppBar(
-          backgroundColor: AppColors.background,
+          backgroundColor: colors.background,
           scrolledUnderElevation: 0,
-          title: const Text(
+          title: Text(
             'Plans',
             style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 28,
               fontWeight: FontWeight.w700,
-              color: AppColors.foreground,
+              color: colors.foreground,
             ),
           ),
           bottom: PreferredSize(
@@ -36,24 +37,24 @@ class PlansScreen extends ConsumerWidget {
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
-                color: const Color(0xFFE8E9E6),
+                color: colors.secondary,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TabBar(
                 indicator: BoxDecoration(
-                  color: Colors.white,
+                  color: colors.card,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.06),
+                      color: colors.foreground.withValues(alpha:0.06),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
                   ],
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: AppColors.foreground,
-                unselectedLabelColor: const Color(0xFF888888),
+                labelColor: colors.foreground,
+                unselectedLabelColor: colors.mutedForeground,
                 labelStyle: const TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 14,
@@ -226,6 +227,7 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(40),
@@ -235,27 +237,27 @@ class _EmptyState extends StatelessWidget {
             Icon(
               Icons.auto_awesome_rounded,
               size: 64,
-              color: AppColors.primary.withOpacity(0.3),
+              color: colors.primary.withValues(alpha:0.3),
             ),
             const SizedBox(height: 20),
             Text(
               AppLocalizations.of(context)!.noActivePlan,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: AppColors.foreground,
+                color: colors.foreground,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.noActivePlanSubtitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF888888),
+                color: colors.mutedForeground,
               ),
             ),
           ],
@@ -269,9 +271,10 @@ class _ListTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final plansAsync = ref.watch(allPlansProvider);
+    final colors = context.colors;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colors.background,
       body: plansAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
@@ -280,10 +283,10 @@ class _ListTab extends ConsumerWidget {
             return Center(
               child: Text(
                 AppLocalizations.of(context)!.noPlansYetTab,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 14,
-                  color: Color(0xFF888888),
+                  color: colors.mutedForeground,
                 ),
               ),
             );
@@ -328,7 +331,7 @@ class _ListTab extends ConsumerWidget {
             MaterialPageRoute(builder: (_) => const AddPlanScreen()),
           );
         },
-        backgroundColor: AppColors.primary,
+        backgroundColor: colors.primary,
         foregroundColor: Colors.white,
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),

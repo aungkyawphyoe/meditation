@@ -10,6 +10,7 @@ class AppBadge extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final double borderRadius;
   final double? letterSpacing;
+  final bool _isMode;
 
   const AppBadge({
     super.key,
@@ -21,25 +22,30 @@ class AppBadge extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     this.borderRadius = 6,
     this.letterSpacing,
-  });
+  }) : _isMode = false;
 
-  AppBadge.mode({
+  const AppBadge.mode({
     super.key,
     required this.text,
-  }) : color = AppColors.primary.withAlpha(25),
-       textColor = AppColors.primary,
+  }) : color = null,
+       textColor = null,
        fontSize = 12,
        fontWeight = FontWeight.w500,
        padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
        borderRadius = 16,
-       letterSpacing = null;
+       letterSpacing = null,
+       _isMode = true;
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final bgColor = _isMode ? colors.primary.withAlpha(25) : (color ?? colors.primary.withAlpha(25));
+    final fgColor = _isMode ? colors.primary : (textColor ?? colors.primary);
+
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: color ?? AppColors.primary.withAlpha(25),
+        color: bgColor,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Text(
@@ -48,7 +54,7 @@ class AppBadge extends StatelessWidget {
           fontFamily: 'Geist',
           fontSize: fontSize,
           fontWeight: fontWeight,
-          color: textColor ?? AppColors.primary,
+          color: fgColor,
           letterSpacing: letterSpacing,
         ),
       ),
@@ -76,11 +82,12 @@ class AppDayIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.primary,
+        color: backgroundColor ?? colors.primary,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Center(

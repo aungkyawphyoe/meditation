@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../counter/providers/counter_provider.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class CounterDisplay extends ConsumerWidget {
   const CounterDisplay({super.key});
@@ -14,7 +15,7 @@ class CounterDisplay extends ConsumerWidget {
         fontFamily: 'JetBrains Mono',
         fontSize: 80,
         fontWeight: FontWeight.w700,
-        color: const Color(0xFF111111),
+        color: context.colors.foreground,
       ),
       textAlign: TextAlign.center,
     );

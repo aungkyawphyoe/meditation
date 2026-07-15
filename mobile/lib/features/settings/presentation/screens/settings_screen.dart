@@ -5,6 +5,7 @@ import '../../../../core/localization/providers/locale_provider.dart';
 import '../../../../core/database/providers/app_database_providers.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/theme/theme_provider.dart';
 import '../../../counter/providers/counter_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -14,11 +15,13 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentLocale = ref.watch(localeProvider);
     final currentMode = ref.watch(counterProvider.select((s) => s.mode));
+    final currentThemeMode = ref.watch(themeModeProvider);
+    final colors = context.colors;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: colors.background,
         scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
@@ -26,11 +29,11 @@ class SettingsScreen extends ConsumerWidget {
         ),
         title: Text(
           AppLocalizations.of(context)!.settings,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Geist',
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: AppColors.foreground,
+            color: colors.foreground,
           ),
         ),
       ),
@@ -41,11 +44,11 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.currentMode,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: AppColors.mutedForeground,
+                color: colors.mutedForeground,
               ),
             ),
             const SizedBox(height: 12),
@@ -54,21 +57,21 @@ class SettingsScreen extends ConsumerWidget {
               child: ListTile(
                 title: Text(
                   currentMode.label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 16,
-                    color: AppColors.foreground,
+                    color: colors.foreground,
                   ),
                 ),
                 trailing: TextButton(
                   onPressed: () => _changeMode(context, ref),
                   child: Text(
                     AppLocalizations.of(context)!.changeMode,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+                      color: colors.primary,
                     ),
                   ),
                 ),
@@ -76,12 +79,53 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              AppLocalizations.of(context)!.language,
-              style: const TextStyle(
+              'Theme',
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: AppColors.mutedForeground,
+                color: colors.mutedForeground,
+              ),
+            ),
+            const SizedBox(height: 12),
+            AppCard(
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  _ThemeOption(
+                    label: 'Light',
+                    icon: Icons.light_mode_rounded,
+                    isSelected: currentThemeMode == ThemeMode.light,
+                    onTap: () =>
+                        ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.light),
+                  ),
+                  const Divider(height: 1, indent: 16, endIndent: 16),
+                  _ThemeOption(
+                    label: 'Dark',
+                    icon: Icons.dark_mode_rounded,
+                    isSelected: currentThemeMode == ThemeMode.dark,
+                    onTap: () =>
+                        ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.dark),
+                  ),
+                  const Divider(height: 1, indent: 16, endIndent: 16),
+                  _ThemeOption(
+                    label: 'System default',
+                    icon: Icons.settings_rounded,
+                    isSelected: currentThemeMode == ThemeMode.system,
+                    onTap: () =>
+                        ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.system),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              AppLocalizations.of(context)!.language,
+              style: TextStyle(
+                fontFamily: 'Geist',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: colors.mutedForeground,
               ),
             ),
             const SizedBox(height: 12),
@@ -131,6 +175,53 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
+class _ThemeOption extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _ThemeOption({
+    required this.label,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: [
+            Icon(icon, size: 20, color: colors.foreground),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'Geist',
+                fontSize: 16,
+                color: colors.foreground,
+              ),
+            ),
+            const Spacer(),
+            if (isSelected)
+              Icon(
+                Icons.check_rounded,
+                color: colors.primary,
+                size: 20,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _ModeBottomSheet extends StatelessWidget {
   final CounterMode currentMode;
 
@@ -138,6 +229,7 @@ class _ModeBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -146,11 +238,11 @@ class _ModeBottomSheet extends StatelessWidget {
         children: [
           Text(
             AppLocalizations.of(context)!.selectMode,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: AppColors.foreground,
+              color: colors.foreground,
             ),
           ),
           const SizedBox(height: 16),
@@ -158,16 +250,16 @@ class _ModeBottomSheet extends StatelessWidget {
             (mode) => ListTile(
               title: Text(
                 mode.label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 16,
-                  color: AppColors.foreground,
+                  color: colors.foreground,
                 ),
               ),
               trailing: mode == currentMode
-                  ? const Icon(
+                  ? Icon(
                       Icons.check_rounded,
-                      color: AppColors.primary,
+                      color: colors.primary,
                       size: 20,
                     )
                   : null,
@@ -194,6 +286,7 @@ class _LanguageOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
@@ -203,17 +296,17 @@ class _LanguageOption extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Geist',
                 fontSize: 16,
-                color: AppColors.foreground,
+                color: colors.foreground,
               ),
             ),
             const Spacer(),
             if (isSelected)
-              const Icon(
+              Icon(
                 Icons.check_rounded,
-                color: AppColors.primary,
+                color: colors.primary,
                 size: 20,
               ),
           ],

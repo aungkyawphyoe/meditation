@@ -42,6 +42,7 @@ class ProfileScreen extends ConsumerWidget {
     AsyncValue<int> plansAsync,
     AsyncValue<List<PlanProgressSummary>> recentPlansAsync,
   ) {
+    final colors = context.colors;
     final plans = plansAsync.asData?.value ?? 0;
     final rounds = user.totalLifetimeRounds;
     final recentPlans = recentPlansAsync.asData?.value ?? [];
@@ -55,11 +56,11 @@ class ProfileScreen extends ConsumerWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.profile,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.foreground,
+                  color: colors.foreground,
                 ),
               ),
               const Spacer(),
@@ -70,9 +71,9 @@ class ProfileScreen extends ConsumerWidget {
                     MaterialPageRoute(builder: (_) => const SettingsScreen()),
                   );
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.settings_outlined,
-                  color: AppColors.mutedForeground,
+                  color: colors.mutedForeground,
                   size: 24,
                 ),
               ),
@@ -86,18 +87,18 @@ class ProfileScreen extends ConsumerWidget {
               Container(
                 width: 80,
                 height: 80,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
+                decoration: BoxDecoration(
+                  color: colors.primary,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: Text(
                     (user.name.isNotEmpty ? user.name[0] : 'M').toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'JetBrains Mono',
                       fontSize: 32,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.foreground,
+                      color: colors.foreground,
                     ),
                   ),
                 ),
@@ -108,11 +109,11 @@ class ProfileScreen extends ConsumerWidget {
                 children: [
                   Text(
                     user.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Geist',
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.foreground,
+                      color: colors.foreground,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -161,11 +162,11 @@ class ProfileScreen extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             AppLocalizations.of(context)!.myPlans,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: AppColors.foreground,
+              color: colors.foreground,
             ),
           ),
         ),
@@ -210,13 +211,14 @@ class _PlanCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colors = context.colors;
     final isActive = plan.status == 'active';
     final isFailed = plan.status == 'failed';
     String statusLabel;
     Color statusColor;
     if (isActive) {
       statusLabel = AppLocalizations.of(context)!.active;
-      statusColor = AppColors.primary;
+      statusColor = colors.primary;
     } else if (isFailed) {
       statusLabel = AppLocalizations.of(context)!.failed;
       statusColor = const Color(0xFFEF4444);
@@ -230,7 +232,8 @@ class _PlanCard extends ConsumerWidget {
           )!.dayOfTotal(plan.currentDay, plan.totalDays)
         : AppLocalizations.of(context)!.daysCount(plan.totalDays);
 
-    return AppCard.white(
+    return AppCard(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -240,11 +243,11 @@ class _PlanCard extends ConsumerWidget {
               Expanded(
                 child: Text(
                   plan.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Geist',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.foreground,
+                    color: colors.foreground,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -257,10 +260,10 @@ class _PlanCard extends ConsumerWidget {
           const SizedBox(height: 4),
           Text(
             plan.description,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Geist',
               fontSize: 12,
-              color: AppColors.mutedForeground,
+              color: colors.mutedForeground,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -268,11 +271,11 @@ class _PlanCard extends ConsumerWidget {
           const SizedBox(height: 6),
           Text(
             daysText,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'JetBrains Mono',
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF888888),
+              color: colors.mutedForeground,
             ),
           ),
         ],

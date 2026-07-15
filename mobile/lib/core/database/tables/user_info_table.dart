@@ -13,6 +13,7 @@ class UserInfoTable extends Table {
   IntColumn get counterRounds => integer().withDefault(const Constant(0))();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
+  TextColumn get themeMode => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
