@@ -45,38 +45,54 @@ class _CompletionOverlayState extends State<CompletionOverlay>
     return FadeTransition(
       opacity: _fadeAnim,
       child: Container(
-        color: colors.foreground.withValues(alpha:0.54),
-        child: Center(
-          child: ScaleTransition(
-            scale: _scaleAnim,
-            child: AppCard(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 48),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.check_circle,
-                    color: colors.primary,
-                    size: 72,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    AppLocalizations.of(context)!.todayPlanComplete,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Geist',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: colors.foreground,
-                      height: 1.3,
+        color: colors.foreground.withValues(alpha: 0.54),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: SizedBox(
+                  width: 360,
+                  child: ScaleTransition(
+                    scale: _scaleAnim,
+                    child: AppCard(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 48,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: colors.primary,
+                            size: 72,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            AppLocalizations.of(context)!.todayPlanComplete,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Geist',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: colors.foreground,
+                              height: 1.3,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          AppLabel(
+                            text: AppLocalizations.of(
+                              context,
+                            )!.allRoundsCompleted,
+                            fontSize: 14,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  AppLabel(
-                    text: AppLocalizations.of(context)!.allRoundsCompleted,
-                    fontSize: 14,
-                  ),
-                ],
+                ),
               ),
             ),
           ),

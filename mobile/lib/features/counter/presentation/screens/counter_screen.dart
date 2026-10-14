@@ -12,6 +12,7 @@ import '../widgets/stats_display.dart';
 import '../widgets/today_plan_detail.dart';
 import '../widgets/completion_overlay.dart';
 import '../widgets/action_buttons.dart';
+import '../widgets/counter_session_layout.dart';
 
 class CounterScreen extends ConsumerWidget {
   const CounterScreen({super.key});
@@ -63,69 +64,48 @@ class CounterScreen extends ConsumerWidget {
     return Scaffold(
       body: Stack(
         children: [
-          SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                AppScreenTitle(text: AppLocalizations.of(context)!.appTitle),
-                if (counterState.isTodayPlanActive) ...[
-                  const TodayPlanDetail(),
-                ] else ...[
-                  const Spacer(),
-                ],
-                const CounterDisplay(),
-                const SizedBox(height: 8),
-                const TapToCount(),
-                const SizedBox(height: 8),
-                const StatsDisplay(),
-                const Spacer(),
-              ],
-            ),
+          CounterSessionLayout(
+            title: AppScreenTitle(text: AppLocalizations.of(context)!.appTitle),
+            plan: counterState.isTodayPlanActive
+                ? const TodayPlanDetail()
+                : null,
+            counter: const CounterDisplay(),
+            tapTarget: const TapToCount(),
+            stats: const StatsDisplay(),
+            reset: ActionButtons(onReset: () => _handleReset(context, ref)),
+            planAction: showPlanButton
+                ? ElevatedButton.icon(
+                    onPressed: () => _handlePlanButton(context, ref),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(48, 48),
+                      backgroundColor: colors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      elevation: 4,
+                      shadowColor: colors.primary.withValues(alpha: 0.4),
+                    ),
+                    icon: Icon(
+                      counterState.isTodayPlanActive
+                          ? Icons.close
+                          : Icons.play_arrow,
+                      size: 20,
+                    ),
+                    label: Text(
+                      counterState.isTodayPlanActive
+                          ? AppLocalizations.of(context)!.exitTodayPlan
+                          : AppLocalizations.of(context)!.startTodayPlan,
+                      style: const TextStyle(
+                        fontFamily: 'Geist',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                : null,
           ),
           if (counterState.isTodayPlanComplete) const CompletionOverlay(),
-          Positioned(
-            left: 24,
-            bottom: 24,
-            child: ActionButtons(
-              onReset: () => _handleReset(context, ref),
-            ),
-          ),
-          if (showPlanButton)
-            Positioned(
-              right: 24,
-              bottom: 24,
-              child: SizedBox(
-                height: 48,
-                child: ElevatedButton.icon(
-                  onPressed: () => _handlePlanButton(context, ref),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    elevation: 4,
-                    shadowColor: colors.primary.withValues(alpha:0.4),
-                  ),
-                  icon: Icon(
-                    counterState.isTodayPlanActive
-                        ? Icons.close
-                        : Icons.play_arrow,
-                    size: 20,
-                  ),
-                  label: Text(
-                    counterState.isTodayPlanActive
-                        ? AppLocalizations.of(context)!.exitTodayPlan
-                        : AppLocalizations.of(context)!.startTodayPlan,
-                    style: const TextStyle(
-                      fontFamily: 'Geist',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );
